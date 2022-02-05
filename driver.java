@@ -2,7 +2,7 @@ import java.io.File;
 import java.util.Scanner;
  
 //this is the driver class
-public class driver {
+public class Driver {
 
     public static void main(String[] args) {
 
