@@ -19,16 +19,16 @@ public class Listing {
 		
 
 		System.out.println(" ________________");
-		printRow(className, 0);
+		printRow(className, 0, false);
 		System.out.println("|================|");
 		
 		for(String att: attributesList) {
-			printRow(att, 1);
+			printRow(att, 1, false);
 		}
 		System.out.println("|________________|");
 	}
 	
-	private static void printRow(String phrase, int isAttribute) {
+	private static void printRow(String phrase, int isAttribute, boolean isRelationship) {
 		int blankSpaces = 16;
 		int remaining = blankSpaces-phrase.length()-(isAttribute*3);
 		int counter = 1;
@@ -45,15 +45,44 @@ public class Listing {
 		for(int i = 0; i <= remaining-counter; i++) {
 			System.out.print(" ");
 		}
-		System.out.println("|");
+		if(isRelationship)
+			System.out.print("|");
+		else
+			System.out.println("|");
 	}
 	
 	public static void listClasses() {
-
+		List<String> attributesList = Arrays.asList("sup1", "sup2", "sup3");
+		List<String> classes = Arrays.asList("Car", "Boat", "Plane");
+		
+		for(String className: classes) {
+			System.out.println(" ________________");
+			printRow(className, 0, false);
+			System.out.println("|================|");
+			
+			for(String att: attributesList) {
+				printRow(att, 1, false);
+			}
+			System.out.println("|________________|");
+		}
 	}
 	
 	public static void listRelationships() {
-
+		System.out.println(" ________________                              ________________");
+		printRelationship("Car", "Plane");
+		System.out.println("|________________|                            |________________|");
+		
+		System.out.println(" ________________                              ________________");
+		printRelationship("Train", "Boat");
+		System.out.println("|________________|                            |________________|");
+		
+	}
+	
+	public static void printRelationship(String class1, String class2) {
+		printRow(class1, 0, true);
+		System.out.print("     <----Related----->     ");
+		printRow(class2, 0, true);
+		System.out.println("");
 	}
 
 }
