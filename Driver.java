@@ -21,14 +21,16 @@ public class Driver {
     * Checks the passed string for invalid characters
     * “`\\|:'\"<.>/?
     */
-    public static void validation_check (String input) 
+    public static boolean validation_check (String input) 
     {
         for (int i = 0; i < input.length(); i++)
         {
             if (" `\\|:'\"<.>/?".indexOf(input.charAt(i)) >= -1)
             {
                 System.out.println("ERROR: " + input.charAt(i) + " is an invalid character");
+                return false;
             }
         }
+        return true;
     }
 }
