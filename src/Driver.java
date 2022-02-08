@@ -6,6 +6,8 @@ import java.util.ArrayList;
 public class Driver {
     //Arraylist for classes
     static ArrayList <Class> classList = new ArrayList <Class> ();
+    //Arraylist for attributes
+    static ArrayList <Attribute> attributeList = new ArrayList <Attribute> ();
     //ArrayList for relationships goes here
 	
     public static void main(String[] args) {
@@ -26,7 +28,6 @@ public class Driver {
 		        break;
             }
 
-
             //All create commands go here with an if statement for class, relationship, and attribute as second token
             if(tokens[0].equalsIgnoreCase("Create"))
             {
@@ -38,12 +39,34 @@ public class Driver {
                         System.out.println("Class \"" + tokens[2] + "\" Added");
                     }
                 }
-            }
 
+                //Create Attribute
+                //Command: create attribute <class_name> <attribute_name>
+                if(tokens[1].equalsIgnoreCase("Attribute"))
+                {
+                    //Check for valid input length
+                    if (tokens.length < 3)
+                    {
+                        System.out.println("ERROR: Input contains too few keywords");
+                        continue;
+                    }
+                    if (tokens.length > 3)
+                    {
+                        System.out.println("ERROR: Input contains too many keywords");
+                        continue;
+                    }
+                    if(createAttribute(tokens[2], tokens[3]))
+                    {
+                        System.out.println("Attribute \"" + tokens[3] + "\" Added to Class \"" + tokens[2] + "\"");
+                    }
+                }
+            }
             //read in next line of input
             input = scanner.nextLine();
         }
     }
+
+    
 
     /*
     * Checks the passed string for invalid characters
@@ -60,6 +83,48 @@ public class Driver {
             }
         }
         return true;
+    }
+
+    //Command: create attribute <class_name> <attribute_name>
+    public static boolean createAttribute(String clasName, String attrName){
+        //Check if class exists
+        if(classExists(clasName))
+        {
+            //Check if attribute already exists
+            for (Attribute a: attributeList)
+            {
+                if (attrName.equals(a.name))
+                {
+                    System.out.println("ERROR: Attribute with name \"" + attrName + "\" already exists");
+                    return false;
+                }
+            }
+            //Check if attribute name is valid
+            if (!validation_check(attrName))
+            {
+                System.out.println("ERROR: Attribute name contains invalid character(s): `\\|:'\"<.>/?");
+                return false;
+            }
+            //Add attribute to arraylist
+            attributeList.add(new Attribute(attrName));
+            return true;
+        }
+        System.out.println("ERROR: Class with name \"" + clasName + "\" does not exist");
+        return false;
+    }
+
+    // Checks if a class already exists
+    // Returns true if it exists
+    public static boolean classExists(String name)
+    {
+        for (Class c: classList)
+        {
+            if (name.equals(c.name))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static boolean createClass(String name)
