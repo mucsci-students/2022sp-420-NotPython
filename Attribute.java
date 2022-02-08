@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.Scanner;
-
 /*
 * attributes.java
 * 
@@ -26,6 +23,4 @@ public class Attribute {
     {
         name = newName;
     }
-
-    
 }
