@@ -44,6 +44,17 @@ public class Driver {
                 //Command: create attribute <class_name> <attribute_name>
                 if(tokens[1].equalsIgnoreCase("Attribute"))
                 {
+                    //Check for valid input length
+                    if (tokens.length < 3)
+                    {
+                        System.out.println("ERROR: Input contains too few keywords");
+                        continue;
+                    }
+                    if (tokens.length > 3)
+                    {
+                        System.out.println("ERROR: Input contains too many keywords");
+                        continue;
+                    }
                     if(createAttribute(tokens[2], tokens[3]))
                     {
                         System.out.println("Attribute \"" + tokens[3] + "\" Added to Class \"" + tokens[2] + "\"");
@@ -54,6 +65,8 @@ public class Driver {
             input = scanner.nextLine();
         }
     }
+
+    
 
     /*
     * Checks the passed string for invalid characters
