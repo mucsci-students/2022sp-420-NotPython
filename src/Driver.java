@@ -71,7 +71,7 @@ public class Driver {
             if (tokens[0].equalsIgnoreCase("Rename"))
             {
                 //Rename class
-                //Command: Rename Class <old name> <new name>
+                //Command: Rename Class <old_name> <new_name>
                 if (tokens[1].equalsIgnoreCase("Class") && lengthChecker(tokens, 4))
                 {
                     dc.renameClass(tokens[2], tokens[3]);
