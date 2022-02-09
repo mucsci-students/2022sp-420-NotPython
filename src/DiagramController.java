@@ -58,7 +58,6 @@ public class DiagramController
         Class tempClass = getClass(clasName);
         if(tempClass != null)
         {
-            
             //Check if attribute name is valid
             if (!validation_check(attrName))
             {
@@ -80,7 +79,29 @@ public class DiagramController
         }
     }
 
-
+    //delete attribute
+    //Command: delete attribute <class_name> <attribute_name>
+    public void deleteAttribute(String clasName, String attrName)
+    {
+        //Check if class exists
+        Class tempClass = getClass(clasName);
+        if(tempClass != null)
+        {
+            Attribute tempAttr = getAttribute(tempClass, attrName);
+            if (tempAttr == null)
+            {
+                System.out.println("ERROR: Attribute with name \"" + attrName + "\" for \"" + clasName + "\" does not exist");
+                return;
+            }
+            //delete attribute to arraylist
+            tempClass.attributes.remove(tempAttr);
+            System.out.println("Attribute \"" + attrName + "\" removed from Class \"" + clasName + "\"");
+        }
+        else
+        {
+            System.out.println("ERROR: Class with name \"" + clasName + "\" does not exist");
+        }
+    }
 
     //Test method find class
     private static Class getClass (String name)
