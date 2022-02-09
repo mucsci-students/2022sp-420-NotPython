@@ -4,21 +4,20 @@ import java.util.ArrayList;
  
 //this is the driver class
 public class Driver {
-    //Arraylist for classes
-    static ArrayList <Class> classList = new ArrayList <Class> ();
-    //Arraylist for attributes
-    static ArrayList <Attribute> attributeList = new ArrayList <Attribute> ();
-    //ArrayList for relationships goes here
 	
     public static void main(String[] args) {
 
         //create scanner and read next line
         Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
+        String input;
         String [] tokens = new String [100];
+        DiagramController dc = new DiagramController();
 
         //main loop
         while(true) {
+            //read in next line of input
+            input = scanner.nextLine();
+
             //strip and tokenize input by spaces
             input.strip();
             tokens = input.split(" ");
@@ -34,10 +33,8 @@ public class Driver {
                 //create class
                 if(tokens[1].equalsIgnoreCase("Class"))
                 {
-                    if(createClass(tokens[2]))
-                    {
-                        System.out.println("Class \"" + tokens[2] + "\" Added");
-                    }
+                    dc.createClass(tokens[2]);
+                    continue;
                 }
 
                 //Create Attribute
@@ -45,110 +42,33 @@ public class Driver {
                 if(tokens[1].equalsIgnoreCase("Attribute"))
                 {
                     //Check for valid input length
-                    if (tokens.length < 3)
+                    if (tokens.length < 4)
                     {
                         System.out.println("ERROR: Input contains too few keywords");
                         continue;
                     }
-                    if (tokens.length > 3)
+                    if (tokens.length > 4)
                     {
                         System.out.println("ERROR: Input contains too many keywords");
                         continue;
                     }
-                    if(createAttribute(tokens[2], tokens[3]))
-                    {
-                        System.out.println("Attribute \"" + tokens[3] + "\" Added to Class \"" + tokens[2] + "\"");
-                    }
+
+                    dc.createAttribute(tokens[2], tokens[3]);
+                    continue;
                 }
             }
-            //read in next line of input
-            input = scanner.nextLine();
-        }
-    }
 
-    
-
-    /*
-    * Checks the passed string for invalid characters
-    * “`\\|:'\"<.>/?
-    */
-    public static boolean validation_check (String input) 
-    {
-        for (int i = 0; i < input.length(); i++)
-        {
-            if (" `\\|:'\"<.>/?".indexOf(input.charAt(i)) > -1)
+            //All delete commands go here with an if statement for class, relationship, and attribute as second token
+            if(tokens[0].equalsIgnoreCase("Delete"))
             {
-                System.out.println("ERROR: " + input.charAt(i) + " is an invalid character");
-                return false;
-            }
-        }
-        return true;
-    }
-
-    //Command: create attribute <class_name> <attribute_name>
-    public static boolean createAttribute(String clasName, String attrName){
-        //Check if class exists
-        if(classExists(clasName))
-        {
-            //Check if attribute already exists
-            for (Attribute a: attributeList)
-            {
-                if (attrName.equals(a.name))
+            //delete class
+                if(tokens[1].equalsIgnoreCase("Class"))
                 {
-                    System.out.println("ERROR: Attribute with name \"" + attrName + "\" already exists");
-                    return false;
+                    dc.deleteClass(tokens[2]);
+                    continue;
                 }
             }
-            //Check if attribute name is valid
-            if (!validation_check(attrName))
-            {
-                System.out.println("ERROR: Attribute name contains invalid character(s): `\\|:'\"<.>/?");
-                return false;
-            }
-            //Add attribute to arraylist
-            attributeList.add(new Attribute(attrName));
-            return true;
+            System.out.println("ERROR: Command \"" + input + "\" is invalid");
         }
-        System.out.println("ERROR: Class with name \"" + clasName + "\" does not exist");
-        return false;
-    }
-
-    // Checks if a class already exists
-    // Returns true if it exists
-    public static boolean classExists(String name)
-    {
-        for (Class c: classList)
-        {
-            if (name.equals(c.name))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static boolean createClass(String name)
-    {
-        //check to see if the name contains any invalid characters
-        if (!validation_check(name))
-        {
-            //need error message here?
-            //System.out.println("ERROR: Class Name contains invalid character(s): `\\|:'\"<.>/?");
-            return false;
-        }
-
-        //check to see if class exists already
-        for (Class c: classList)
-        {
-            if (name.equals(c.name))
-            {
-                System.out.println("ERROR: Class with name \"" + name + "\" already exists");
-                return false;
-            }
-        }
-
-        //add the new class to the classList
-        classList.add(new Class(name));
-        return true;
     }
 }
