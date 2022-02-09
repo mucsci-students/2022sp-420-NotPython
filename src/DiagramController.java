@@ -12,6 +12,7 @@ public class DiagramController
 
     }
 
+    //Command: Create class <classname>
     public void createClass(String name)
     {
         //check to see if the name contains any invalid characters
@@ -34,8 +35,11 @@ public class DiagramController
             System.out.println("Class \"" + name + "\" Added");
     }
 
+    //command: delete Class <classname>
+    //deletes a class and all of it's attributes
     public void deleteClass(String className)
     {
+        //if class exists then delete
         Class tempClass = getClass(className);
         if (tempClass == null)
         {
@@ -91,6 +95,7 @@ public class DiagramController
         return null;
     }
 
+    //gets an attribute with attrName for curClass
     private static Attribute getAttribute(Class curClass, String attrName)
     {
         //Check if attribute already exists
