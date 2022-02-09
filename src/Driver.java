@@ -10,7 +10,7 @@ public class Driver {
         //create scanner and read next line
         Scanner scanner = new Scanner(System.in);
         String input;
-        String [] tokens = new String [100];
+        String [] tokens = new String [10];
         DiagramController dc = new DiagramController();
 
         //main loop
@@ -31,7 +31,8 @@ public class Driver {
             if(tokens[0].equalsIgnoreCase("Create"))
             {
                 //create class
-                if(tokens[1].equalsIgnoreCase("Class"))
+                //Command: create class <class_name>
+                if(tokens[1].equalsIgnoreCase("Class") && lengthChecker(tokens, 3))
                 {
                     dc.createClass(tokens[2]);
                     continue;
@@ -39,20 +40,8 @@ public class Driver {
 
                 //Create Attribute
                 //Command: create attribute <class_name> <attribute_name>
-                if(tokens[1].equalsIgnoreCase("Attribute"))
+                if(tokens[1].equalsIgnoreCase("Attribute") && lengthChecker(tokens, 4))
                 {
-                    //Check for valid input length
-                    if (tokens.length < 4)
-                    {
-                        System.out.println("ERROR: Input contains too few keywords");
-                        continue;
-                    }
-                    if (tokens.length > 4)
-                    {
-                        System.out.println("ERROR: Input contains too many keywords");
-                        continue;
-                    }
-
                     dc.createAttribute(tokens[2], tokens[3]);
                     continue;
                 }
@@ -61,14 +50,40 @@ public class Driver {
             //All delete commands go here with an if statement for class, relationship, and attribute as second token
             if(tokens[0].equalsIgnoreCase("Delete"))
             {
-            //delete class
-                if(tokens[1].equalsIgnoreCase("Class"))
+                //delete class
+                //Command: delete class <class_name>
+                if(tokens[1].equalsIgnoreCase("Class") && lengthChecker(tokens, 3))
                 {
                     dc.deleteClass(tokens[2]);
                     continue;
                 }
+
+                //delete attribute
+                //Command: delete attribute <class_name> <attribute_name>
+                if(tokens[1].equalsIgnoreCase("Attribute") && lengthChecker(tokens, 4))
+                {
+                    dc.deleteAttribute(tokens[2], tokens[3]);
+                    continue;
+                }
+
             }
             System.out.println("ERROR: Command \"" + input + "\" is invalid");
         }
+    }
+
+    public static boolean lengthChecker (String [] tokens, int size)
+    {
+        //Check for valid input length
+        if (tokens.length < size)
+        {
+            System.out.println("ERROR: Input contains too few keywords");
+            return false;
+        }
+        if (tokens.length > size)
+        {
+            System.out.println("ERROR: Input contains too many keywords");
+            return false;
+        }
+        return true;
     }
 }
