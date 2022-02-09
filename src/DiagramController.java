@@ -6,6 +6,7 @@ public class DiagramController
     static ArrayList <Class> classList = new ArrayList <Class> ();
     //ArrayList for relationships goes here
 
+    
     //Default constructor
     public DiagramController()
     {
@@ -33,6 +34,38 @@ public class DiagramController
             //add the new class to the classList
             classList.add(new Class(name));
             System.out.println("Class \"" + name + "\" Added");
+    }
+
+    //rename class method
+    public void renameClass(String oldName, String newName)
+    {
+        //get class with old name
+        Class tempClass = getClass(oldName);
+        if (tempClass == null)
+        {
+            System.out.println("ERROR: Class \"" + oldName + "\" does not exist");
+            return;
+        }
+
+        //see if a class with new name already exists
+        if (getClass(newName) != null)
+        {
+            System.out.println("ERROR: Class with name \"" + newName + "\" already exists");
+            return;
+        }
+
+        if (!validation_check(newName))
+        {
+            System.out.println("ERROR: New name \"" + newName + "\" is an invalid name");
+            return;
+        }
+
+        //change class name and set object again in classlist
+        int index = classList.indexOf(tempClass);
+        tempClass.rename(newName);
+
+        classList.set(index, tempClass);
+        System.out.println("Class \"" + oldName + "\" was renamed to \"" + newName + "\"");
     }
 
     //command: delete Class <classname>
