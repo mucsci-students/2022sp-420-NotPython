@@ -209,9 +209,24 @@ public class DiagramController
             return;
         }
 
-        //add the new relationship to the relationshipList
+        //add the new relationship to the relationship list
         relationships.add(new Relationship(name, src, dest));
         System.out.println("Relationship \"" + name + "\" Added");
+    }
+
+    public void deleteRelationship(String name)
+    {
+        //if relationship exists then delete
+        Relationship tempRelationship = getRelationship(name);
+        if (tempRelationship == null)
+        {
+            System.out.println("ERROR: Relationship with name \"" + name + "\" does not exist");
+            return;
+        }
+
+        //delete the relationship from the relationship list
+        relationships.remove(tempRelationship);
+        System.out.println("Relationship with name \"" + tempRelationship.name + "\" deleted");
     }
 
     public void saveDiagram(String fileName)

@@ -74,6 +74,13 @@ public class Driver {
                     continue;
                 }
 
+                //delete relationship
+                //Command: delete relationship <relationship_name>
+                if(tokens[1].equalsIgnoreCase("Relationship") && lengthChecker(tokens, 3))
+                {
+                    dc.deleteRelationship(tokens[2]);
+                    continue;
+                }
             }
 
             if (tokens[0].equalsIgnoreCase("Rename"))
