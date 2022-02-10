@@ -86,6 +86,34 @@ public class Driver {
                     continue;
                 }
             }
+            
+            //All list commands go here with an if statement for class, classes and relationships as second token
+            if(tokens[0].equalsIgnoreCase("List"))
+            {
+                //List class
+                //Command: list class <class_name>
+                if(tokens[1].equalsIgnoreCase("Class") && lengthChecker(tokens, 3))
+                {
+                    dc.listClass(tokens[2]);
+                    continue;
+                }
+
+                //List classes
+                //Command: list classes
+                if(tokens[1].equalsIgnoreCase("Classes") && lengthChecker(tokens, 2))
+                {
+                    dc.listClasses();
+                    continue;
+                }
+                
+                //List relationships
+                //Command: list relationships
+                if(tokens[1].equalsIgnoreCase("Relationships") && lengthChecker(tokens, 2))
+                {
+                    dc.listRelationships();
+                    continue;
+                }
+            }
 		
  	    //save file
 	    //command: save <file_name> 
