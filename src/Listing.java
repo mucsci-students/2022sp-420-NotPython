@@ -8,7 +8,7 @@ public class Listing {
 	public static void listClass(ArrayList<Class> list, String className) {
 		
 		//Check the class name is valid
-		if(Driver.validation_check(className)) {
+		if(DiagramController.validation_check(className)) {
 			
 			Class classAux;
 			

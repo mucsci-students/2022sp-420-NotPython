@@ -189,6 +189,25 @@ public class DiagramController
         System.out.println("Succesfully saved to " + fileName);
 
     }
+    
+    //List class
+    //Command: list class <class_name>
+    public void listClass(String className) {
+    	Listing.listClass(classList, className);
+    }
+    
+    //List classes
+    //Command: list classes
+    public void listClasses() {
+    	Listing.listClasses(classList);
+    }
+    
+    //List relationships
+    //Command: list relationships
+    public void listRelationships() {
+    	Listing.listRelationships(relationships);
+    }
+    
     //Test method to find class
     private static Class getClass (String name)
     {
