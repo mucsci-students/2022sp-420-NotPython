@@ -177,6 +177,43 @@ public class DiagramController
         tempClass.attributes.set(index, tempAttr);
         System.out.println("Attribute \"" + oldName + "\" was renamed to \"" + newName + "\"");
     }
+
+    public void createRelationship(String name, String src, String dest)
+    {
+        //check to see if the name contains any invalid characters
+        if (!validation_check(name))
+        {
+            //need error message here?
+            //System.out.println("ERROR: Class Name contains invalid character(s): `\\|:'\"<.>/?");
+            return;
+        }
+
+        //check to see if relationship exists already
+        if (getRelationship (name) != null)
+        {
+            System.out.println("ERROR: Relationship with name \"" + name + "\" already exists");
+            return;
+        }
+
+        //check to see if source exists already
+        if (getClass(src) == null)
+        {
+            System.out.println("ERROR: Class with name \"" + src + "\" does not exist");
+            return;
+        }
+
+        //check to see if destination exists already
+        if (getClass(dest) == null)
+        {
+            System.out.println("ERROR: Class with name \"" + dest + "\" does not exist");
+            return;
+        }
+
+        //add the new relationship to the relationshipList
+        relationships.add(new Relationship(name, src, dest));
+        System.out.println("Relationship \"" + name + "\" Added");
+    }
+
     public void saveDiagram(String fileName)
     {
         //makes sure end of file name has .json or .yaml
@@ -234,6 +271,19 @@ public class DiagramController
         }
         return null;
     }
+
+    private static Relationship getRelationship(String name)
+    {
+        for (Relationship r: relationships)
+        {
+            if (name.equals(r.name))
+            {
+                return r;
+            }
+        }
+        return null;
+    }
+
     /*
     * Checks the passed string for invalid characters
     * “`\\|:'\"<.>/?

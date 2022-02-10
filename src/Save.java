@@ -63,8 +63,8 @@ public class Save {
       {
         text += "\"relationship\":\"" + r.name + "\"{\n";
 
-        text += "\t\"class\": \"" + r.class1 +"\"" + "\n";
-        text += "\t\"class\": \"" + r.class2 +"\"" + "\n}";
+        text += "\t\"class\": \"" + r.src +"\"" + "\n";
+        text += "\t\"class\": \"" + r.dest +"\"" + "\n}";
       }
       
       return text;
@@ -92,8 +92,8 @@ public class Save {
       for (Relationship r : relations)
       {
         text += "\trelationship:" + r.name + "\n";
-        text+= "\t\tClass: " + r.class1 + "\n";
-        text+= "\t\tClass: " + r.class2 + "\n";
+        text+= "\t\tClass: " + r.src + "\n";
+        text+= "\t\tClass: " + r.dest + "\n";
       }
       return text;
     }

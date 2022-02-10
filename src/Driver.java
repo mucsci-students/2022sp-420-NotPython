@@ -45,6 +45,14 @@ public class Driver {
                     dc.createAttribute(tokens[2], tokens[3]);
                     continue;
                 }
+
+                //Create Relationship
+                //Command: create relationship <relationship_name> <src> <dest>
+                if(tokens[1].equalsIgnoreCase("Relationship") && lengthChecker(tokens, 5))
+                {
+                    dc.createRelationship(tokens[2], tokens[3], tokens[4]);
+                    continue;
+                }
             }
 
             //All delete commands go here with an if statement for class, relationship, and attribute as second token
