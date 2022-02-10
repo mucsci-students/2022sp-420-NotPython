@@ -173,12 +173,11 @@ public class DiagramController
         //change attribute name and set object again in classlist
         int index = tempClass.attributes.indexOf(tempAttr);
         tempAttr.rename_attribute(newName);
-
         tempClass.attributes.set(index, tempAttr);
         System.out.println("Attribute \"" + oldName + "\" was renamed to \"" + newName + "\"");
     }
 
-    //Test method find class
+    //Test method to find class
     private static Class getClass (String name)
     {
         for (Class c: classList)
