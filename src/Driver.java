@@ -86,6 +86,9 @@ public class Driver {
                     continue;
                 }
             }
+		
+ 	    //save file
+	    //command: save <file_name> 
             if(tokens[0].equalsIgnoreCase("Save") && lengthChecker(tokens, 2))
                 {
                     dc.saveDiagram(tokens[1]);
