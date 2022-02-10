@@ -8,30 +8,24 @@ import java.util.ArrayList;
 
 public class Save {
  
-
     //class constructor
     public Save ()
     {
       
-      
-
     }
-
 
     //pass both class and atrribute objects, then iterate through attributes, make relationships whole other section
     public void saveFile(String fileName, ArrayList <Class> classes, ArrayList <Relationship> relations)
-    {
-
-    
+    { 
       try{
    
-     FileWriter writer = new FileWriter(fileName);
-     String contents = ""; 
+       	  FileWriter writer = new FileWriter(fileName);
+          String contents = ""; 
 
 
       if (fileName.contains(".json"))
         {
-          contents = saveJson(classes, relations);
+      	   contents = saveJson(classes, relations);
         }
          else
          {
@@ -44,8 +38,8 @@ public class Save {
     } catch (IOException e) 
         {
 
-      System.out.println("An error occurred.");
-      e.printStackTrace();
+      		System.out.println("An error occurred.");
+     		 e.printStackTrace();
         }
     }
 
