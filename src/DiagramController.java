@@ -2,11 +2,12 @@ import java.util.ArrayList;
 
 public class DiagramController
 {
+    
     //Arraylist for classes
     static ArrayList <Class> classList = new ArrayList <Class> ();
     //ArrayList for relationships goes here
-
-    
+    static ArrayList <Relationship> relationships = new ArrayList <Relationship> ();
+    Save save = new Save();
     //Default constructor
     public DiagramController()
     {
@@ -85,6 +86,7 @@ public class DiagramController
         }
     }
 
+    //Create attribute
     //Command: create attribute <class_name> <attribute_name>
     public void createAttribute(String clasName, String attrName){
         //Check if class exists
@@ -126,7 +128,7 @@ public class DiagramController
                 System.out.println("ERROR: Attribute with name \"" + attrName + "\" for \"" + clasName + "\" does not exist");
                 return;
             }
-            //delete attribute to arraylist
+            //delete attribute from arraylist
             tempClass.attributes.remove(tempAttr);
             System.out.println("Attribute \"" + attrName + "\" removed from Class \"" + clasName + "\"");
         }
@@ -136,7 +138,58 @@ public class DiagramController
         }
     }
 
-    //Test method find class
+    //rename attribute method
+    //Command: Rename attribute <class_name> <old_name> <new_name>
+    public void renameAttribute(String clas, String oldName, String newName)
+    {
+        //Check if class exists
+        Class tempClass = getClass(clas);
+        if (tempClass == null)
+        {
+            System.out.println("ERROR: Class \"" + clas + "\" does not exist");
+            return;
+        }
+
+        //Check if attribute with old name exists
+        if (getAttribute(tempClass, oldName) == null)
+        {
+            System.out.println("ERROR: Attribute with name \"" + oldName + "\" does not exist");
+            return;
+        }
+
+        //Check if attribute with new name already exists
+        if (getAttribute(tempClass, newName) != null)
+        {
+            System.out.println("ERROR: Attribute with name \"" + newName + "\" already exists");
+            return;
+        }
+
+        Attribute tempAttr = getAttribute(tempClass, oldName);
+        if (!validation_check(newName))
+        {
+            System.out.println("ERROR: New name \"" + newName + "\" is an invalid name");
+            return;
+        }
+
+        //change attribute name and set object again in classlist
+        int index = tempClass.attributes.indexOf(tempAttr);
+        tempAttr.rename_attribute(newName);
+        tempClass.attributes.set(index, tempAttr);
+        System.out.println("Attribute \"" + oldName + "\" was renamed to \"" + newName + "\"");
+    }
+    public void saveDiagram(String fileName)
+    {
+        //if (!(fileName.containsIgnoreCase(".json") || fileName.containsIgnoreCase(".YAML")))
+        if (!(fileName.toLowerCase().contains(".json") || fileName.toLowerCase().contains(".yaml")))
+        {
+            System.out.println("ERROR: Unsupported file type: please choose .json or .yaml.");
+            return;
+        }
+        save.saveFile(fileName, classList, relationships);
+        System.out.println("Succesfully saved to " + fileName);
+
+    }
+    //Test method to find class
     private static Class getClass (String name)
     {
         for (Class c: classList)

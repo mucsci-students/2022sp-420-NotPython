@@ -77,7 +77,20 @@ public class Driver {
                     dc.renameClass(tokens[2], tokens[3]);
                     continue;
                 }
+
+                //Rename attribute
+                //Command: Rename attribute <class_name> <old_name> <new_name>
+                if (tokens[1].equalsIgnoreCase("attribute") && lengthChecker(tokens, 5))
+                {
+                    dc.renameAttribute(tokens[2], tokens[3], tokens[4]);
+                    continue;
+                }
             }
+            if(tokens[0].equalsIgnoreCase("Save") && lengthChecker(tokens, 2))
+                {
+                    dc.saveDiagram(tokens[1]);
+                    continue;
+                }
             System.out.println("ERROR: Command \"" + input + "\" is invalid");
         }
     }

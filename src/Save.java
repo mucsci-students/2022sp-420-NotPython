@@ -1,12 +1,25 @@
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.array;
+
+import org.w3c.dom.ls.LSException;
+
+import java.util.ArrayList;
 
 public class Save {
+ 
+
+    //class constructor
+    public Save ()
+    {
+      
+      
+
+    }
+
 
     //pass both class and atrribute objects, then iterate through attributes, make relationships whole other section
-    public static void saveFile(String fileName, ArrayList <Class> classes, ArrayList <Relationship> relations)
+    public void saveFile(String fileName, ArrayList <Class> classes, ArrayList <Relationship> relations)
     {
 
     
@@ -16,7 +29,7 @@ public class Save {
      String contents = ""; 
 
 
-      if (newFile.contains(".json"))
+      if (fileName.contains(".json"))
         {
           contents = saveJson(classes, relations);
         }
@@ -26,7 +39,7 @@ public class Save {
          }
          writer.write(contents);
          writer.close();
-         System.out.println("Successfully wrote to the file.");
+         
 
     } catch (IOException e) 
         {
@@ -40,45 +53,51 @@ public class Save {
     private static String saveJson(ArrayList <Class> classes, ArrayList <Relationship> relations)
     {
         String text =  "";
-      for(class : classes)
+      for(Class c : classes)
       {
-          text += "\"class\": \"" + class.name +"\"" + "{\n";
+          text += "\"class\": \"" + c.name +"\"" + "{\n";
 
-          for(attribute : class.attributes)
+          for(Attribute a: c.attributes)
           {
-            text += "\t\"attribute\":\"" + attribute.name + "\"" ",\n";
+            text += "\t\"attribute\":\"" + a.name + "\" ,\n";
           }
-          text += "}";
+          text += "}\n";
         
       }
       
-      for (r : relations)
+      for (Relationship r : relations)
       {
-        text += "relationship:" + r.name + "\n";
+        text += "\"relationship\":\"" + r.name + "\"{\n";
+
+        text += "\t\"class\": \"" + r.class1 +"\"" + "\n";
+        text += "\t\"class\": \"" + r.class2 +"\"" + "\n}";
       }
+      
       return text;
     }
     private static String saveYaml(ArrayList <Class> classes, ArrayList <Relationship> relations)
     {
         String text =  "";
         text += "classes: \n";
-        for(class : classes)
+        for(Class c : classes)
       {
           text += "\tclass:\n";
-          text += "\t\tname: " + class.name + "\n";
+          text += "\t\tname: " + c.name + "\n";
 
           text += "\t\tattributes:\n";
 
-          for(attribute : class.attributes)
+          for(Attribute a : c.attributes)
           {
-            text += "\t\t\tattribute: " + attribute.name + "\n";
+            text += "\t\t\tattribute: " + a.name + "\n";
           }
         
       }
       text += "relationships: \n";
-      for (r : relations)
+      for (Relationship r : relations)
       {
         text += "\trelationship:" + r.name + "\n";
+        text+= "\t\tClass: " + r.class1 + "\n";
+        text+= "\t\tClass: " + r.class2 + "\n";
       }
       return text;
     }
