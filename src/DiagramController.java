@@ -2,11 +2,12 @@ import java.util.ArrayList;
 
 public class DiagramController
 {
+    
     //Arraylist for classes
     static ArrayList <Class> classList = new ArrayList <Class> ();
     //ArrayList for relationships goes here
-
-    
+    static ArrayList <Relationship> relationships = new ArrayList <Relationship> ();
+    Save save = new Save();
     //Default constructor
     public DiagramController()
     {
@@ -176,7 +177,18 @@ public class DiagramController
         tempClass.attributes.set(index, tempAttr);
         System.out.println("Attribute \"" + oldName + "\" was renamed to \"" + newName + "\"");
     }
+    public void saveDiagram(String fileName)
+    {
+        //makes sure end of file name has .json or .yaml
+        if (!(fileName.toLowerCase().contains(".json") || fileName.toLowerCase().contains(".yaml")))
+        {
+            System.out.println("ERROR: Unsupported file type: please choose .json or .yaml.");
+            return;
+        }
+        save.saveFile(fileName, classList, relationships);
+        System.out.println("Succesfully saved to " + fileName);
 
+    }
     //Test method to find class
     private static Class getClass (String name)
     {
