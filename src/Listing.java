@@ -56,7 +56,7 @@ public class Listing {
 		//Iterate through all the relationships and print its content
 		for(Relationship relationshipSample: list) {
 			System.out.println(" ______________________                                        ______________________");
-			printRelationship(relationshipSample.src, relationshipSample.dest, relationshipSample.relationshipName);
+			printRelationship(relationshipSample.src, relationshipSample.dest, relationshipSample.name);
 			System.out.println("|______________________|                                      |______________________|");
 		}
 	}
