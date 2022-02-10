@@ -7,10 +7,12 @@ public class Listing {
 	
 	public static void listClass(ArrayList<Class> list, String className) {
 		
+		//Check the class name is valid
 		if(Driver.validation_check(className)) {
 			
 			Class classAux;
 			
+			//Look for the class info
 			for(int i = 0; i < list.size(); i++) {
 				classAux = list.get(i);
 				if(classAux.name.equals(className)) {
@@ -32,6 +34,7 @@ public class Listing {
 	// List classes: List the content of all the existing classes
 	
 	public static void listClasses(ArrayList<Class> list) {
+		//Iterate through all the classes and print its content
 		for(Class classSample: list) {
 			System.out.println(" ______________________");
 			printRow(classSample.name, 0, false);
@@ -50,6 +53,7 @@ public class Listing {
 	//List relationships: List all the exiting relationships
 	
 	public static void listRelationships(ArrayList<Relationship> list) {
+		//Iterate through all the relationships and print its content
 		for(Relationship relationshipSample: list) {
 			System.out.println(" ______________________                                        ______________________");
 			printRelationship(relationshipSample.src, relationshipSample.dest, relationshipSample.relationshipName);
@@ -57,6 +61,7 @@ public class Listing {
 		}
 	}
 	
+	//Auxiliar function to print the relationships
 	public static void printRelationship(String class1, String class2, String relationshipName) {
 		int dashes = 28;
 		int remaining = dashes-relationshipName.length();
@@ -74,6 +79,7 @@ public class Listing {
 		System.out.println("");
 	}
 	
+	//Auxiliar function to print a row(either a class name or a attribute name)
 	private static void printRow(String phrase, int isAttribute, boolean isRelationship) {
 		int blankSpaces = 22;
 		int remaining = blankSpaces-phrase.length()-(isAttribute*3);
