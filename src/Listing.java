@@ -40,8 +40,6 @@ public class Listing {
 			printRow(classSample.name, 0, false);
 			System.out.println("|======================|");
 			
-			classSample.attributes.add(new Attribute("Gold"));
-			
 			for(Attribute attr: classSample.attributes) {
 				printRow(attr.name, 1, false);
 			}
