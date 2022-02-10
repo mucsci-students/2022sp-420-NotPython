@@ -77,7 +77,51 @@ public class Driver {
                     dc.renameClass(tokens[2], tokens[3]);
                     continue;
                 }
+
+                //Rename attribute
+                //Command: Rename attribute <class_name> <old_name> <new_name>
+                if (tokens[1].equalsIgnoreCase("attribute") && lengthChecker(tokens, 5))
+                {
+                    dc.renameAttribute(tokens[2], tokens[3], tokens[4]);
+                    continue;
+                }
             }
+            
+            //All list commands go here with an if statement for class, classes and relationships as second token
+            if(tokens[0].equalsIgnoreCase("List"))
+            {
+                //List class
+                //Command: list class <class_name>
+                if(tokens[1].equalsIgnoreCase("Class") && lengthChecker(tokens, 3))
+                {
+                    dc.listClass(tokens[2]);
+                    continue;
+                }
+
+                //List classes
+                //Command: list classes
+                if(tokens[1].equalsIgnoreCase("Classes") && lengthChecker(tokens, 2))
+                {
+                    dc.listClasses();
+                    continue;
+                }
+                
+                //List relationships
+                //Command: list relationships
+                if(tokens[1].equalsIgnoreCase("Relationships") && lengthChecker(tokens, 2))
+                {
+                    dc.listRelationships();
+                    continue;
+                }
+            }
+		
+ 	    //save file
+	    //command: save <file_name> 
+            if(tokens[0].equalsIgnoreCase("Save") && lengthChecker(tokens, 2))
+                {
+                    dc.saveDiagram(tokens[1]);
+                    continue;
+                }
             System.out.println("ERROR: Command \"" + input + "\" is invalid");
         }
     }
