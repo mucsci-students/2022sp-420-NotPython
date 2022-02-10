@@ -152,14 +152,14 @@ public class DiagramController
         //Check if attribute with old name exists
         if (getAttribute(tempClass, oldName) == null)
         {
-            System.out.println("ERROR: Atribute with name \"" + oldName + "\" does not exist");
+            System.out.println("ERROR: Attribute with name \"" + oldName + "\" does not exist");
             return;
         }
 
         //Check if attribute with new name already exists
         if (getAttribute(tempClass, newName) != null)
         {
-            System.out.println("ERROR: Atribute with name \"" + newName + "\" already exists");
+            System.out.println("ERROR: Attribute with name \"" + newName + "\" already exists");
             return;
         }
 
