@@ -43,7 +43,7 @@ public class Save {
         }
     }
 
-
+//creates json string
     private static String saveJson(ArrayList <Class> classes, ArrayList <Relationship> relations)
     {
         String text =  "";
@@ -69,6 +69,8 @@ public class Save {
       
       return text;
     }
+ //creates yaml string
+ 
     private static String saveYaml(ArrayList <Class> classes, ArrayList <Relationship> relations)
     {
         String text =  "";
