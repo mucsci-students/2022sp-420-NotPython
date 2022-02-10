@@ -179,7 +179,7 @@ public class DiagramController
     }
     public void saveDiagram(String fileName)
     {
-        //if (!(fileName.containsIgnoreCase(".json") || fileName.containsIgnoreCase(".YAML")))
+        //makes sure end of file name has .json or .yaml
         if (!(fileName.toLowerCase().contains(".json") || fileName.toLowerCase().contains(".yaml")))
         {
             System.out.println("ERROR: Unsupported file type: please choose .json or .yaml.");
