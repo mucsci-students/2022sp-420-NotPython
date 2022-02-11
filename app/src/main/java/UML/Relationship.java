@@ -1,3 +1,5 @@
+package UML;
+
 public class Relationship 
 {
     public String name;
