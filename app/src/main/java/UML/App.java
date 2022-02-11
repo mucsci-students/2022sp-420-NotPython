@@ -143,7 +143,34 @@ public class App {
                 continue;
             }
             
+            //help user
+            if(tokens[0].equalsIgnoreCase("Help"))
+            {
+                System.out.printf("%-55s%-50s\n", "COMMANDS", "USAGE");
+
+                System.out.printf("%-55s%-50s\n", "help", "shows this help message");
+                System.out.printf("%-55s%-50s\n", "create class <class_name>", "creates a class with the given name");
+                System.out.printf("%-55s%-50s\n", "rename class <old_name> <new_name>", "renames the class");
+                System.out.printf("%-55s%-50s\n", "delete class <class_name>","deletes the class");
+                
+                System.out.printf("%-55s%-50s\n", "create relationship <relationship_name> <src> <dest>", "creates a relationshipwih given src and dest");
+                System.out.printf("%-55s%-50s\n", "delete relationship <relationship_name>", "deletes a relationship given its name");
             
+                System.out.printf("%-55s%-50s\n", "create attribute <class_name> <attribute_name>", "creates an attribute");
+                System.out.printf("%-55s%-50s\n", "rename attribute <class_name> <old_name> <new_name>", "deletes an attribute");
+                System.out.printf("%-55s%-50s\n", "delete attribute <class_name> <attribute_name>", "deletes an attribute");
+
+                System.out.printf("%-55s%-50s\n", "save <file_name>", "saves a file to a JSON format");
+                System.out.printf("%-55s%-50s\n", "load <file_name>", "loads a file from a JSON format");
+
+                System.out.printf("%-55s%-50s\n", "list class <class_name>", "lists the contents of a class given its name");
+                System.out.printf("%-55s%-50s\n", "list classes", "lists all the classes and contents");
+                System.out.printf("%-55s%-50s\n", "list relationships", "lists the relationships between classes");
+                System.out.printf("%-55s%-50s\n", "exit", "exits the program");
+
+                continue;
+            }
+
             System.out.println("ERROR: Command \"" + input + "\" is invalid");
             
         }
