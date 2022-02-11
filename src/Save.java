@@ -59,6 +59,7 @@ public class Save {
           text += "\n\t\t\"class\": { \n\t\t\t\"name\": \"" + c.name +"\"" + ",\n";
 
           text += "\t\t\t\"attributes\": [\n\t\t\t{\n";
+          
           for(Attribute a: c.attributes)
           {
            
@@ -70,7 +71,7 @@ public class Save {
             text += "\n";
           }
          
-          text += "\t\t\t}\n\t\t]";
+          text += "\t\t\t}\n\t\t\t]";
           text+= "\n\t\t}";
           if(classes.indexOf(c) != classes.size() -1)
           {
@@ -79,16 +80,23 @@ public class Save {
           
       }
       
-      text += "\n\t\t}\n";
-      text += "\t]\n}\n";
+      text += "\n\t}\n";
+      text += "\t],\n";
+      text +=  "\t\"relationships\": [\n\t{\n";
       for (Relationship r : relations)
       {
-        text += "\"relationship\":\"" + r.name + "\"{\n";
+        text += "\t\t\t\"relationship\": [\n\t\t\t{ \n\t\t\t\t\"name\": \"" + r.name +"\"" + ",\n";
 
-        text += "\t\"class\": \"" + r.src +"\"" + "\n";
-        text += "\t\"class\": \"" + r.dest +"\"" + "\n}";
+        text += "\t\t\t\t\"class\": \"" + r.src +"\"" + ",\n";
+        
+        text += "\t\t\t\t\"class\": \"" + r.dest +"\"" + "\n\t\t\t}\n\t\t\t]";
+        if(relations.indexOf(r) != relations.size() -1)
+          {
+            text+= ",";
+          }
+          text+= "\n";
       }
-      
+      text+= "\t}\n\t]\n}";
       return text;
     }
     private static String saveYaml(ArrayList <Class> classes, ArrayList <Relationship> relations)
