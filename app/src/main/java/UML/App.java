@@ -135,14 +135,17 @@ public class App {
                 }
             }
 		
- 	    //save file
-	    //command: save <file_name> 
+ 	        //save file
+	        //command: save <file_name> 
             if(tokens[0].equalsIgnoreCase("Save") && lengthChecker(tokens, 2))
-                {
-                    dc.saveDiagram(tokens[1]);
-                    continue;
-                }
+            {
+                dc.saveDiagram(tokens[1]);
+                continue;
+            }
+            
+            
             System.out.println("ERROR: Command \"" + input + "\" is invalid");
+            
         }
     }
 
