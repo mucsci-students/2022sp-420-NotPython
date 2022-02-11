@@ -1,18 +1,18 @@
 /*
-* attributes.java
+* Attribute.java
 * 
 * attribute object constructor
 */
 public class Attribute {
     public String name;
-    
+
     /*
     * Attribute: attaches the attribute to the class
     * 
     */
     public Attribute (String attrib) 
     {
-        name = attrib;
+        name = attrib; 
     }
 
     /*
@@ -23,4 +23,6 @@ public class Attribute {
     {
         name = newName;
     }
-}
+
+
+} 
