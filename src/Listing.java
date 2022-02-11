@@ -100,5 +100,4 @@ public class Listing {
 		else
 			System.out.println("|");
 	}
-
 }
