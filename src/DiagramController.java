@@ -78,12 +78,24 @@ public class DiagramController
         if (tempClass == null)
         {
             System.out.println("ERROR: Class with name \"" + className + "\" does not exist");
+            return;
         }
-        else
+
+        //delete all relationships associated with class <className>
+        Relationship tempRelationship;
+        for (int i = 0; i < relationships.size(); ++i)
         {
-            classList.remove(tempClass);
-            System.out.println("Class with name \"" + tempClass.name + "\" deleted");
+            tempRelationship = relationships.get(i);
+            if (tempRelationship.src.equals(className) || tempRelationship.dest.equals(className))
+            {
+                relationships.remove(tempRelationship);
+                --i;
+            }
         }
+
+        //delete class
+        classList.remove(tempClass);
+        System.out.println("Class with name \"" + tempClass.name + "\" deleted");
     }
 
     //Create attribute
@@ -287,6 +299,7 @@ public class DiagramController
         return null;
     }
 
+    //get a relationship for with name <name>
     private static Relationship getRelationship(String name)
     {
         for (Relationship r: relationships)
