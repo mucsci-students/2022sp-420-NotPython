@@ -8,24 +8,30 @@ import java.util.ArrayList;
 
 public class Save {
  
+
     //class constructor
     public Save ()
     {
       
+      
+
     }
+
 
     //pass both class and atrribute objects, then iterate through attributes, make relationships whole other section
     public void saveFile(String fileName, ArrayList <Class> classes, ArrayList <Relationship> relations)
-    { 
+    {
+
+    
       try{
    
-       	  FileWriter writer = new FileWriter(fileName);
-          String contents = ""; 
+     FileWriter writer = new FileWriter(fileName);
+     String contents = ""; 
 
 
       if (fileName.contains(".json"))
         {
-      	   contents = saveJson(classes, relations);
+          contents = saveJson(classes, relations);
         }
          else
          {
@@ -38,39 +44,61 @@ public class Save {
     } catch (IOException e) 
         {
 
-      		System.out.println("An error occurred.");
-     		 e.printStackTrace();
+      System.out.println("An error occurred.");
+      e.printStackTrace();
         }
     }
 
-//creates json string
+
     private static String saveJson(ArrayList <Class> classes, ArrayList <Relationship> relations)
     {
-        String text =  "";
+      
+        String text =  "{\n\t\"classes\": [\n\t{";
       for(Class c : classes)
-      {
-          text += "\"class\": \"" + c.name +"\"" + "{\n";
+      {  
+          text += "\n\t\t\"class\": { \n\t\t\t\"name\": \"" + c.name +"\"" + ",\n";
 
+          text += "\t\t\t\"attributes\": [\n\t\t\t{\n";
+          
           for(Attribute a: c.attributes)
           {
-            text += "\t\"attribute\":\"" + a.name + "\" ,\n";
+           
+            text += "\t\t\t\t\"attribute\":\"" + a.name + "\"";
+            if(c.attributes.indexOf(a) != c.attributes.size() -1 )
+            {
+            text += ",";        
+            }
+            text += "\n";
           }
-          text += "}\n";
-        
+         
+          text += "\t\t\t}\n\t\t\t]";
+          text+= "\n\t\t}";
+          if(classes.indexOf(c) != classes.size() -1)
+          {
+            text+= ",";
+          }
+          
       }
       
+      text += "\n\t}\n";
+      text += "\t],\n";
+      text +=  "\t\"relationships\": [\n\t{\n";
       for (Relationship r : relations)
       {
-        text += "\"relationship\":\"" + r.name + "\"{\n";
+        text += "\t\t\t\"relationship\": [\n\t\t\t{ \n\t\t\t\t\"name\": \"" + r.name +"\"" + ",\n";
 
-        text += "\t\"class\": \"" + r.src +"\"" + "\n";
-        text += "\t\"class\": \"" + r.dest +"\"" + "\n}";
+        text += "\t\t\t\t\"class\": \"" + r.src +"\"" + ",\n";
+        
+        text += "\t\t\t\t\"class\": \"" + r.dest +"\"" + "\n\t\t\t}\n\t\t\t]";
+        if(relations.indexOf(r) != relations.size() -1)
+          {
+            text+= ",";
+          }
+          text+= "\n";
       }
-      
+      text+= "\t}\n\t]\n}";
       return text;
     }
- //creates yaml string
- 
     private static String saveYaml(ArrayList <Class> classes, ArrayList <Relationship> relations)
     {
         String text =  "";
