@@ -18,8 +18,8 @@ Open up a command line and cd into the filepath you just navigated to
 # Step 5
 ## If on Linux or Mac
 Type "gradle build install"
-Then type "./app/build/install/bin/app"
+Then type "./app/build/install/app/bin/app"
 
 ## If on Windows
 Type "gradle build install"
-Then type ".\app\build\install\bin\app.bat"
+Then type ".\app\build\install\app\bin\app.bat"
