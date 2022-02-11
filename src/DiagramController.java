@@ -177,6 +177,58 @@ public class DiagramController
         tempClass.attributes.set(index, tempAttr);
         System.out.println("Attribute \"" + oldName + "\" was renamed to \"" + newName + "\"");
     }
+
+    public void createRelationship(String name, String src, String dest)
+    {
+        //check to see if the name contains any invalid characters
+        if (!validation_check(name))
+        {
+            //need error message here?
+            //System.out.println("ERROR: Class Name contains invalid character(s): `\\|:'\"<.>/?");
+            return;
+        }
+
+        //check to see if relationship exists already
+        if (getRelationship (name) != null)
+        {
+            System.out.println("ERROR: Relationship with name \"" + name + "\" already exists");
+            return;
+        }
+
+        //check to see if source exists already
+        if (getClass(src) == null)
+        {
+            System.out.println("ERROR: Class with name \"" + src + "\" does not exist");
+            return;
+        }
+
+        //check to see if destination exists already
+        if (getClass(dest) == null)
+        {
+            System.out.println("ERROR: Class with name \"" + dest + "\" does not exist");
+            return;
+        }
+
+        //add the new relationship to the relationship list
+        relationships.add(new Relationship(name, src, dest));
+        System.out.println("Relationship \"" + name + "\" Added");
+    }
+
+    public void deleteRelationship(String name)
+    {
+        //if relationship exists then delete
+        Relationship tempRelationship = getRelationship(name);
+        if (tempRelationship == null)
+        {
+            System.out.println("ERROR: Relationship with name \"" + name + "\" does not exist");
+            return;
+        }
+
+        //delete the relationship from the relationship list
+        relationships.remove(tempRelationship);
+        System.out.println("Relationship with name \"" + tempRelationship.name + "\" deleted");
+    }
+
     public void saveDiagram(String fileName)
     {
         //makes sure end of file name has .json or .yaml
@@ -189,6 +241,25 @@ public class DiagramController
         System.out.println("Succesfully saved to " + fileName);
 
     }
+    
+    //List class
+    //Command: list class <class_name>
+    public void listClass(String className) {
+    	Listing.listClass(classList, className);
+    }
+    
+    //List classes
+    //Command: list classes
+    public void listClasses() {
+    	Listing.listClasses(classList);
+    }
+    
+    //List relationships
+    //Command: list relationships
+    public void listRelationships() {
+    	Listing.listRelationships(relationships);
+    }
+    
     //Test method to find class
     private static Class getClass (String name)
     {
@@ -215,6 +286,19 @@ public class DiagramController
         }
         return null;
     }
+
+    private static Relationship getRelationship(String name)
+    {
+        for (Relationship r: relationships)
+        {
+            if (name.equals(r.name))
+            {
+                return r;
+            }
+        }
+        return null;
+    }
+
     /*
     * Checks the passed string for invalid characters
     * “`\\|:'\"<.>/?

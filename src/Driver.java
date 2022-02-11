@@ -45,6 +45,14 @@ public class Driver {
                     dc.createAttribute(tokens[2], tokens[3]);
                     continue;
                 }
+
+                //Create Relationship
+                //Command: create relationship <relationship_name> <src> <dest>
+                if(tokens[1].equalsIgnoreCase("Relationship") && lengthChecker(tokens, 5))
+                {
+                    dc.createRelationship(tokens[2], tokens[3], tokens[4]);
+                    continue;
+                }
             }
 
             //All delete commands go here with an if statement for class, relationship, and attribute as second token
@@ -66,6 +74,13 @@ public class Driver {
                     continue;
                 }
 
+                //delete relationship
+                //Command: delete relationship <relationship_name>
+                if(tokens[1].equalsIgnoreCase("Relationship") && lengthChecker(tokens, 3))
+                {
+                    dc.deleteRelationship(tokens[2]);
+                    continue;
+                }
             }
 
             if (tokens[0].equalsIgnoreCase("Rename"))
@@ -83,6 +98,34 @@ public class Driver {
                 if (tokens[1].equalsIgnoreCase("attribute") && lengthChecker(tokens, 5))
                 {
                     dc.renameAttribute(tokens[2], tokens[3], tokens[4]);
+                    continue;
+                }
+            }
+            
+            //All list commands go here with an if statement for class, classes and relationships as second token
+            if(tokens[0].equalsIgnoreCase("List"))
+            {
+                //List class
+                //Command: list class <class_name>
+                if(tokens[1].equalsIgnoreCase("Class") && lengthChecker(tokens, 3))
+                {
+                    dc.listClass(tokens[2]);
+                    continue;
+                }
+
+                //List classes
+                //Command: list classes
+                if(tokens[1].equalsIgnoreCase("Classes") && lengthChecker(tokens, 2))
+                {
+                    dc.listClasses();
+                    continue;
+                }
+                
+                //List relationships
+                //Command: list relationships
+                if(tokens[1].equalsIgnoreCase("Relationships") && lengthChecker(tokens, 2))
+                {
+                    dc.listRelationships();
                     continue;
                 }
             }
