@@ -161,8 +161,8 @@ public class App {
                 System.out.printf("%-55s%-50s\n", "rename class <old_name> <new_name>", "renames the class");
                 System.out.printf("%-55s%-50s\n", "delete class <class_name>","deletes the class");
                 
-                System.out.printf("%-55s%-50s\n", "create relationship <src> <dest>", "creates a relationshipwih given src and dest");
-                System.out.printf("%-55s%-50s\n", "delete relationship <src> <dest>", "deletes a relationship given its name");
+                System.out.printf("%-55s%-50s\n", "create relationship <src> <dest>", "creates a relationship given src and dest classes");
+                System.out.printf("%-55s%-50s\n", "delete relationship <src> <dest>", "deletes a relationship given its src and dest");
             
                 System.out.printf("%-55s%-50s\n", "create attribute <class_name> <attribute_name>", "creates an attribute");
                 System.out.printf("%-55s%-50s\n", "rename attribute <class_name> <old_name> <new_name>", "deletes an attribute");
