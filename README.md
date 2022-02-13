@@ -1,7 +1,9 @@
 ## Dependencies
 Install Gradle 7.2 if you don't have it
 Make sure to have the most recent version of Java installed
-JSON-Simple 1.1.1
+json: 20211205
+json-simple: 1.1.1
+junit: 4.13.2
 
 ## Step 1:
 Clone the repository to a folder you choose

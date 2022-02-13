@@ -1,15 +1,18 @@
 package UML;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 public class DiagramController
 {
     
     //Arraylist for classes
-    static ArrayList <Class> classList = new ArrayList <Class> ();
+    public static ArrayList <Class> classList = new ArrayList <Class> ();
     //ArrayList for relationships goes here
-    static ArrayList <Relationship> relationships = new ArrayList <Relationship> ();
+    public static ArrayList <Relationship> relationships = new ArrayList <Relationship> ();
     Save save = new Save();
+    Load load = new Load();
     //Default constructor
     public DiagramController()
     {
@@ -192,20 +195,14 @@ public class DiagramController
         System.out.println("Attribute \"" + oldName + "\" was renamed to \"" + newName + "\"");
     }
 
-    public void createRelationship(String name, String src, String dest)
+    //create relationship
+    //add functionality for type with name in next sprint
+    public void createRelationship(/*String name,*/ String src, String dest)
     {
-        //check to see if the name contains any invalid characters
-        if (!validation_check(name))
-        {
-            //need error message here?
-            //System.out.println("ERROR: Class Name contains invalid character(s): `\\|:'\"<.>/?");
-            return;
-        }
-
         //check to see if relationship exists already
-        if (getRelationship (name) != null)
+        if (getRelationship (src, dest) != null)
         {
-            System.out.println("ERROR: Relationship with name \"" + name + "\" already exists");
+            System.out.println("ERROR: Relationship from " + src + " to " + dest +" already exists");
             return;
         }
 
@@ -224,25 +221,26 @@ public class DiagramController
         }
 
         //add the new relationship to the relationship list
-        relationships.add(new Relationship(name, src, dest));
-        System.out.println("Relationship \"" + name + "\" Added");
+        relationships.add(new Relationship(src, dest));
+        System.out.println("Relationship from " + src + " to " + dest +" added");
     }
 
-    public void deleteRelationship(String name)
+    public void deleteRelationship(String src, String dest)
     {
         //if relationship exists then delete
-        Relationship tempRelationship = getRelationship(name);
+        Relationship tempRelationship = getRelationship(src, dest);
         if (tempRelationship == null)
         {
-            System.out.println("ERROR: Relationship with name \"" + name + "\" does not exist");
+            System.out.println("ERROR: Relationship from " + src + " to " + dest +" does not exist");
             return;
         }
 
         //delete the relationship from the relationship list
         relationships.remove(tempRelationship);
-        System.out.println("Relationship with name \"" + tempRelationship.name + "\" deleted");
+        System.out.println("Relationship from " + src + " to " + dest +" deleted");
     }
 
+    //saves program to .json or .yaml file
     public void saveDiagram(String fileName)
     {
         //makes sure end of file name has .json or .yaml
@@ -254,6 +252,27 @@ public class DiagramController
         save.saveFile(fileName, classList, relationships);
         System.out.println("Succesfully saved to " + fileName);
 
+    }
+
+    //loads diagram from .json or .yaml file
+    public void loadDiagram(String fileName)
+    {
+        Map <ArrayList<Class>, ArrayList<Relationship>> map = new HashMap<ArrayList<Class>, ArrayList<Relationship>>();
+        //makes sure end of file name has .json or .yaml
+        if (!fileName.toLowerCase().contains(".json"))
+        {
+            System.out.println("ERROR: Unsupported file type: please choose .json");
+            return;
+        }
+        
+        //read files into data structure
+        map = load.loadFile(fileName);
+        for (Map.Entry<ArrayList<Class>, ArrayList<Relationship>> iter : map.entrySet())
+        {
+            classList = iter.getKey();
+            relationships = iter.getValue();
+        }
+        System.out.println("Successfully loaded from " + fileName);
     }
     
     //List class
@@ -275,7 +294,7 @@ public class DiagramController
     }
     
     //Test method to find class
-    private static Class getClass (String name)
+    public static Class getClass (String name)
     {
         for (Class c: classList)
         {
@@ -288,7 +307,7 @@ public class DiagramController
     }
 
     //gets an attribute with attrName for curClass
-    private static Attribute getAttribute(Class curClass, String attrName)
+    public static Attribute getAttribute(Class curClass, String attrName)
     {
         //Check if attribute already exists
         for (Attribute a: curClass.attributes)
@@ -302,11 +321,11 @@ public class DiagramController
     }
 
     //get a relationship for with name <name>
-    private static Relationship getRelationship(String name)
+    public static Relationship getRelationship(String src, String dest)
     {
         for (Relationship r: relationships)
         {
-            if (name.equals(r.name))
+            if (src.equals(r.src) && dest.equals(r.dest))
             {
                 return r;
             }
@@ -322,7 +341,7 @@ public class DiagramController
     {
         for (int i = 0; i < input.length(); i++)
         {
-            if (" `\\|:'\"<.>/?".indexOf(input.charAt(i)) > -1)
+            if (" `\\|:'\"<.>/?!".indexOf(input.charAt(i)) > -1)
             {
                 System.out.println("ERROR: " + input.charAt(i) + " is an invalid character");
                 return false;
