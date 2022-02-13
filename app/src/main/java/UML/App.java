@@ -15,18 +15,19 @@ public class App {
         //create scanner and read next line
         Scanner scanner = new Scanner(System.in);
         String input;
-        String [] tokens = new String [10];
+        String [] tokens = new String [100];
         DiagramController dc = new DiagramController();
 
         //main loop
         while(true) {
             //read in next line of input
+            System.out.print("> ");
             input = scanner.nextLine();
 
             //strip and tokenize input by spaces
-            input.strip();
-            tokens = input.split(" ");
-            
+            input = input.strip();
+            tokens = input.split("\\s+");
+
             //exit the program
 	        if(tokens[0].equalsIgnoreCase("exit")) {
 		        break;
@@ -53,9 +54,9 @@ public class App {
 
                 //Create Relationship
                 //Command: create relationship <relationship_name> <src> <dest>
-                if(tokens[1].equalsIgnoreCase("Relationship") && lengthChecker(tokens, 5))
+                if(tokens[1].equalsIgnoreCase("Relationship") && lengthChecker(tokens, 4))
                 {
-                    dc.createRelationship(tokens[2], tokens[3], tokens[4]);
+                    dc.createRelationship(tokens[2], tokens[3]);
                     continue;
                 }
             }
@@ -81,9 +82,9 @@ public class App {
 
                 //delete relationship
                 //Command: delete relationship <relationship_name>
-                if(tokens[1].equalsIgnoreCase("Relationship") && lengthChecker(tokens, 3))
+                if(tokens[1].equalsIgnoreCase("Relationship") && lengthChecker(tokens, 4))
                 {
-                    dc.deleteRelationship(tokens[2]);
+                    dc.deleteRelationship(tokens[2], tokens[3]);
                     continue;
                 }
             }
@@ -143,6 +144,13 @@ public class App {
                 continue;
             }
             
+            //load file
+            //command: load <file_name>
+            if(tokens[0].equalsIgnoreCase("load") && lengthChecker(tokens, 2))
+            {
+                dc.loadDiagram(tokens[1]);
+                continue;
+            }
             //help user
             if(tokens[0].equalsIgnoreCase("Help"))
             {
@@ -153,8 +161,8 @@ public class App {
                 System.out.printf("%-55s%-50s\n", "rename class <old_name> <new_name>", "renames the class");
                 System.out.printf("%-55s%-50s\n", "delete class <class_name>","deletes the class");
                 
-                System.out.printf("%-55s%-50s\n", "create relationship <relationship_name> <src> <dest>", "creates a relationshipwih given src and dest");
-                System.out.printf("%-55s%-50s\n", "delete relationship <relationship_name>", "deletes a relationship given its name");
+                System.out.printf("%-55s%-50s\n", "create relationship <src> <dest>", "creates a relationshipwih given src and dest");
+                System.out.printf("%-55s%-50s\n", "delete relationship <src> <dest>", "deletes a relationship given its name");
             
                 System.out.printf("%-55s%-50s\n", "create attribute <class_name> <attribute_name>", "creates an attribute");
                 System.out.printf("%-55s%-50s\n", "rename attribute <class_name> <old_name> <new_name>", "deletes an attribute");
@@ -171,6 +179,7 @@ public class App {
                 continue;
             }
 
+            
             System.out.println("ERROR: Command \"" + input + "\" is invalid");
             
         }

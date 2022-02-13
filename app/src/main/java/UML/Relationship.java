@@ -2,14 +2,15 @@ package UML;
 
 public class Relationship 
 {
-    public String name;
+    //public String name;
     public String src;
     public String dest;
     
     //Relationship constructor
-    public Relationship(String name, String src, String dest)
+    //name to be converted to a type in the next sprint
+    public Relationship(/*String name,*/ String src, String dest)
     {
-        this.name = name;
+        /*this.name = name;*/
         this.src = src;
         this.dest = dest;
     }
