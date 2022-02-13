@@ -250,7 +250,7 @@ public class DiagramController
             return;
         }
         save.saveFile(fileName, classList, relationships);
-        System.out.println("Succesfully saved to " + fileName);
+        System.out.println("Successfully saved to " + fileName);
 
     }
 
@@ -271,8 +271,9 @@ public class DiagramController
         {
             classList = iter.getKey();
             relationships = iter.getValue();
+            System.out.println("Successfully loaded from " + fileName);
         }
-        System.out.println("Successfully loaded from " + fileName);
+        
     }
     
     //List class
