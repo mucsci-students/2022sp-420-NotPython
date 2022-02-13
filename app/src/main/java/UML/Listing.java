@@ -19,34 +19,41 @@ public class Listing {
 				classAux = list.get(i);
 				if(classAux.name.equals(className)) {
 					
-					System.out.println(" ______________________");
-					printRow(classAux.name, 0, false);
-					System.out.println("|======================|");
+					int boxLength = maximumLength(classAux) + 10;
+					
+					System.out.print(" ");
+					for(int j = 0; j < boxLength; j++) {
+						System.out.print("_");
+					}
+					System.out.println("");
+					
+					printRow(classAux.name, 0, boxLength, false);
+					
+					System.out.print("|");
+					for(int j = 0; j < boxLength; j++) {
+						System.out.print("=");
+					}
+					System.out.println("|");
 					
 					for(Attribute attr: classAux.attributes) {
-						printRow(attr.name, 1, false);
+						printRow(attr.name, 1, boxLength, false);
 					}
 					
-					System.out.println("|______________________|");
+					System.out.print("|");
+					for(int j = 0; j < boxLength; j++) {
+						System.out.print("_");
+					}
+					System.out.println("|");
 				}
 			}
 		}
 	}
 	
 	// List classes: List the content of all the existing classes
-	
 	public static void listClasses(ArrayList<Class> list) {
 		//Iterate through all the classes and print its content
 		for(Class classSample: list) {
-			System.out.println(" ______________________");
-			printRow(classSample.name, 0, false);
-			System.out.println("|======================|");
-			
-			for(Attribute attr: classSample.attributes) {
-				printRow(attr.name, 1, false);
-			}
-			
-			System.out.println("|______________________|");
+			listClass(list, classSample.name);
 		}
 	}
 	
@@ -55,33 +62,64 @@ public class Listing {
 	public static void listRelationships(ArrayList<Relationship> list) {
 		//Iterate through all the relationships and print its content
 		for(Relationship relationshipSample: list) {
-			System.out.println(" ______________________                                        ______________________");
-			printRelationship(relationshipSample.src, relationshipSample.dest, relationshipSample.name);
-			System.out.println("|______________________|                                      |______________________|");
+			
+			int length1 = relationshipSample.src.length() + 10;
+			
+			System.out.print(" ");
+			for(int j = 0; j < length1; j++) {
+				System.out.print("_");
+			}
+			
+			for(int j = 0; j < 38; j++) {
+				System.out.print(" ");
+			}
+			
+			int length2 = relationshipSample.dest.length() + 10;
+			
+			System.out.print("  ");
+			for(int j = 0; j < length2; j++) {
+				System.out.print("_");
+			}
+			
+			System.out.println("");			
+			
+			printRelationship(relationshipSample.src, relationshipSample.dest);
+			
+			System.out.print("|");
+			for(int j = 0; j < length1; j++) {
+				System.out.print("_");
+			}
+			System.out.print("|");
+			
+			for(int j = 0; j < 38; j++) {
+				System.out.print(" ");
+			}
+			
+			System.out.print("|");
+			for(int j = 0; j < length2; j++) {
+				System.out.print("_");
+			}
+			System.out.println("|");
+	
 		}
 	}
 	
 	//Auxiliar function to print the relationships
-	public static void printRelationship(String class1, String class2, String relationshipName) {
+	public static void printRelationship(String class1, String class2) {
 		int dashes = 28;
-		int remaining = dashes-relationshipName.length();
-		printRow(class1, 0, true);
-		System.out.print("    <");
-		for(int i = 0; i < remaining/2; i++) {
-			System.out.print("-");
-		}
-		System.out.print(relationshipName);
-		for(int i=0; i<(remaining-remaining/2); i++) {
+		printRow(class1, 0, class1.length()+10, true);
+		System.out.print("     ");
+		for(int i = 0; i < dashes; i++) {
 			System.out.print("-");
 		}
 		System.out.print(">    ");
-		printRow(class2, 0, true);
+		printRow(class2, 0, class2.length()+10, true);
 		System.out.println("");
 	}
 	
 	//Auxiliar function to print a row(either a class name or a attribute name)
-	private static void printRow(String phrase, int isAttribute, boolean isRelationship) {
-		int blankSpaces = 22;
+	private static void printRow(String phrase, int isAttribute, int length, boolean isRelationship) {
+		int blankSpaces = length;
 		int remaining = blankSpaces-phrase.length()-(isAttribute*3);
 		int counter = 1;
 		
@@ -101,6 +139,23 @@ public class Listing {
 			System.out.print("|");
 		else
 			System.out.println("|");
+	}
+	
+	//Method to know what is the length of the longest sentence in the class(ClassName, Attribute, Method)
+	private static int maximumLength(Class classSample) {
+		int maxLength = 0;
+		
+		if(classSample.name.length()>maxLength) {
+			maxLength = classSample.name.length();
+		}
+		
+		for(Attribute attr: classSample.attributes) {
+			if(attr.name.length()>maxLength) {
+				maxLength = attr.name.length();
+			}
+		}
+		
+		return maxLength;
 	}
 
 }
