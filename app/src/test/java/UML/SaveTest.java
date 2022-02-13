@@ -17,7 +17,6 @@ public class SaveTest {
 	 */
 	@Test
 	public void testSave() {
-		//DiagramController s = new DiagramController( );
         DiagramController d = new DiagramController( );
 		d.createClass("foo");
         d.createAttribute("foo", "bar");
@@ -25,14 +24,13 @@ public class SaveTest {
         
         File file = new File("foobar.json");
 
-
     try {
 
         Scanner sc = new Scanner(file);
+        assertTrue("Save failed", sc.hasNextLine());
 
-       
-            assertTrue("Save succesful", sc.hasNextLine());
-        
+        sc.close();
+        assertTrue("File not deleted", file.delete());
         
     } 
     catch (FileNotFoundException e) {

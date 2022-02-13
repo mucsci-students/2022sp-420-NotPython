@@ -18,8 +18,8 @@ public class ClassTest {
 		//DiagramController s = new DiagramController( );
         Class c = new Class("hello");
         
-        assertTrue("Class created succesfully", c != null);
-        assertTrue("Class has correct name", c.name.equals("hello"));
+        assertTrue("Class not created", c != null);
+        assertTrue("Class does not have correct name", c.name.equals("hello"));
         
 	}
 
@@ -28,28 +28,26 @@ public class ClassTest {
         Class c = new Class("hello");
 		c.rename("test");
 
-		assertTrue("Class renamed succesfully", c.name.equals("test"));
+		assertTrue("Class rename failed", c.name.equals("test"));
 	}
 
 	@Test
 	public void testDelete(){
 		DiagramController d = new DiagramController( );
 		d.createClass("1");
-		Class c = d.classList.get(0);
 
         d.deleteClass("1");
-        assertTrue("Class deleted succesfully", d.getClass("1") == null);
+        assertTrue("Class failed to delete", d.getClass("1") == null);
 	}
+
 	@Test
 	public void testCreate(){
 		DiagramController d = new DiagramController( );
 		d.createClass("2");
         d.createClass("3");
-
-		Class c = d.classList.get(0);
         
-		assertTrue("Class created succesfully", d.getClass("2") != null);
-		assertTrue("Class created succesfully",  d.getClass("3") != null);
+		assertTrue("Class 2 not created", d.getClass("2") != null);
+		assertTrue("Class 3 not created",  d.getClass("3") != null);
 		d.deleteClass("2");
         d.deleteClass("3");
         
@@ -58,11 +56,9 @@ public class ClassTest {
 	public void testRenameDC(){
 		DiagramController d = new DiagramController( );
 		d.createClass("x");
-		Class c = d.classList.get(0);
-		
         d.renameClass("x", "y");
 		
-		assertTrue("Class x renamed succesfully", d.getClass("y") != null);
+		assertTrue("Class rename failed", d.getClass("y") != null);
 		d.deleteClass("y");
 
 	}

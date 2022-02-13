@@ -18,8 +18,8 @@ public class AttributeTest {
 		//DiagramController s = new DiagramController( );
         Attribute a = new Attribute("hello");
         
-        assertTrue("Attribute created succesfully", a != null);
-		assertTrue("Attribute has correct name", a.name.equals("hello"));
+        assertTrue("Attribute not created", a != null);
+		assertTrue("Attribute does not have correct name", a.name.equals("hello"));
 
 	}
 
@@ -28,30 +28,30 @@ public class AttributeTest {
 		Attribute a = new Attribute("hello");
 		a.rename_attribute("test");
 
-		assertTrue("Attribute renamed succesfully", a.name.equals("test"));
+		assertTrue("Attribute rename failed", a.name.equals("test"));
 	}
 
 	@Test
 	public void testDelete(){
 		DiagramController d = new DiagramController( );
 		d.createClass("x");
-		Class c = d.classList.get(0);
+		Class c = d.getClass("x");
 		d.createAttribute("x", "y");
 		d.deleteAttribute("x", "y");
 
-		assertTrue("Attribute deleted succesfully", d.getAttribute(c,"y") == null);
+		assertTrue("Attribute deleted failed", d.getAttribute(c,"y") == null);
         d.deleteClass("x");
 	}
 	@Test
 	public void testCreate(){
 		DiagramController d = new DiagramController( );
 		d.createClass("x");
-		Class c = d.classList.get(0);
+		Class c = d.getClass("x");
 		d.createAttribute("x", "y");
         d.createAttribute("x", "z");
 		
-		assertTrue("Attribute z created succesfully", d.getAttribute(c,"z") != null);
-		assertTrue("Attribute y created succesfully", d.getAttribute(c,"y") != null);
+		assertTrue("Attribute z not created", d.getAttribute(c,"z") != null);
+		assertTrue("Attribute y not created", d.getAttribute(c,"y") != null);
 		d.deleteClass("x");
         
         
@@ -60,11 +60,11 @@ public class AttributeTest {
 	public void testRenameDC(){
 		DiagramController d = new DiagramController( );
 		d.createClass("x");
-		Class c = d.classList.get(0);
+		Class c = d.getClass("x");
 		d.createAttribute("x", "y");
         d.renameAttribute("x", "y", "z");
 		
-		assertTrue("Attribute y renamed succesfully", d.getAttribute(c,"z") != null);
+		assertTrue("Attribute y rename failed", d.getAttribute(c,"z") != null);
 		d.deleteClass("x");
 
 	}
