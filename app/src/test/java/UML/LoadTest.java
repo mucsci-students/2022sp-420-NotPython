@@ -8,13 +8,15 @@ package UML;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import java.util.ArrayList;
+import UML.model.Class;
+import UML.model.Diagram;
 
 public class LoadTest
 {
     @Test
     public void testLoadClasses()
     {
-        DiagramController dc = new DiagramController();
+        Diagram dc = new Diagram();
         dc.createClass("cool");
         dc.createClass("bar");
         dc.createClass("class");
@@ -34,7 +36,7 @@ public class LoadTest
     @Test
     public void testLoadAttributes()
     {
-        DiagramController dc = new DiagramController();
+        Diagram dc = new Diagram();
         dc.createClass("cool");
         dc.createAttribute("cool", "bar");
         dc.createAttribute("cool", "class");
@@ -55,7 +57,7 @@ public class LoadTest
     @Test
     public void testLoadRelationships()
     {
-        DiagramController dc = new DiagramController();
+        Diagram dc = new Diagram();
         dc.createClass("src");
         dc.createClass("dest");;
         dc.createRelationship("src", "dest");
@@ -76,7 +78,7 @@ public class LoadTest
     @Test
     public void testLoadEverything()
     {
-        DiagramController dc = new DiagramController();
+        Diagram dc = new Diagram();
         
         dc.classList.clear();
         dc.relationships.clear();

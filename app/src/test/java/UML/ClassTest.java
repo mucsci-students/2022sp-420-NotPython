@@ -7,7 +7,8 @@
 package UML;
 import org.junit.Test;
 import static org.junit.Assert.*;
-
+import UML.model.Class;
+import UML.model.Diagram;
 
 public class ClassTest {
 	/**
@@ -15,7 +16,7 @@ public class ClassTest {
 	 */
 	@Test
 	public void testConstructor() {
-		//DiagramController s = new DiagramController( );
+		//Diagram s = new Diagram( );
         Class c = new Class("hello");
         
         assertTrue("Class not created", c != null);
@@ -33,7 +34,7 @@ public class ClassTest {
 
 	@Test
 	public void testDelete(){
-		DiagramController d = new DiagramController( );
+		Diagram d = new Diagram( );
 		d.createClass("1");
 
         d.deleteClass("1");
@@ -42,7 +43,7 @@ public class ClassTest {
 
 	@Test
 	public void testCreate(){
-		DiagramController d = new DiagramController( );
+		Diagram d = new Diagram( );
 		d.createClass("2");
         d.createClass("3");
         
@@ -54,7 +55,7 @@ public class ClassTest {
 	}
 	@Test
 	public void testRenameDC(){
-		DiagramController d = new DiagramController( );
+		Diagram d = new Diagram( );
 		d.createClass("x");
         d.renameClass("x", "y");
 		
