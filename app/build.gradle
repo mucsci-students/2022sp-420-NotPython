@@ -31,7 +31,7 @@ dependencies {
 apply plugin: 'application'
 //apply plugin: 'java'
 jar {
-    archiveBaseName = 'App'
+    archiveBaseName = 'UML'
     manifest {
         attributes(
             'Main-Class': 'UML.App'

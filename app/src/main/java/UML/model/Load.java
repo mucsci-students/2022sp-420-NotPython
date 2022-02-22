@@ -1,4 +1,4 @@
-package UML;
+package UML.model;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import java.io.IOException;

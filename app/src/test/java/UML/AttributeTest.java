@@ -7,7 +7,9 @@
 package UML;
 import org.junit.Test;
 import static org.junit.Assert.*;
-
+import UML.model.Attribute;
+import UML.model.Class;
+import UML.model.Diagram;
 
 public class AttributeTest {
 	/**
@@ -15,7 +17,7 @@ public class AttributeTest {
 	 */
 	@Test
 	public void testConstructor() {
-		//DiagramController s = new DiagramController( );
+		//Diagram s = new Diagram( );
         Attribute a = new Attribute("hello");
         
         assertTrue("Attribute not created", a != null);
@@ -33,7 +35,7 @@ public class AttributeTest {
 
 	@Test
 	public void testDelete(){
-		DiagramController d = new DiagramController( );
+		Diagram d = new Diagram( );
 		d.createClass("x");
 		Class c = d.getClass("x");
 		d.createAttribute("x", "y");
@@ -44,7 +46,7 @@ public class AttributeTest {
 	}
 	@Test
 	public void testCreate(){
-		DiagramController d = new DiagramController( );
+		Diagram d = new Diagram( );
 		d.createClass("x");
 		Class c = d.getClass("x");
 		d.createAttribute("x", "y");
@@ -58,7 +60,7 @@ public class AttributeTest {
 	}
 	@Test
 	public void testRenameDC(){
-		DiagramController d = new DiagramController( );
+		Diagram d = new Diagram( );
 		d.createClass("x");
 		Class c = d.getClass("x");
 		d.createAttribute("x", "y");

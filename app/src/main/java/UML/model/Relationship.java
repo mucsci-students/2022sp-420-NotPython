@@ -1,4 +1,4 @@
-package UML;
+package UML.model;
 
 public class Relationship 
 {

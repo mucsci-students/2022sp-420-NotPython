@@ -1,6 +1,8 @@
-package UML;
+package UML.model;
 
 import java.util.ArrayList;
+
+import UML.model.*;
 
 public class Listing {
 	
@@ -10,7 +12,7 @@ public class Listing {
 	public static void listClass(ArrayList<Class> list, String className) {
 		
 		//Check the class name is valid
-		if(DiagramController.validation_check(className)) {
+		if(Diagram.validation_check(className)) {
 			
 			Class classAux;
 			

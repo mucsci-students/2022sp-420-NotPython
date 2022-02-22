@@ -3,7 +3,7 @@
 * 
 * attribute object constructor
 */
-package UML;
+package UML.model;
 
 public class Attribute {
     public String name;

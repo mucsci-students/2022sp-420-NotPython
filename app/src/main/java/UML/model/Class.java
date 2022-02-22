@@ -1,4 +1,4 @@
-package UML;
+package UML.model;
 
 import java.util.ArrayList;
 
