@@ -8,6 +8,9 @@
 package UML;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import UML.model.Relationship;
+import UML.model.Diagram;
+
 
 
 public class RelationshipTest {
@@ -23,7 +26,7 @@ public class RelationshipTest {
 
     @Test
     public void testCreateRelationship(){
-        DiagramController d = new DiagramController( );
+        Diagram d = new Diagram( );
         d.createClass("x");
         d.createClass("y");
 
@@ -36,7 +39,7 @@ public class RelationshipTest {
 
     @Test
     public void testDeleteRelationship(){
-        DiagramController d = new DiagramController( );
+        Diagram d = new Diagram( );
         d.createClass("x");
         d.createClass("y");
         d.createRelationship("x", "y");

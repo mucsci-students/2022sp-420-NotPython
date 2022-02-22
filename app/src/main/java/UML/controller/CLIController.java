@@ -10,6 +10,7 @@ public class CLIController {
     public void processCommand(String[] tokens) {
 
         Diagram dg = new Diagram();
+        Listing listing = new Listing();
         // All create commands go here with an if statement for class, relationship, and
         // attribute as second token
         if (tokens[0].equalsIgnoreCase("Create")) {

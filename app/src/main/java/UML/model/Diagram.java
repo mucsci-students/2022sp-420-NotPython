@@ -1,6 +1,7 @@
 package UML.model;
 
 import UML.model.*;
+import UML.controller.Listing;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -280,19 +281,22 @@ public class Diagram {
     //List class
     //Command: list class <class_name>
     public void listClass(String className) {
-    	Listing.listClass(classList, className);
+        Listing listing = new Listing();
+    	listing.listClass(classList, className);
     }
     
     //List classes
     //Command: list classes
     public void listClasses() {
-    	Listing.listClasses(classList);
+        Listing listing = new Listing();
+    	listing.listClasses(classList);
     }
     
     //List relationships
     //Command: list relationships
     public void listRelationships() {
-    	Listing.listRelationships(relationships);
+        Listing listing = new Listing();
+    	listing.listRelationships(relationships);
     }
 
     //Test method to find class
