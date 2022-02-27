@@ -15,7 +15,7 @@ public class Listing {
 	public static void listClass(ArrayList<Class> list, String className) {
 		
 		//Check the class name is valid
-		if(Diagram.validation_check(className)) {
+		if(Diagram.validation_check(className).equals("")) {
 			
 			Class classAux;
 			

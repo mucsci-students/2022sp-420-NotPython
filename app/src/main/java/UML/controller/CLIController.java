@@ -17,21 +17,27 @@ public class CLIController {
             // create class
             // Command: create class <class_name>
             if (tokens[1].equalsIgnoreCase("Class") && lengthChecker(tokens, 3)) {
-                dg.createClass(tokens[2]);
+                System.out.println(dg.createClass(tokens[2]));
                 return;
             }
 
             // Create Attribute
             // Command: create attribute <class_name> <attribute_name>
             if (tokens[1].equalsIgnoreCase("Attribute") && lengthChecker(tokens, 4)) {
-                dg.createAttribute(tokens[2], tokens[3]);
+                System.out.println(dg.createAttribute(tokens[2], tokens[3]));
                 return;
             }
 
             // Create Relationship
+<<<<<<< Updated upstream
             // Command: create relationship <relationship_name> <src> <dest>
             if (tokens[1].equalsIgnoreCase("Relationship") && lengthChecker(tokens, 4)) {
                 dg.createRelationship(tokens[2], tokens[3]);
+=======
+            // Command: create relationship <relationship_type> <src> <dest>
+            if (tokens[1].equalsIgnoreCase("Relationship") && lengthChecker(tokens, 5)) {
+                System.out.println(dg.createRelationship(tokens[2], tokens[3], tokens[4]));
+>>>>>>> Stashed changes
                 return;
             }
         }
@@ -42,21 +48,21 @@ public class CLIController {
             // delete class
             // Command: delete class <class_name>
             if (tokens[1].equalsIgnoreCase("Class") && lengthChecker(tokens, 3)) {
-                dg.deleteClass(tokens[2]);
+                System.out.println(dg.deleteClass(tokens[2]));
                 return;
             }
 
             // delete attribute
             // Command: delete attribute <class_name> <attribute_name>
             if (tokens[1].equalsIgnoreCase("Attribute") && lengthChecker(tokens, 4)) {
-                dg.deleteAttribute(tokens[2], tokens[3]);
+                System.out.println(dg.deleteAttribute(tokens[2], tokens[3]));
                 return;
             }
 
             // delete relationship
             // Command: delete relationship <relationship_name>
             if (tokens[1].equalsIgnoreCase("Relationship") && lengthChecker(tokens, 4)) {
-                dg.deleteRelationship(tokens[2], tokens[3]);
+                System.out.println(dg.deleteRelationship(tokens[2], tokens[3]));
                 return;
             }
         }
@@ -65,14 +71,14 @@ public class CLIController {
             // Rename class
             // Command: Rename Class <old_name> <new_name>
             if (tokens[1].equalsIgnoreCase("Class") && lengthChecker(tokens, 4)) {
-                dg.renameClass(tokens[2], tokens[3]);
+                System.out.println(dg.renameClass(tokens[2], tokens[3]));
                 return;
             }
 
             // Rename attribute
             // Command: Rename attribute <class_name> <old_name> <new_name>
             if (tokens[1].equalsIgnoreCase("attribute") && lengthChecker(tokens, 5)) {
-                dg.renameAttribute(tokens[2], tokens[3], tokens[4]);
+                System.out.println(dg.renameAttribute(tokens[2], tokens[3], tokens[4]));
                 return;
             }
         }
@@ -105,14 +111,14 @@ public class CLIController {
         // save file
         // command: save <file_name>
         if (tokens[0].equalsIgnoreCase("Save") && lengthChecker(tokens, 2)) {
-            dg.saveDiagram(tokens[1]);
+            System.out.println(dg.saveDiagram(tokens[1]));
             return;
         }
 
         // load file
         // command: load <file_name>
         if (tokens[0].equalsIgnoreCase("load") && lengthChecker(tokens, 2)) {
-            dg.loadDiagram(tokens[1]);
+            System.out.println(dg.loadDiagram(tokens[1]));
             return;
         }
         // help user
