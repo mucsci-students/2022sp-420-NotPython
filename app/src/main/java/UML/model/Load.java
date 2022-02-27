@@ -73,14 +73,13 @@ public class Load {
             }
 		    
             JSONArray relArray = (JSONArray) jsonObj.get("relationships");
-            String src, dest;
+            String src, dest, type = "";
             for (int i = 0; i < relArray.length(); i++)
             {
                 relObject = (JSONObject) relArray.getJSONObject(i);
                 src = (String) relObject.get("src");
                 dest = (String) relObject.get("dest");
-
-                relationshipList.add(new Relationship(src, dest));
+                relationshipList.add(new Relationship(type, src, dest));
             }
             
         } 

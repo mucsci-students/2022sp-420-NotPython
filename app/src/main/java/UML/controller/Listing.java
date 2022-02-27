@@ -88,7 +88,7 @@ public class Listing {
 			
 			System.out.println("");			
 			
-			printRelationship(relationshipSample.src, relationshipSample.dest);
+			printRelationship(relationshipSample.type, relationshipSample.src, relationshipSample.dest);
 			
 			System.out.print("|");
 			for(int j = 0; j < length1; j++) {
@@ -110,14 +110,18 @@ public class Listing {
 	}
 	
 	//Auxiliar function to print the relationships
-	public static void printRelationship(String class1, String class2) {
-		int dashes = 28;
+	public static void printRelationship(String type, String class1, String class2) {
+		int dashes = (28 - type.length())/2;
 		printRow(class1, 0, class1.length()+10, true);
 		System.out.print("     ");
 		for(int i = 0; i < dashes; i++) {
 			System.out.print("-");
 		}
-		System.out.print(">    ");
+		System.out.print(type);
+		for(int i = 0; i < dashes; i++) {
+			System.out.print("-");
+		}
+		System.out.print(">     ");
 		printRow(class2, 0, class2.length()+10, true);
 		System.out.println("");
 	}

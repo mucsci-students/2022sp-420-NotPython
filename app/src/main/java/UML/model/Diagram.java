@@ -199,15 +199,8 @@ public class Diagram {
 
     //create relationship
     //add functionality for type with name in next sprint
-    public void createRelationship(/*String name,*/ String src, String dest)
+    public void createRelationship(String type, String src, String dest)
     {
-        //check to see if relationship exists already
-        if (getRelationship (src, dest) != null)
-        {
-            System.out.println("ERROR: Relationship from " + src + " to " + dest +" already exists");
-            return;
-        }
-
         //check to see if source exists already
         if (getClass(src) == null)
         {
@@ -222,9 +215,24 @@ public class Diagram {
             return;
         }
 
+        //check for correct relationship type
+        if (!(type.equalsIgnoreCase("aggregation") || type.equalsIgnoreCase("composition") ||
+              type.equalsIgnoreCase("inheritance") || type.equalsIgnoreCase("realization")))
+        {
+            System.out.println("ERROR: Incorrect type: \"" + type + "\" valid types are Aggregation, Composition, Inheritance and Realization");
+            return;
+        }
+
+        //check to see if relationship exists already
+        if (getRelationship (src, dest) != null || getRelationship(dest, src) != null)
+        {
+            System.out.println("ERROR: Relationship from " + src + " to " + dest +" of type " + type + " already exists");
+            return;
+        }
+
         //add the new relationship to the relationship list
-        relationships.add(new Relationship(src, dest));
-        System.out.println("Relationship from " + src + " to " + dest +" added");
+        relationships.add(new Relationship(type, src, dest));
+        System.out.println("Relationship from " + src + " to " + dest + " of type " + type + " added");
     }
 
     public void deleteRelationship(String src, String dest)
