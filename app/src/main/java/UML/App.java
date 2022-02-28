@@ -1,17 +1,18 @@
 package UML;
 
 import UML.view.CLI;
+import UML.view.GUI;
 
 public class App
 {
     public static void main (String [] args)
     {
         CLI cmdInterface = new CLI();
-        //create gui here
+        GUI guiInterface = new GUI();
 
         if (args.length == 0)
         {
-            //run gui here
+            guiInterface.GUI_view();
         }
         else if (args.length == 1 && args[0].equals("--cli"))
         {
