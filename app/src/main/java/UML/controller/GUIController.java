@@ -72,4 +72,16 @@ public class GUIController {
     public void editFieldType(){
 
     }
+
+    public void listClassCtr(){
+
+    }
+
+    public void listClassesCtr(){
+
+    }
+
+    public void listRelationshipsCtr(){
+        
+    }
 }

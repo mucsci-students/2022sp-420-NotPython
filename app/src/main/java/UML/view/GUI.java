@@ -83,12 +83,21 @@ public class GUI {
         editMenu.add(editMethodMenu);
         editMenu.add(editFieldMenu);
 
+        //List Menu Options
+        JMenuItem listClass = new JMenuItem("Class");
+        JMenuItem listClasses = new JMenuItem("Classes");
+        JMenuItem listRelationships = new JMenuItem("Relationships");
+        listMenu.add(listClass);
+        listMenu.add(listClasses);
+        listMenu.add(listRelationships);
+
         mainBar.add(Box.createHorizontalGlue());
         mainBar.add(fileMenu);
         mainBar.add(createMenu);
         mainBar.add(deleteMenu);
         mainBar.add(editMenu);
-        mainBar.add(Box.createRigidArea(new Dimension(580,35)));
+        mainBar.add(listMenu);
+        mainBar.add(Box.createRigidArea(new Dimension(550,35)));
         
         mainPanel.add(mainBar);
         mainFrame.add(mainPanel);
@@ -154,8 +163,19 @@ public class GUI {
         //Modify Field Type
         editFieldTypeItem.addActionListener(e ->
             guiCtr.editFieldType() );
+            
+        //LIST LISTENER
+        //List Class
+        listClass.addActionListener(e ->
+            guiCtr.listClassCtr() );
+        //List Classes
+        listClasses.addActionListener(e ->
+            guiCtr.listClassesCtr() );
+        //List Relationships
+        listRelationships.addActionListener(e -> 
+            guiCtr.listRelationshipsCtr() );
 
-
+            
     }    
 
 
