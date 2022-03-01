@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import UML.model.Class;
 import UML.model.Diagram;
-import UML.model.Attribute;
+import UML.model.Field;
 import UML.model.Relationship;
 
 public class Listing {
@@ -40,8 +40,8 @@ public class Listing {
 					}
 					System.out.println("|");
 					
-					for(Attribute attr: classAux.attributes) {
-						printRow(attr.name, 1, boxLength, false);
+					for(Field fld: classAux.fields) {
+						printRow(fld.name, 1, boxLength, false);
 					}
 					
 					System.out.print("|");
@@ -126,10 +126,10 @@ public class Listing {
 		System.out.println("");
 	}
 	
-	//Auxiliar function to print a row(either a class name or a attribute name)
-	private static void printRow(String phrase, int isAttribute, int length, boolean isRelationship) {
+	//Auxiliar function to print a row(either a class name or a field name)
+	private static void printRow(String phrase, int isField, int length, boolean isRelationship) {
 		int blankSpaces = length;
-		int remaining = blankSpaces-phrase.length()-(isAttribute*3);
+		int remaining = blankSpaces-phrase.length()-(isField * 3);
 		int counter = 1;
 		
 		System.out.print("|");
@@ -137,7 +137,7 @@ public class Listing {
 			System.out.print(" ");
 			counter++;
 		}
-		if(isAttribute==0)
+		if(isField == 0)
 			System.out.print(phrase);
 		else
 			System.out.print("<> " + phrase);
@@ -150,7 +150,7 @@ public class Listing {
 			System.out.println("|");
 	}
 	
-	//Method to know what is the length of the longest sentence in the class(ClassName, Attribute, Method)
+	//Method to know what is the length of the longest sentence in the class(ClassName, Field, Method)
 	private static int maximumLength(Class classSample) {
 		int maxLength = 0;
 		
@@ -158,9 +158,9 @@ public class Listing {
 			maxLength = classSample.name.length();
 		}
 		
-		for(Attribute attr: classSample.attributes) {
-			if(attr.name.length()>maxLength) {
-				maxLength = attr.name.length();
+		for(Field fld: classSample.fields) {
+			if(fld.name.length()>maxLength) {
+				maxLength = fld.name.length();
 			}
 		}
 		

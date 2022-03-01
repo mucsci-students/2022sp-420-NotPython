@@ -13,6 +13,8 @@ public class Diagram {
     public static ArrayList <Class> classList = new ArrayList <Class> ();
     //ArrayList for relationships goes here
     public static ArrayList <Relationship> relationships = new ArrayList <Relationship> ();
+    //ArrayList for fields
+    public static ArrayList <Field> fields = new ArrayList <Field> ();
     Save save = new Save();
     Load load = new Load();
     //Default constructor
@@ -21,6 +23,7 @@ public class Diagram {
 
     }
 
+    //Create class method
     //Command: Create class <classname>
     public String createClass(String name)
     {   
@@ -42,7 +45,8 @@ public class Diagram {
         return "Class \"" + name + "\" Added";
     }
 
-    //rename class method
+    //Rename class method
+    //Command: rename class <old_name> <new_name>
     public String renameClass(String oldName, String newName)
     {
         //get class with old name
@@ -73,8 +77,8 @@ public class Diagram {
         return "Class \"" + oldName + "\" was renamed to \"" + newName + "\"";
     }
 
-    //command: delete Class <classname>
-    //deletes a class and all of it's attributes
+    //Deletes a class and all of it's fields and methods
+    //Command: delete class <classname>
     public String deleteClass(String className)
     {
         //if class exists then delete
@@ -101,26 +105,26 @@ public class Diagram {
         return "Class with name \"" + tempClass.name + "\" and its relationships deleted";
     }
 
-    //Create attribute
-    //Command: create attribute <class_name> <attribute_name>
-    public String createAttribute(String clasName, String attrName){
+    //Create field
+    //Command: create field <class_name> <field_type> <field_name>
+    public String createField(String clasName, String fldType, String fldName){
         //Check if class exists
         Class tempClass = getClass(clasName);
         if(tempClass != null)
         {
             //check to see if the name contains any invalid characters
-            String error = validation_check(attrName);
+            String error = validation_check(fldName);
             if (!error.trim().equals(""))
             {
                 return error;
             }
-            if (getAttribute(tempClass, attrName) != null)
+            if (getField(tempClass, fldName) != null)
             {
-                return "ERROR: Attribute with name \"" + attrName + "\" for \"" + clasName + "\" already exists";
+                return "ERROR: Field with name \"" + fldName + "\" for \"" + clasName + "\" already exists";
             }
-            //Add attribute to arraylist
-            tempClass.attributes.add(new Attribute(attrName));
-            return "Attribute \"" + attrName + "\" Added to Class \"" + clasName + "\"";
+            //Add field to arraylist
+            tempClass.fields.add(new Field(fldName, fldType));
+            return "Field \"" + fldName + "of type \"" + fldType + "\" Added to Class \"" + clasName + "\"";
         }
         else
         {
@@ -128,22 +132,22 @@ public class Diagram {
         }
     }
 
-    //delete attribute
-    //Command: delete attribute <class_name> <attribute_name>
-    public String deleteAttribute(String clasName, String attrName)
+    //Delete field
+    //Command: delete field <class_name> <field_name>
+    public String deleteField(String clasName, String fldName)
     {
         //Check if class exists
         Class tempClass = getClass(clasName);
         if(tempClass != null)
         {
-            Attribute tempAttr = getAttribute(tempClass, attrName);
-            if (tempAttr == null)
+            Field tempFld = getField(tempClass, fldName);
+            if (tempFld == null)
             {
-                return "ERROR: Attribute with name \"" + attrName + "\" for \"" + clasName + "\" does not exist";
+                return "ERROR: Field with name \"" + fldName + "\" for \"" + clasName + "\" does not exist";
             }
-            //delete attribute from arraylist
-            tempClass.attributes.remove(tempAttr);
-            return "Attribute \"" + attrName + "\" removed from Class \"" + clasName + "\"";
+            //delete field from arraylist
+            tempClass.fields.remove(tempFld);
+            return "Field \"" + fldName + "\" removed from Class \"" + clasName + "\"";
         }
         else
         {
@@ -151,9 +155,9 @@ public class Diagram {
         }
     }
 
-    //rename attribute method
-    //Command: Rename attribute <class_name> <old_name> <new_name>
-    public String renameAttribute(String clas, String oldName, String newName)
+    //Rename field method
+    //Command: rename field <class_name> <old_name> <new_name>
+    public String renameField(String clas, String oldName, String newName)
     {
         //Check if class exists
         Class tempClass = getClass(clas);
@@ -162,19 +166,19 @@ public class Diagram {
             return "ERROR: Class \"" + clas + "\" does not exist";
         }
 
-        //Check if attribute with old name exists
-        if (getAttribute(tempClass, oldName) == null)
+        //Check if field with old name exists
+        if (getField(tempClass, oldName) == null)
         {
-            return "ERROR: Attribute with name \"" + oldName + "\" does not exist";
+            return "ERROR: Field with name \"" + oldName + "\" does not exist";
         }
 
-        //Check if attribute with new name already exists
-        if (getAttribute(tempClass, newName) != null)
+        //Check if field with new name already exists
+        if (getField(tempClass, newName) != null)
         {
-            return "ERROR: Attribute with name \"" + newName + "\" already exists";
+            return "ERROR: Field with name \"" + newName + "\" already exists";
         }
 
-        Attribute tempAttr = getAttribute(tempClass, oldName);
+        Field tempFld = getField(tempClass, oldName);
         
         //check to see if the name contains any invalid characters
         String error = validation_check(newName);
@@ -183,14 +187,15 @@ public class Diagram {
             return error;
         }
 
-        //change attribute name and set object again in classlist
-        int index = tempClass.attributes.indexOf(tempAttr);
-        tempAttr.rename_attribute(newName);
-        tempClass.attributes.set(index, tempAttr);
-        return "Attribute \"" + oldName + "\" was renamed to \"" + newName + "\"";
+        //change field name and set object again in classlist
+        int index = tempClass.fields.indexOf(tempFld);
+        tempFld.rename_field(newName);
+        tempClass.fields.set(index, tempFld);
+        return "Field \"" + oldName + "\" was renamed to \"" + newName + "\"";
     }
 
     //create relationship
+    //Command: create relationship <relationship_type> <src> <dest>
     public String createRelationship(String type, String src, String dest)
     {
         //check to see if source exists already
@@ -238,6 +243,9 @@ public class Diagram {
         return "Relationship from " + src + " to " + dest + " of type " + type + " added";
     }
 
+
+    // delete relationship method
+    //Command: delete relationship <src> <dest>
     public String deleteRelationship(String src, String dest)
     {
         //if relationship exists then delete
@@ -251,6 +259,7 @@ public class Diagram {
         relationships.remove(tempRelationship);
         return "Relationship from " + src + " to " + dest +" deleted";
     }
+
 
     //saves program to .json or .yaml file
     public String saveDiagram(String fileName)
@@ -321,15 +330,15 @@ public class Diagram {
         return null;
     }
 
-    //gets an attribute with attrName for curClass
-    public static Attribute getAttribute(Class curClass, String attrName)
+    //gets an field with fldName for curClass
+    public static Field getField(Class curClass, String fldName)
     {
-        //Check if attribute already exists
-        for (Attribute a: curClass.attributes)
+        //Check if field already exists
+        for (Field f: curClass.fields)
         {
-            if (attrName.equals(a.name))
+            if (fldName.equals(f.name))
             {
-                return a;
+                return f;
             }
         }
         return null;
