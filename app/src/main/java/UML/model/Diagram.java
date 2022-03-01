@@ -114,9 +114,14 @@ public class Diagram {
         {
             //check to see if the name contains any invalid characters
             String error = validation_check(fldName);
-            if (!error.trim().equals(""))
+            if (!error.equals(""))
             {
-                return error;
+                return error + " in field name";
+            }
+            error = validation_check(fldType);
+            if (!error.equals(""))
+            {
+                return error + " in field type";
             }
             if (getField(tempClass, fldName) != null)
             {
@@ -367,7 +372,7 @@ public class Diagram {
         {
             if (" `\\|:'\"<.>/?!".indexOf(input.charAt(i)) > -1)
             {
-                return "ERROR: " + input.charAt(i) + " is an invalid character";
+                return "ERROR: invalid character: " + input.charAt(i);
             }
         }
         return "";
