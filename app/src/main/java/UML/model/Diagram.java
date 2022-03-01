@@ -37,9 +37,9 @@ public class Diagram {
             return "ERROR: Class with name \"" + name + "\" already exists";
         }
 
-            //add the new class to the classList
-            classList.add(new Class(name));
-            return "Class \"" + name + "\" Added";
+        //add the new class to the classList
+        classList.add(new Class(name));
+        return "Class \"" + name + "\" Added";
     }
 
     //rename class method
@@ -216,6 +216,21 @@ public class Diagram {
         if (getRelationship (src, dest) != null || getRelationship(dest, src) != null)
         {
             return "ERROR: Relationship from " + src + " to " + dest +" of type " + type + " already exists";
+        }
+
+        //check for correct relationship type
+        if (!(type.equalsIgnoreCase("aggregation") || type.equalsIgnoreCase("composition") ||
+              type.equalsIgnoreCase("inheritance") || type.equalsIgnoreCase("realization")))
+        {
+            System.out.println("ERROR: Incorrect type: \"" + type + "\" valid types are Aggregation, Composition, Inheritance and Realization");
+            return;
+        }
+
+        //check to see if relationship exists already
+        if (getRelationship (src, dest) != null || getRelationship(dest, src) != null)
+        {
+            System.out.println("ERROR: Relationship from " + src + " to " + dest +" of type " + type + " already exists");
+            return;
         }
 
         //add the new relationship to the relationship list
