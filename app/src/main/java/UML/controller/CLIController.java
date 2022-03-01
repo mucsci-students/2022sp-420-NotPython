@@ -20,10 +20,10 @@ public class CLIController {
                 return;
             }
 
-            // Create Attribute
-            // Command: create attribute <class_name> <attribute_name>
-            if (tokens[1].equalsIgnoreCase("Attribute") && lengthChecker(tokens, 4)) {
-                System.out.println(dg.createAttribute(tokens[2], tokens[3]));
+            // Create Field
+            // Command: create field <class_name> <field_type> <field_name>
+            if (tokens[1].equalsIgnoreCase("Field") && lengthChecker(tokens, 5)) {
+                dg.createField(tokens[2], tokens[3], tokens[4]);
                 return;
             }
 
@@ -45,10 +45,10 @@ public class CLIController {
                 return;
             }
 
-            // delete attribute
-            // Command: delete attribute <class_name> <attribute_name>
-            if (tokens[1].equalsIgnoreCase("Attribute") && lengthChecker(tokens, 4)) {
-                System.out.println(dg.deleteAttribute(tokens[2], tokens[3]));
+            // delete field
+            // Command: delete field <class_name> <field_name>
+            if (tokens[1].equalsIgnoreCase("Field") && lengthChecker(tokens, 4)) {
+                dg.deleteField(tokens[2], tokens[3]);
                 return;
             }
 
@@ -68,12 +68,19 @@ public class CLIController {
                 return;
             }
 
-            // Rename attribute
-            // Command: Rename attribute <class_name> <old_name> <new_name>
-            if (tokens[1].equalsIgnoreCase("attribute") && lengthChecker(tokens, 5)) {
-                System.out.println(dg.renameAttribute(tokens[2], tokens[3], tokens[4]));
+            // Rename field
+            // Command: Rename field <class_name> <old_name> <new_name>
+            if (tokens[1].equalsIgnoreCase("field") && lengthChecker(tokens, 5)) {
+                dg.renameField(tokens[2], tokens[3], tokens[4]);
                 return;
             }
+
+            // Rename method
+            // Command: Rename method <class_name> <old_name> <new_name>
+            //if (tokens[1].equalsIgnoreCase("method") && lengthChecker(tokens, 5)) {
+            //    dg.renameMethod(tokens[2], tokens[3], tokens[4]);
+            //    return;
+            //}
         }
 
         // All list commands go here with an if statement for class, classes and
@@ -116,31 +123,31 @@ public class CLIController {
         }
         // help user
         if (tokens[0].equalsIgnoreCase("Help")) {
-            System.out.printf("%-55s%-50s\n", "COMMANDS", "USAGE");
+            System.out.printf("%-60s%-50s\n", "COMMANDS", "USAGE");
 
-            System.out.printf("%-55s%-50s\n", "help", "shows this help message");
-            System.out.printf("%-55s%-50s\n", "create class <class_name>", "creates a class with the given name");
-            System.out.printf("%-55s%-50s\n", "rename class <old_name> <new_name>", "renames the class");
-            System.out.printf("%-55s%-50s\n", "delete class <class_name>", "deletes the class");
+            System.out.printf("%-60s%-50s\n", "help", "shows this help message");
+            System.out.printf("%-60s%-50s\n", "create class <class_name>", "creates a class with the given name");
+            System.out.printf("%-60s%-50s\n", "rename class <old_name> <new_name>", "renames the class");
+            System.out.printf("%-60s%-50s\n", "delete class <class_name>", "deletes the class");
 
-            System.out.printf("%-55s%-50s\n", "create relationship <type> <src> <dest>",
+            System.out.printf("%-60s%-50s\n", "create relationship <type> <src> <dest>",
                     "creates a relationship given src and dest classes and a type: Aggregation, Composition, Inheritance or Realization");
-            System.out.printf("%-55s%-50s\n", "delete relationship <src> <dest>",
+            System.out.printf("%-60s%-50s\n", "delete relationship <src> <dest>",
                     "deletes a relationship given its src and dest");
 
-            System.out.printf("%-55s%-50s\n", "create attribute <class_name> <attribute_name>", "creates an attribute");
-            System.out.printf("%-55s%-50s\n", "rename attribute <class_name> <old_name> <new_name>",
-                    "deletes an attribute");
-            System.out.printf("%-55s%-50s\n", "delete attribute <class_name> <attribute_name>", "deletes an attribute");
+            System.out.printf("%-60s%-50s\n", "create field <class_name> <field_type> <field_name>", "creates a field");
+            System.out.printf("%-60s%-50s\n", "rename field <class_name> <old_name> <new_name>",
+                    "renames an field");
+            System.out.printf("%-60s%-50s\n", "delete field <class_name> <field_name>", "deletes a field");
 
-            System.out.printf("%-55s%-50s\n", "save <file_name>", "saves a file to a JSON format");
-            System.out.printf("%-55s%-50s\n", "load <file_name>", "loads a file from a JSON format");
+            System.out.printf("%-60s%-50s\n", "save <file_name>", "saves a file to a JSON/ YAML format");
+            System.out.printf("%-60s%-50s\n", "load <file_name>", "loads a file from a JSON/ YAML format");
 
-            System.out.printf("%-55s%-50s\n", "list class <class_name>",
+            System.out.printf("%-60s%-50s\n", "list class <class_name>",
                     "lists the contents of a class given its name");
-            System.out.printf("%-55s%-50s\n", "list classes", "lists all the classes and contents");
-            System.out.printf("%-55s%-50s\n", "list relationships", "lists the relationships between classes");
-            System.out.printf("%-55s%-50s\n", "exit", "exits the program");
+            System.out.printf("%-60s%-50s\n", "list classes", "lists all the classes and contents");
+            System.out.printf("%-60s%-50s\n", "list relationships", "lists the relationships between classes");
+            System.out.printf("%-60s%-50s\n", "exit", "exits the program");
 
             return;
         }
