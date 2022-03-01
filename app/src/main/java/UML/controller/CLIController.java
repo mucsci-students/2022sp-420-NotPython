@@ -11,7 +11,6 @@ public class CLIController {
 
         Diagram dg = new Diagram();
         // All create commands go here with an if statement for class, relationship, and
-        // attribute as second token
         if (tokens[0].equalsIgnoreCase("Create")) {
             // create class
             // Command: create class <class_name>
@@ -20,12 +19,6 @@ public class CLIController {
                 return;
             }
 
-            // Create Attribute
-            // Command: create attribute <class_name> <attribute_name>
-            if (tokens[1].equalsIgnoreCase("Attribute") && lengthChecker(tokens, 4)) {
-                System.out.println(dg.createAttribute(tokens[2], tokens[3]));
-                return;
-            }
 
             // Create Relationship
             // Command: create relationship <relationship_type> <src> <dest>
@@ -33,22 +26,21 @@ public class CLIController {
                 System.out.println(dg.createRelationship(tokens[2], tokens[3], tokens[4]));
                 return;
             }
+
+            // Create Method
+            // Command: create method <class_name> <method_name> <type> <param>
+            if (tokens[1].equalsIgnoreCase("Method")) {
+                System.out.println(dg.createMethod(tokens[2], tokens[4], tokens[3], tokens));
+                return;
+            }
         }
 
         // All delete commands go here with an if statement for class, relationship, and
-        // attribute as second token
         if (tokens[0].equalsIgnoreCase("Delete")) {
             // delete class
             // Command: delete class <class_name>
             if (tokens[1].equalsIgnoreCase("Class") && lengthChecker(tokens, 3)) {
                 System.out.println(dg.deleteClass(tokens[2]));
-                return;
-            }
-
-            // delete attribute
-            // Command: delete attribute <class_name> <attribute_name>
-            if (tokens[1].equalsIgnoreCase("Attribute") && lengthChecker(tokens, 4)) {
-                System.out.println(dg.deleteAttribute(tokens[2], tokens[3]));
                 return;
             }
 
@@ -65,13 +57,6 @@ public class CLIController {
             // Command: Rename Class <old_name> <new_name>
             if (tokens[1].equalsIgnoreCase("Class") && lengthChecker(tokens, 4)) {
                 System.out.println(dg.renameClass(tokens[2], tokens[3]));
-                return;
-            }
-
-            // Rename attribute
-            // Command: Rename attribute <class_name> <old_name> <new_name>
-            if (tokens[1].equalsIgnoreCase("attribute") && lengthChecker(tokens, 5)) {
-                System.out.println(dg.renameAttribute(tokens[2], tokens[3], tokens[4]));
                 return;
             }
         }
@@ -127,11 +112,6 @@ public class CLIController {
                     "creates a relationship given src and dest classes and a type: Aggregation, Composition, Inheritance or Realization");
             System.out.printf("%-55s%-50s\n", "delete relationship <src> <dest>",
                     "deletes a relationship given its src and dest");
-
-            System.out.printf("%-55s%-50s\n", "create attribute <class_name> <attribute_name>", "creates an attribute");
-            System.out.printf("%-55s%-50s\n", "rename attribute <class_name> <old_name> <new_name>",
-                    "deletes an attribute");
-            System.out.printf("%-55s%-50s\n", "delete attribute <class_name> <attribute_name>", "deletes an attribute");
 
             System.out.printf("%-55s%-50s\n", "save <file_name>", "saves a file to a JSON format");
             System.out.printf("%-55s%-50s\n", "load <file_name>", "loads a file from a JSON format");

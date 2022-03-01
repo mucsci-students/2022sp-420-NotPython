@@ -74,7 +74,7 @@ public class Diagram {
     }
 
     //command: delete Class <classname>
-    //deletes a class and all of it's attributes
+    //deletes a class
     public String deleteClass(String className)
     {
         //if class exists then delete
@@ -99,95 +99,6 @@ public class Diagram {
         //delete class
         classList.remove(tempClass);
         return "Class with name \"" + tempClass.name + "\" and its relationships deleted";
-    }
-
-    //Create attribute
-    //Command: create attribute <class_name> <attribute_name>
-    public String createAttribute(String clasName, String attrName){
-        //Check if class exists
-        Class tempClass = getClass(clasName);
-        if(tempClass != null)
-        {
-            //check to see if the name contains any invalid characters
-            String error = validation_check(attrName);
-            if (!error.trim().equals(""))
-            {
-                return error;
-            }
-            if (getAttribute(tempClass, attrName) != null)
-            {
-                return "ERROR: Attribute with name \"" + attrName + "\" for \"" + clasName + "\" already exists";
-            }
-            //Add attribute to arraylist
-            tempClass.attributes.add(new Attribute(attrName));
-            return "Attribute \"" + attrName + "\" Added to Class \"" + clasName + "\"";
-        }
-        else
-        {
-            return "ERROR: Class with name \"" + clasName + "\" does not exist";
-        }
-    }
-
-    //delete attribute
-    //Command: delete attribute <class_name> <attribute_name>
-    public String deleteAttribute(String clasName, String attrName)
-    {
-        //Check if class exists
-        Class tempClass = getClass(clasName);
-        if(tempClass != null)
-        {
-            Attribute tempAttr = getAttribute(tempClass, attrName);
-            if (tempAttr == null)
-            {
-                return "ERROR: Attribute with name \"" + attrName + "\" for \"" + clasName + "\" does not exist";
-            }
-            //delete attribute from arraylist
-            tempClass.attributes.remove(tempAttr);
-            return "Attribute \"" + attrName + "\" removed from Class \"" + clasName + "\"";
-        }
-        else
-        {
-            return "ERROR: Class with name \"" + clasName + "\" does not exist";
-        }
-    }
-
-    //rename attribute method
-    //Command: Rename attribute <class_name> <old_name> <new_name>
-    public String renameAttribute(String clas, String oldName, String newName)
-    {
-        //Check if class exists
-        Class tempClass = getClass(clas);
-        if (tempClass == null)
-        {
-            return "ERROR: Class \"" + clas + "\" does not exist";
-        }
-
-        //Check if attribute with old name exists
-        if (getAttribute(tempClass, oldName) == null)
-        {
-            return "ERROR: Attribute with name \"" + oldName + "\" does not exist";
-        }
-
-        //Check if attribute with new name already exists
-        if (getAttribute(tempClass, newName) != null)
-        {
-            return "ERROR: Attribute with name \"" + newName + "\" already exists";
-        }
-
-        Attribute tempAttr = getAttribute(tempClass, oldName);
-        
-        //check to see if the name contains any invalid characters
-        String error = validation_check(newName);
-        if (!error.trim().equals(""))
-        {
-            return error;
-        }
-
-        //change attribute name and set object again in classlist
-        int index = tempClass.attributes.indexOf(tempAttr);
-        tempAttr.rename_attribute(newName);
-        tempClass.attributes.set(index, tempAttr);
-        return "Attribute \"" + oldName + "\" was renamed to \"" + newName + "\"";
     }
 
     //create relationship
@@ -222,15 +133,13 @@ public class Diagram {
         if (!(type.equalsIgnoreCase("aggregation") || type.equalsIgnoreCase("composition") ||
               type.equalsIgnoreCase("inheritance") || type.equalsIgnoreCase("realization")))
         {
-            System.out.println("ERROR: Incorrect type: \"" + type + "\" valid types are Aggregation, Composition, Inheritance and Realization");
-            return;
+            return "ERROR: Incorrect type: \"" + type + "\" valid types are Aggregation, Composition, Inheritance and Realization";
         }
 
         //check to see if relationship exists already
         if (getRelationship (src, dest) != null || getRelationship(dest, src) != null)
         {
-            System.out.println("ERROR: Relationship from " + src + " to " + dest +" of type " + type + " already exists");
-            return;
+            return "ERROR: Relationship from " + src + " to " + dest +" of type " + type + " already exists";
         }
 
         //add the new relationship to the relationship list
@@ -250,6 +159,54 @@ public class Diagram {
         //delete the relationship from the relationship list
         relationships.remove(tempRelationship);
         return "Relationship from " + src + " to " + dest +" deleted";
+    }
+
+    // Create Method
+    // Command: create method <class_name> <method_name> <type> <param>
+    public String createMethod(String className, String type, String methodName, String[] param)
+    {
+        ArrayList <String> parameter = new ArrayList <String> ();
+        Class c = getClass(className);
+        //checks if class exists
+        if(c == null)
+        {
+            return "ERROR: Class with name \"" + className + "\" does not exist";
+        }
+        //checks if type is valid
+        String error = validation_check(type);
+        if(!error.equals(""))
+        {
+            return error + " in method type";
+        }
+        //checks if method name is valid
+        error = validation_check(methodName);
+        if(!error.equals(""))
+        {
+            return error + " in method name";
+        }
+        //checks parameter list
+        for(int i = 5; i < param.length - 1; i += 2)
+        {
+            error = validation_check(param[i]);
+            if(!error.equals(""))
+            {
+                return error + " in method parameter name";
+            }
+            error = validation_check(param[i + 1]);
+            if(!error.equals(""))
+            {
+                return error + " in method parameter type";
+            }
+            parameter.add(param[i]);
+            parameter.add(param[i + 1]);
+        }
+        //check if method exists
+        if(getMethod(className, methodName, type, parameter) != null)
+        {
+            return "ERROR: method already exists";
+        }
+        c.methods.add(new Method(type, methodName, parameter));
+        return "Method with name \"" + methodName + "\" added to class \"" + className + "\"";
     }
 
     //saves program to .json or .yaml file
@@ -321,21 +278,7 @@ public class Diagram {
         return null;
     }
 
-    //gets an attribute with attrName for curClass
-    public static Attribute getAttribute(Class curClass, String attrName)
-    {
-        //Check if attribute already exists
-        for (Attribute a: curClass.attributes)
-        {
-            if (attrName.equals(a.name))
-            {
-                return a;
-            }
-        }
-        return null;
-    }
-
-    //get a relationship for with name <name>
+    //get a relationship with name <name>
     public static Relationship getRelationship(String src, String dest)
     {
         for (Relationship r: relationships)
@@ -343,6 +286,42 @@ public class Diagram {
             if (src.equals(r.src) && dest.equals(r.dest))
             {
                 return r;
+            }
+        }
+        return null;
+    }
+
+    //get a method with class name, method name, type, and parameter
+    public static Method getMethod(String className, String methodName, String type, ArrayList <String> param)
+    {
+        Parameter p;
+        int counter = 0;
+        int neflag = 0;
+        Class c = getClass(className);
+        if(c != null)
+        {
+            for(Method m : c.methods)
+            {
+                if(m.name.equals(methodName) && m.type.equals(type) && !m.parameters.isEmpty() && !param.isEmpty() && m.parameters.size() == (param.size() / 2))
+                {
+                    for(int i = 0; i < param.size() - 1; i += 2)
+                    {
+                        p = m.parameters.get(counter);
+                        if(p.name.equals(param.get(i + 1)) && p.type.equals(param.get(i)))
+                        {
+                            neflag++;
+                        }
+                        ++counter;
+                    }
+                    if(counter == neflag)
+                    {
+                        return m;
+                    }
+                }
+                else if(m.name.equals(methodName) && m.type.equals(type) && m.parameters.isEmpty() && param.isEmpty())
+                {
+                    return m;
+                }
             }
         }
         return null;
@@ -358,7 +337,7 @@ public class Diagram {
         {
             if (" `\\|:'\"<.>/?!".indexOf(input.charAt(i)) > -1)
             {
-                return "ERROR: " + input.charAt(i) + " is an invalid character";
+                return "ERROR: invalid character: " + input.charAt(i);
             }
         }
         return "";

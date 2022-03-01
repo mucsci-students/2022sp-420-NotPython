@@ -38,9 +38,9 @@ public class LoadTest
     {
         Diagram dc = new Diagram();
         dc.createClass("cool");
-        dc.createAttribute("cool", "bar");
-        dc.createAttribute("cool", "class");
-        dc.createAttribute("cool", "silly");
+//        dc.createAttribute("cool", "bar");
+//        dc.createAttribute("cool", "class");
+//        dc.createAttribute("cool", "silly");
 
         dc.saveDiagram("test.json");
         dc.deleteClass("cool");
@@ -49,9 +49,9 @@ public class LoadTest
         assertTrue("Class cool not loaded", dc.getClass("cool") != null);
 
         Class c = dc.getClass("cool");
-        assertTrue("Attribute bar not loaded", dc.getAttribute(c, "bar") != null);
-        assertTrue("Attribute class not loaded", dc.getAttribute(c, "class") != null);
-        assertTrue("Attribute silly not loaded", dc.getAttribute(c, "silly") != null);
+//        assertTrue("Attribute bar not loaded", dc.getAttribute(c, "bar") != null);
+//        assertTrue("Attribute class not loaded", dc.getAttribute(c, "class") != null);
+//        assertTrue("Attribute silly not loaded", dc.getAttribute(c, "silly") != null);
     }
 
     @Test
@@ -92,15 +92,15 @@ public class LoadTest
         dc.createClass("bar");
         dc.createClass("class");
 
-        dc.createAttribute("cool", "bar");
-        dc.createAttribute("cool", "class");
-        dc.createAttribute("cool", "silly");
-        dc.createAttribute("bar", "bar");
-        dc.createAttribute("bar", "class");
-        dc.createAttribute("bar", "silly");
-        dc.createAttribute("class", "bar");
-        dc.createAttribute("class", "class");
-        dc.createAttribute("class", "silly");
+//        dc.createAttribute("cool", "bar");
+//        dc.createAttribute("cool", "class");
+//        dc.createAttribute("cool", "silly");
+//        dc.createAttribute("bar", "bar");
+//        dc.createAttribute("bar", "class");
+//        dc.createAttribute("bar", "silly");
+//        dc.createAttribute("class", "bar");
+//        dc.createAttribute("class", "class");
+//        dc.createAttribute("class", "silly");
         dc.createRelationship("Aggregation", "cool", "bar");
         dc.createRelationship("Aggregation", "bar", "class");
         dc.saveDiagram("test.json");
@@ -119,9 +119,9 @@ public class LoadTest
         assertTrue("Class class not loaded", dc.getClass("class") != null);
 
         Class c = dc.getClass("cool");
-        assertTrue("Attribute bar not loaded", dc.getAttribute(c, "bar") != null);
-        assertTrue("Attribute class not loaded", dc.getAttribute(c, "class") != null);
-        assertTrue("Attribute silly not loaded", dc.getAttribute(c, "silly") != null);
+//        assertTrue("Attribute bar not loaded", dc.getAttribute(c, "bar") != null);
+//        assertTrue("Attribute class not loaded", dc.getAttribute(c, "class") != null);
+//        assertTrue("Attribute silly not loaded", dc.getAttribute(c, "silly") != null);
 
         assertTrue("Relationship from bar to class not loaded", dc.getRelationship("cool", "bar") != null);
         assertTrue("Relationship from bar to class not loaded", dc.getRelationship("bar", "class") != null);

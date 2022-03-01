@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import UML.model.Class;
 import UML.model.Diagram;
-import UML.model.Attribute;
 import UML.model.Relationship;
 
 public class Listing {
@@ -40,9 +39,9 @@ public class Listing {
 					}
 					System.out.println("|");
 					
-					for(Attribute attr: classAux.attributes) {
-						printRow(attr.name, 1, boxLength, false);
-					}
+//					for(Attribute attr: classAux.attributes) {
+//						printRow(attr.name, 1, boxLength, false);
+//					}
 					
 					System.out.print("|");
 					for(int j = 0; j < boxLength; j++) {
@@ -158,11 +157,11 @@ public class Listing {
 			maxLength = classSample.name.length();
 		}
 		
-		for(Attribute attr: classSample.attributes) {
-			if(attr.name.length()>maxLength) {
-				maxLength = attr.name.length();
-			}
-		}
+//		for(Attribute attr: classSample.attributes) {
+//			if(attr.name.length()>maxLength) {
+//				maxLength = attr.name.length();
+//			}
+//		}
 		
 		return maxLength;
 	}

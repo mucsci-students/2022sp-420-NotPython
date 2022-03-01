@@ -52,17 +52,17 @@ public class Save {
           text += "\t\t\"attributes\": [\n\t\t{\n";
           
           attributeCounter = 1;
-          for(Attribute a: c.attributes)
-          {
-            
-            text += "\t\t\t\"attribute" + attributeCounter + "\":\"" + a.name + "\"";
-            if(c.attributes.indexOf(a) != c.attributes.size() -1 )
-            {
-            text += ",";        
-            }
-            text += "\n";
-            ++attributeCounter;
-          }
+          //for(Attribute a: c.attributes)
+          //{
+          //  
+          //  text += "\t\t\t\"attribute" + attributeCounter + "\":\"" + a.name + "\"";
+          //  if(c.attributes.indexOf(a) != c.attributes.size() -1 )
+          //  {
+          //  text += ",";        
+          //  }
+          //  text += "\n";
+          //  ++attributeCounter;
+          //}
          
           text += "\t\t}\n\t\t]";
           text+= "\n\t}";

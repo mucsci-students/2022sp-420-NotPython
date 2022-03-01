@@ -5,13 +5,13 @@ import java.util.ArrayList;
 public class Class 
 {
     public String name;
-    public ArrayList <Attribute> attributes;
+    public ArrayList <Method> methods;
 
     //class constructor
     public Class (String initName)
     {
         name = initName;
-        attributes = new ArrayList<Attribute>();
+        methods = new ArrayList<Method>();
     }
 
     //rename class

@@ -20,7 +20,7 @@ public class SaveTest {
 	public void testSave() {
         Diagram d = new Diagram( );
 		d.createClass("foo");
-        d.createAttribute("foo", "bar");
+//        d.createAttribute("foo", "bar");
         d.saveDiagram("foobar.json");
         
         File file = new File("foobar.json");
