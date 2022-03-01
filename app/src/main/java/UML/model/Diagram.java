@@ -235,15 +235,13 @@ public class Diagram {
         if (!(type.equalsIgnoreCase("aggregation") || type.equalsIgnoreCase("composition") ||
               type.equalsIgnoreCase("inheritance") || type.equalsIgnoreCase("realization")))
         {
-            System.out.println("ERROR: Incorrect type: \"" + type + "\" valid types are Aggregation, Composition, Inheritance and Realization");
-            return;
+            return "ERROR: Incorrect type: \"" + type + "\" valid types are Aggregation, Composition, Inheritance and Realization";
         }
 
         //check to see if relationship exists already
         if (getRelationship (src, dest) != null || getRelationship(dest, src) != null)
         {
-            System.out.println("ERROR: Relationship from " + src + " to " + dest +" of type " + type + " already exists");
-            return;
+            return "ERROR: Relationship from " + src + " to " + dest +" of type " + type + " already exists";
         }
 
         //add the new relationship to the relationship list
