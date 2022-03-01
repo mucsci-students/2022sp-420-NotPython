@@ -6,16 +6,16 @@
 package UML.model;
 
 public class Field {
-    public String type;
     public String name;
+    public String type;
     
     /*
     * attaches the field to the class
     */
-    public Field (String tp, String fld)
+    public Field (String fld, String tp)
     {
-        this.type = tp;
         this.name = fld;
+        this.type = tp;
     }
 
     /*

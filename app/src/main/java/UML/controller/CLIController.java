@@ -21,7 +21,7 @@ public class CLIController {
             }
 
             // Create Field
-            // Command: create field <class_name> <field_type> <field_name>
+            // Command: create field <class_name> <field_name> <field_type> 
             if (tokens[1].equalsIgnoreCase("Field") && lengthChecker(tokens, 5)) {
                 dg.createField(tokens[2], tokens[3], tokens[4]);
                 return;
@@ -135,7 +135,7 @@ public class CLIController {
             System.out.printf("%-60s%-50s\n", "delete relationship <src> <dest>",
                     "deletes a relationship given its src and dest");
 
-            System.out.printf("%-60s%-50s\n", "create field <class_name> <field_type> <field_name>", "creates a field");
+            System.out.printf("%-60s%-50s\n", "create field <class_name> <field_name> <field_type>", "creates a field");
             System.out.printf("%-60s%-50s\n", "rename field <class_name> <old_name> <new_name>",
                     "renames an field");
             System.out.printf("%-60s%-50s\n", "delete field <class_name> <field_name>", "deletes a field");

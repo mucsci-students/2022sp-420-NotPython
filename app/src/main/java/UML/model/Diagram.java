@@ -123,7 +123,7 @@ public class Diagram {
                 return "ERROR: Field with name \"" + fldName + "\" for \"" + clasName + "\" already exists";
             }
             //Add field to arraylist
-            tempClass.fields.add(new Field(fldType, fldName));
+            tempClass.fields.add(new Field(fldName, fldType));
             return "Field \"" + fldName + "of type \"" + fldType + "\" Added to Class \"" + clasName + "\"";
         }
         else
