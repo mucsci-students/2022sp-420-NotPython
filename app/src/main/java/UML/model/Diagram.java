@@ -336,13 +336,13 @@ public class Diagram {
         return null;
     }
 
-    //gets an field with fldName for curClass
-    public static Field getField(Class curClass, String fldName)
+    //gets a field with fldName for curClass
+    public static Field getField(Class curClass, String fldName, String fldType)
     {
         //Check if field already exists
         for (Field f: curClass.fields)
         {
-            if (fldName.equals(f.name))
+            if (fldName.equals(f.name) && fldType.equals(f.type))
             {
                 return f;
             }
