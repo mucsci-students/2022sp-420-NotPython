@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Class 
 {
     public String name;
+    public ArrayList <Field> fields;
     public ArrayList <Method> methods;
 
     //class constructor

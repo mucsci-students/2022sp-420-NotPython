@@ -13,6 +13,8 @@ public class Diagram {
     public static ArrayList <Class> classList = new ArrayList <Class> ();
     //ArrayList for relationships goes here
     public static ArrayList <Relationship> relationships = new ArrayList <Relationship> ();
+    //ArrayList for fields
+    public static ArrayList <Field> fields = new ArrayList <Field> ();
     Save save = new Save();
     Load load = new Load();
     //Default constructor
@@ -21,6 +23,7 @@ public class Diagram {
 
     }
 
+    //Create class method
     //Command: Create class <classname>
     public String createClass(String name)
     {   
@@ -42,7 +45,8 @@ public class Diagram {
         return "Class \"" + name + "\" Added";
     }
 
-    //rename class method
+    //Rename class method
+    //Command: rename class <old_name> <new_name>
     public String renameClass(String oldName, String newName)
     {
         //get class with old name
@@ -73,8 +77,8 @@ public class Diagram {
         return "Class \"" + oldName + "\" was renamed to \"" + newName + "\"";
     }
 
-    //command: delete Class <classname>
-    //deletes a class
+    //Deletes a class and all of it's fields and methods
+    //Command: delete class <classname>
     public String deleteClass(String className)
     {
         //if class exists then delete
@@ -101,64 +105,93 @@ public class Diagram {
         return "Class with name \"" + tempClass.name + "\" and its relationships deleted";
     }
 
-    //create relationship
-    public String createRelationship(String type, String src, String dest)
-    {
-        //check to see if source exists already
-        if (getClass(src) == null)
+    //Create field
+    //Command: create field <class_name> <field_type> <field_name>
+    public String createField(String clasName, String fldType, String fldName){
+        //Check if class exists
+        Class tempClass = getClass(clasName);
+        if(tempClass != null)
         {
-            return "ERROR: Class with name \"" + src + "\" does not exist";
+            //check to see if the name contains any invalid characters
+            String error = validation_check(fldName);
+            if (!error.trim().equals(""))
+            {
+                return error;
+            }
+            if (getField(tempClass, fldName) != null)
+            {
+                return "ERROR: Field with name \"" + fldName + "\" for \"" + clasName + "\" already exists";
+            }
+            //Add field to arraylist
+            tempClass.fields.add(new Field(fldName, fldType));
+            return "Field \"" + fldName + "of type \"" + fldType + "\" Added to Class \"" + clasName + "\"";
         }
-
-        //check to see if destination exists already
-        if (getClass(dest) == null)
+        else
         {
-            return "ERROR: Class with name \"" + dest + "\" does not exist";
+            return "ERROR: Class with name \"" + clasName + "\" does not exist";
         }
-
-        //check for correct relationship type
-        if (!(type.equalsIgnoreCase("aggregation") || type.equalsIgnoreCase("composition") ||
-              type.equalsIgnoreCase("inheritance") || type.equalsIgnoreCase("realization")))
-        {
-            return "ERROR: Incorrect type: \"" + type + "\" valid types are Aggregation, Composition, Inheritance and Realization";
-        }
-
-        //check to see if relationship exists already
-        if (getRelationship (src, dest) != null || getRelationship(dest, src) != null)
-        {
-            return "ERROR: Relationship from " + src + " to " + dest +" of type " + type + " already exists";
-        }
-
-        //check for correct relationship type
-        if (!(type.equalsIgnoreCase("aggregation") || type.equalsIgnoreCase("composition") ||
-              type.equalsIgnoreCase("inheritance") || type.equalsIgnoreCase("realization")))
-        {
-            return "ERROR: Incorrect type: \"" + type + "\" valid types are Aggregation, Composition, Inheritance and Realization";
-        }
-
-        //check to see if relationship exists already
-        if (getRelationship (src, dest) != null || getRelationship(dest, src) != null)
-        {
-            return "ERROR: Relationship from " + src + " to " + dest +" of type " + type + " already exists";
-        }
-
-        //add the new relationship to the relationship list
-        relationships.add(new Relationship(type, src, dest));
-        return "Relationship from " + src + " to " + dest + " of type " + type + " added";
     }
 
-    public String deleteRelationship(String src, String dest)
+    //Delete field
+    //Command: delete field <class_name> <field_name>
+    public String deleteField(String clasName, String fldName)
     {
-        //if relationship exists then delete
-        Relationship tempRelationship = getRelationship(src, dest);
-        if (tempRelationship == null)
+        //Check if class exists
+        Class tempClass = getClass(clasName);
+        if(tempClass != null)
         {
-            return "ERROR: Relationship from " + src + " to " + dest +" does not exist";
+            Field tempFld = getField(tempClass, fldName);
+            if (tempFld == null)
+            {
+                return "ERROR: Field with name \"" + fldName + "\" for \"" + clasName + "\" does not exist";
+            }
+            //delete field from arraylist
+            tempClass.fields.remove(tempFld);
+            return "Field \"" + fldName + "\" removed from Class \"" + clasName + "\"";
+        }
+        else
+        {
+            return "ERROR: Class with name \"" + clasName + "\" does not exist";
+        }
+    }
+
+    //Rename field method
+    //Command: rename field <class_name> <old_name> <new_name>
+    public String renameField(String clas, String oldName, String newName)
+    {
+        //Check if class exists
+        Class tempClass = getClass(clas);
+        if (tempClass == null)
+        {
+            return "ERROR: Class \"" + clas + "\" does not exist";
         }
 
-        //delete the relationship from the relationship list
-        relationships.remove(tempRelationship);
-        return "Relationship from " + src + " to " + dest +" deleted";
+        //Check if field with old name exists
+        if (getField(tempClass, oldName) == null)
+        {
+            return "ERROR: Field with name \"" + oldName + "\" does not exist";
+        }
+
+        //Check if field with new name already exists
+        if (getField(tempClass, newName) != null)
+        {
+            return "ERROR: Field with name \"" + newName + "\" already exists";
+        }
+
+        Field tempFld = getField(tempClass, oldName);
+        
+        //check to see if the name contains any invalid characters
+        String error = validation_check(newName);
+        if (!error.trim().equals(""))
+        {
+            return error;
+        }
+
+        //change field name and set object again in classlist
+        int index = tempClass.fields.indexOf(tempFld);
+        tempFld.rename_field(newName);
+        tempClass.fields.set(index, tempFld);
+        return "Field \"" + oldName + "\" was renamed to \"" + newName + "\"";
     }
 
     // Create Method
@@ -208,6 +241,71 @@ public class Diagram {
         c.methods.add(new Method(type, methodName, parameter));
         return "Method with name \"" + methodName + "\" added to class \"" + className + "\"";
     }
+
+    //create relationship
+    //Command: create relationship <relationship_type> <src> <dest>
+    public String createRelationship(String type, String src, String dest)
+    {
+        //check to see if source exists already
+        if (getClass(src) == null)
+        {
+            return "ERROR: Class with name \"" + src + "\" does not exist";
+        }
+
+        //check to see if destination exists already
+        if (getClass(dest) == null)
+        {
+            return "ERROR: Class with name \"" + dest + "\" does not exist";
+        }
+
+        //check for correct relationship type
+        if (!(type.equalsIgnoreCase("aggregation") || type.equalsIgnoreCase("composition") ||
+              type.equalsIgnoreCase("inheritance") || type.equalsIgnoreCase("realization")))
+        {
+            return "ERROR: Incorrect type: \"" + type + "\" valid types are Aggregation, Composition, Inheritance and Realization";
+        }
+
+        //check to see if relationship exists already
+        if (getRelationship (src, dest) != null || getRelationship(dest, src) != null)
+        {
+            return "ERROR: Relationship from " + src + " to " + dest +" of type " + type + " already exists";
+        }
+
+        //check for correct relationship type
+        if (!(type.equalsIgnoreCase("aggregation") || type.equalsIgnoreCase("composition") ||
+              type.equalsIgnoreCase("inheritance") || type.equalsIgnoreCase("realization")))
+        {
+            return "ERROR: Incorrect type: \"" + type + "\" valid types are Aggregation, Composition, Inheritance and Realization";
+        }
+
+        //check to see if relationship exists already
+        if (getRelationship (src, dest) != null || getRelationship(dest, src) != null)
+        {
+            return "ERROR: Relationship from " + src + " to " + dest +" of type " + type + " already exists";
+        }
+
+        //add the new relationship to the relationship list
+        relationships.add(new Relationship(type, src, dest));
+        return "Relationship from " + src + " to " + dest + " of type " + type + " added";
+    }
+
+
+    // delete relationship method
+    //Command: delete relationship <src> <dest>
+    public String deleteRelationship(String src, String dest)
+    {
+        //if relationship exists then delete
+        Relationship tempRelationship = getRelationship(src, dest);
+        if (tempRelationship == null)
+        {
+            return "ERROR: Relationship from " + src + " to " + dest +" does not exist";
+        }
+
+        //delete the relationship from the relationship list
+        relationships.remove(tempRelationship);
+        return "Relationship from " + src + " to " + dest +" deleted";
+    }
+
 
     //saves program to .json or .yaml file
     public String saveDiagram(String fileName)
@@ -278,7 +376,21 @@ public class Diagram {
         return null;
     }
 
-    //get a relationship with name <name>
+    //gets an field with fldName for curClass
+    public static Field getField(Class curClass, String fldName)
+    {
+        //Check if field already exists
+        for (Field f: curClass.fields)
+        {
+            if (fldName.equals(f.name))
+            {
+                return f;
+            }
+        }
+        return null;
+    }
+
+    //get a relationship for with name <name>
     public static Relationship getRelationship(String src, String dest)
     {
         for (Relationship r: relationships)
@@ -326,7 +438,7 @@ public class Diagram {
         }
         return null;
     }
-
+    
     /*
     * Checks the passed string for invalid characters
     * “`\\|:'\"<.>/?
@@ -337,7 +449,7 @@ public class Diagram {
         {
             if (" `\\|:'\"<.>/?!".indexOf(input.charAt(i)) > -1)
             {
-                return "ERROR: invalid character: " + input.charAt(i);
+                return "ERROR: " + input.charAt(i) + " is an invalid character";
             }
         }
         return "";
