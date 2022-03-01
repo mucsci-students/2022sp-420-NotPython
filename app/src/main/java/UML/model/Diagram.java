@@ -105,10 +105,10 @@ public class Diagram {
         return "Class with name \"" + tempClass.name + "\" and its relationships deleted";
     }
 
-    //Create field
-    //Command: create field <class_name> <field_type> <field_name>
-    public String createField(String clasName, String fldType, String fldName){
-        //Check if class exists
+    // Create field
+    // Command: create field <class_name> <field_name> <field_type>
+    public String createField(String clasName, String fldName, String fldType){
+        //check to seeif class exists
         Class tempClass = getClass(clasName);
         if(tempClass != null)
         {
@@ -118,16 +118,19 @@ public class Diagram {
             {
                 return error + " in field name";
             }
+            //check to see if the type contains any invalid characters
             error = validation_check(fldType);
             if (!error.equals(""))
             {
                 return error + " in field type";
             }
+            //check to see if field already exists
             if (getField(tempClass, fldName) != null)
             {
                 return "ERROR: Field with name \"" + fldName + "\" for \"" + clasName + "\" already exists";
             }
-            //Add field to arraylist
+
+            //Add field to arrayList
             tempClass.fields.add(new Field(fldName, fldType));
             return "Field \"" + fldName + "of type \"" + fldType + "\" Added to Class \"" + clasName + "\"";
         }
@@ -137,8 +140,8 @@ public class Diagram {
         }
     }
 
-    //Delete field
-    //Command: delete field <class_name> <field_name>
+    // Delete field
+    // Command: delete field <class_name> <field_name>
     public String deleteField(String clasName, String fldName)
     {
         //Check if class exists
@@ -160,8 +163,8 @@ public class Diagram {
         }
     }
 
-    //Rename field method
-    //Command: rename field <class_name> <old_name> <new_name>
+    // Rename field method
+    // Command: rename field <class_name> <old_name> <new_name>
     public String renameField(String clas, String oldName, String newName)
     {
         //Check if class exists

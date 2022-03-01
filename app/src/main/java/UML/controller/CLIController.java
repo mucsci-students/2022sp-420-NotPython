@@ -13,7 +13,7 @@ public class CLIController {
         // All create commands go here with an if statement for class, relationship, and
         // attribute as second token
         if (tokens[0].equalsIgnoreCase("Create")) {
-            // create class
+            // Create Class
             // Command: create class <class_name>
             if (tokens[1].equalsIgnoreCase("Class") && lengthChecker(tokens, 3)) {
                 System.out.println(dg.createClass(tokens[2]));
