@@ -22,50 +22,47 @@ public class Diagram {
     }
 
     //Command: Create class <classname>
-    public void createClass(String name)
-    {
+    public String createClass(String name)
+    {   
+        String error = validation_check(name);
         //check to see if the name contains any invalid characters
-        if (!validation_check(name))
+        if (!error.trim().equals(""))
         {
-            //need error message here?
-            //System.out.println("ERROR: Class Name contains invalid character(s): `\\|:'\"<.>/?");
-            return;
+            return error;
         }
 
         //check to see if class exists already
         if (getClass (name) != null)
         {
-            System.out.println("ERROR: Class with name \"" + name + "\" already exists");
-            return;
+            return "ERROR: Class with name \"" + name + "\" already exists";
         }
 
-            //add the new class to the classList
-            classList.add(new Class(name));
-            System.out.println("Class \"" + name + "\" Added");
+        //add the new class to the classList
+        classList.add(new Class(name));
+        return "Class \"" + name + "\" Added";
     }
 
     //rename class method
-    public void renameClass(String oldName, String newName)
+    public String renameClass(String oldName, String newName)
     {
         //get class with old name
         Class tempClass = getClass(oldName);
         if (tempClass == null)
         {
-            System.out.println("ERROR: Class \"" + oldName + "\" does not exist");
-            return;
+            return "ERROR: Class \"" + oldName + "\" does not exist";
         }
 
         //see if a class with new name already exists
         if (getClass(newName) != null)
         {
-            System.out.println("ERROR: Class with name \"" + newName + "\" already exists");
-            return;
+            return "ERROR: Class with name \"" + newName + "\" already exists";
         }
 
-        if (!validation_check(newName))
+        String error = validation_check(newName);
+        //check to see if the name contains any invalid characters
+        if (!error.trim().equals(""))
         {
-            System.out.println("ERROR: New name \"" + newName + "\" is an invalid name");
-            return;
+            return error;
         }
 
         //change class name and set object again in classlist
@@ -73,19 +70,18 @@ public class Diagram {
         tempClass.rename(newName);
 
         classList.set(index, tempClass);
-        System.out.println("Class \"" + oldName + "\" was renamed to \"" + newName + "\"");
+        return "Class \"" + oldName + "\" was renamed to \"" + newName + "\"";
     }
 
     //command: delete Class <classname>
     //deletes a class and all of it's attributes
-    public void deleteClass(String className)
+    public String deleteClass(String className)
     {
         //if class exists then delete
         Class tempClass = getClass(className);
         if (tempClass == null)
         {
-            System.out.println("ERROR: Class with name \"" + className + "\" does not exist");
-            return;
+            return "ERROR: Class with name \"" + className + "\" does not exist";
         }
 
         //delete all relationships associated with class <className>
@@ -102,40 +98,39 @@ public class Diagram {
 
         //delete class
         classList.remove(tempClass);
-        System.out.println("Class with name \"" + tempClass.name + "\" deleted");
+        return "Class with name \"" + tempClass.name + "\" and its relationships deleted";
     }
 
     //Create attribute
     //Command: create attribute <class_name> <attribute_name>
-    public void createAttribute(String clasName, String attrName){
+    public String createAttribute(String clasName, String attrName){
         //Check if class exists
         Class tempClass = getClass(clasName);
         if(tempClass != null)
         {
-            //Check if attribute name is valid
-            if (!validation_check(attrName))
+            //check to see if the name contains any invalid characters
+            String error = validation_check(attrName);
+            if (!error.trim().equals(""))
             {
-                //System.out.println("ERROR: Attribute name contains invalid character(s): `\\|:'\"<.>/?");
-                return;
+                return error;
             }
             if (getAttribute(tempClass, attrName) != null)
             {
-                System.out.println("ERROR: Attribute with name \"" + attrName + "\" for \"" + clasName + "\" already exists");
-                return;
+                return "ERROR: Attribute with name \"" + attrName + "\" for \"" + clasName + "\" already exists";
             }
             //Add attribute to arraylist
             tempClass.attributes.add(new Attribute(attrName));
-            System.out.println("Attribute \"" + attrName + "\" Added to Class \"" + clasName + "\"");
+            return "Attribute \"" + attrName + "\" Added to Class \"" + clasName + "\"";
         }
         else
         {
-            System.out.println("ERROR: Class with name \"" + clasName + "\" does not exist");
+            return "ERROR: Class with name \"" + clasName + "\" does not exist";
         }
     }
 
     //delete attribute
     //Command: delete attribute <class_name> <attribute_name>
-    public void deleteAttribute(String clasName, String attrName)
+    public String deleteAttribute(String clasName, String attrName)
     {
         //Check if class exists
         Class tempClass = getClass(clasName);
@@ -144,75 +139,83 @@ public class Diagram {
             Attribute tempAttr = getAttribute(tempClass, attrName);
             if (tempAttr == null)
             {
-                System.out.println("ERROR: Attribute with name \"" + attrName + "\" for \"" + clasName + "\" does not exist");
-                return;
+                return "ERROR: Attribute with name \"" + attrName + "\" for \"" + clasName + "\" does not exist";
             }
             //delete attribute from arraylist
             tempClass.attributes.remove(tempAttr);
-            System.out.println("Attribute \"" + attrName + "\" removed from Class \"" + clasName + "\"");
+            return "Attribute \"" + attrName + "\" removed from Class \"" + clasName + "\"";
         }
         else
         {
-            System.out.println("ERROR: Class with name \"" + clasName + "\" does not exist");
+            return "ERROR: Class with name \"" + clasName + "\" does not exist";
         }
     }
 
     //rename attribute method
     //Command: Rename attribute <class_name> <old_name> <new_name>
-    public void renameAttribute(String clas, String oldName, String newName)
+    public String renameAttribute(String clas, String oldName, String newName)
     {
         //Check if class exists
         Class tempClass = getClass(clas);
         if (tempClass == null)
         {
-            System.out.println("ERROR: Class \"" + clas + "\" does not exist");
-            return;
+            return "ERROR: Class \"" + clas + "\" does not exist";
         }
 
         //Check if attribute with old name exists
         if (getAttribute(tempClass, oldName) == null)
         {
-            System.out.println("ERROR: Attribute with name \"" + oldName + "\" does not exist");
-            return;
+            return "ERROR: Attribute with name \"" + oldName + "\" does not exist";
         }
 
         //Check if attribute with new name already exists
         if (getAttribute(tempClass, newName) != null)
         {
-            System.out.println("ERROR: Attribute with name \"" + newName + "\" already exists");
-            return;
+            return "ERROR: Attribute with name \"" + newName + "\" already exists";
         }
 
         Attribute tempAttr = getAttribute(tempClass, oldName);
-        if (!validation_check(newName))
+        
+        //check to see if the name contains any invalid characters
+        String error = validation_check(newName);
+        if (!error.trim().equals(""))
         {
-            System.out.println("ERROR: New name \"" + newName + "\" is an invalid name");
-            return;
+            return error;
         }
 
         //change attribute name and set object again in classlist
         int index = tempClass.attributes.indexOf(tempAttr);
         tempAttr.rename_attribute(newName);
         tempClass.attributes.set(index, tempAttr);
-        System.out.println("Attribute \"" + oldName + "\" was renamed to \"" + newName + "\"");
+        return "Attribute \"" + oldName + "\" was renamed to \"" + newName + "\"";
     }
 
     //create relationship
-    //add functionality for type with name in next sprint
-    public void createRelationship(String type, String src, String dest)
+    public String createRelationship(String type, String src, String dest)
     {
         //check to see if source exists already
         if (getClass(src) == null)
         {
-            System.out.println("ERROR: Class with name \"" + src + "\" does not exist");
-            return;
+            return "ERROR: Class with name \"" + src + "\" does not exist";
         }
 
         //check to see if destination exists already
         if (getClass(dest) == null)
         {
-            System.out.println("ERROR: Class with name \"" + dest + "\" does not exist");
-            return;
+            return "ERROR: Class with name \"" + dest + "\" does not exist";
+        }
+
+        //check for correct relationship type
+        if (!(type.equalsIgnoreCase("aggregation") || type.equalsIgnoreCase("composition") ||
+              type.equalsIgnoreCase("inheritance") || type.equalsIgnoreCase("realization")))
+        {
+            return "ERROR: Incorrect type: \"" + type + "\" valid types are Aggregation, Composition, Inheritance and Realization";
+        }
+
+        //check to see if relationship exists already
+        if (getRelationship (src, dest) != null || getRelationship(dest, src) != null)
+        {
+            return "ERROR: Relationship from " + src + " to " + dest +" of type " + type + " already exists";
         }
 
         //check for correct relationship type
@@ -232,47 +235,44 @@ public class Diagram {
 
         //add the new relationship to the relationship list
         relationships.add(new Relationship(type, src, dest));
-        System.out.println("Relationship from " + src + " to " + dest + " of type " + type + " added");
+        return "Relationship from " + src + " to " + dest + " of type " + type + " added";
     }
 
-    public void deleteRelationship(String src, String dest)
+    public String deleteRelationship(String src, String dest)
     {
         //if relationship exists then delete
         Relationship tempRelationship = getRelationship(src, dest);
         if (tempRelationship == null)
         {
-            System.out.println("ERROR: Relationship from " + src + " to " + dest +" does not exist");
-            return;
+            return "ERROR: Relationship from " + src + " to " + dest +" does not exist";
         }
 
         //delete the relationship from the relationship list
         relationships.remove(tempRelationship);
-        System.out.println("Relationship from " + src + " to " + dest +" deleted");
+        return "Relationship from " + src + " to " + dest +" deleted";
     }
 
     //saves program to .json or .yaml file
-    public void saveDiagram(String fileName)
+    public String saveDiagram(String fileName)
     {
         //makes sure end of file name has .json or .yaml
-        if (!(fileName.toLowerCase().contains(".json") || fileName.toLowerCase().contains(".yaml")))
+        if (!(fileName.toLowerCase().contains(".json"))) //|| fileName.toLowerCase().contains(".yaml")))
         {
-            System.out.println("ERROR: Unsupported file type: please choose .json or .yaml.");
-            return;
+            return "ERROR: Unsupported file type: please choose .json";
         }
         save.saveFile(fileName, classList, relationships);
-        System.out.println("Successfully saved to " + fileName);
+        return "Successfully saved to " + fileName;
 
     }
 
     //loads diagram from .json or .yaml file
-    public void loadDiagram(String fileName)
+    public String loadDiagram(String fileName)
     {
         Map <ArrayList<Class>, ArrayList<Relationship>> map = new HashMap<ArrayList<Class>, ArrayList<Relationship>>();
         //makes sure end of file name has .json or .yaml
         if (!fileName.toLowerCase().contains(".json"))
         {
-            System.out.println("ERROR: Unsupported file type: please choose .json");
-            return;
+            return "ERROR: Unsupported file type: please choose .json";
         }
         
         //read files into data structure
@@ -281,9 +281,10 @@ public class Diagram {
         {
             classList = iter.getKey();
             relationships = iter.getValue();
-            System.out.println("Successfully loaded from " + fileName);
+            return "Successfully loaded from " + fileName;
         }
         
+        return "";
     }
 
     //List class
@@ -351,16 +352,15 @@ public class Diagram {
     * Checks the passed string for invalid characters
     * “`\\|:'\"<.>/?
     */
-    public static boolean validation_check (String input) 
+    public static String validation_check (String input) 
     {
         for (int i = 0; i < input.length(); i++)
         {
             if (" `\\|:'\"<.>/?!".indexOf(input.charAt(i)) > -1)
             {
-                System.out.println("ERROR: " + input.charAt(i) + " is an invalid character");
-                return false;
+                return "ERROR: " + input.charAt(i) + " is an invalid character";
             }
         }
-        return true;
+        return "";
     }
 }
