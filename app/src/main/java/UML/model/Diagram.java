@@ -191,20 +191,8 @@ public class Diagram {
     }
 
     //create relationship
-<<<<<<< Updated upstream
-    //add functionality for type with name in next sprint
-    public void createRelationship(/*String name,*/ String src, String dest)
-=======
     public String createRelationship(String type, String src, String dest)
->>>>>>> Stashed changes
     {
-        //check to see if relationship exists already
-        if (getRelationship (src, dest) != null)
-        {
-            System.out.println("ERROR: Relationship from " + src + " to " + dest +" already exists");
-            return;
-        }
-
         //check to see if source exists already
         if (getClass(src) == null)
         {
@@ -217,11 +205,6 @@ public class Diagram {
             return "ERROR: Class with name \"" + dest + "\" does not exist";
         }
 
-<<<<<<< Updated upstream
-        //add the new relationship to the relationship list
-        relationships.add(new Relationship(src, dest));
-        System.out.println("Relationship from " + src + " to " + dest +" added");
-=======
         //check for correct relationship type
         if (!(type.equalsIgnoreCase("aggregation") || type.equalsIgnoreCase("composition") ||
               type.equalsIgnoreCase("inheritance") || type.equalsIgnoreCase("realization")))
@@ -238,7 +221,6 @@ public class Diagram {
         //add the new relationship to the relationship list
         relationships.add(new Relationship(type, src, dest));
         return "Relationship from " + src + " to " + dest + " of type " + type + " added";
->>>>>>> Stashed changes
     }
 
     public String deleteRelationship(String src, String dest)

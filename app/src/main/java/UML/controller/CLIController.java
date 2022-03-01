@@ -10,7 +10,6 @@ public class CLIController {
     public void processCommand(String[] tokens) {
 
         Diagram dg = new Diagram();
-        Listing listing = new Listing();
         // All create commands go here with an if statement for class, relationship, and
         // attribute as second token
         if (tokens[0].equalsIgnoreCase("Create")) {
@@ -29,15 +28,9 @@ public class CLIController {
             }
 
             // Create Relationship
-<<<<<<< Updated upstream
-            // Command: create relationship <relationship_name> <src> <dest>
-            if (tokens[1].equalsIgnoreCase("Relationship") && lengthChecker(tokens, 4)) {
-                dg.createRelationship(tokens[2], tokens[3]);
-=======
             // Command: create relationship <relationship_type> <src> <dest>
             if (tokens[1].equalsIgnoreCase("Relationship") && lengthChecker(tokens, 5)) {
                 System.out.println(dg.createRelationship(tokens[2], tokens[3], tokens[4]));
->>>>>>> Stashed changes
                 return;
             }
         }
@@ -130,8 +123,8 @@ public class CLIController {
             System.out.printf("%-55s%-50s\n", "rename class <old_name> <new_name>", "renames the class");
             System.out.printf("%-55s%-50s\n", "delete class <class_name>", "deletes the class");
 
-            System.out.printf("%-55s%-50s\n", "create relationship <src> <dest>",
-                    "creates a relationship given src and dest classes");
+            System.out.printf("%-55s%-50s\n", "create relationship <type> <src> <dest>",
+                    "creates a relationship given src and dest classes and a type: Aggregation, Composition, Inheritance or Realization");
             System.out.printf("%-55s%-50s\n", "delete relationship <src> <dest>",
                     "deletes a relationship given its src and dest");
 
@@ -152,15 +145,23 @@ public class CLIController {
             return;
         }
 
+        if (tokens[0].trim().equals(""))
+            return;
+
         System.out.print("ERROR: Command \"");
         for (int i = 0; i < tokens.length; ++i)
         {
             if (!tokens[i].trim().equals(""))
-                System.out.print(tokens[i] + " ");
+                System.out.print(tokens[i]);
             else
                 break;
+
+            if (i < (tokens.length - 1))
+            {
+                System.out.print(" ");
+            }
         }
-        System.out.print("\" is invalid");
+        System.out.println("\" is invalid");
 
     }
 
