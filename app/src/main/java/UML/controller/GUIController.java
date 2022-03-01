@@ -4,14 +4,72 @@ import javax.swing.*;
 import java.awt.*;
 
 import UML.model.Diagram;
-import UML.view.GUI;
 
 public class GUIController {
 
-    GUI guiInt = new GUI();
+    Diagram dg = new Diagram();
 
+    public void guiSaveCtr(){
+
+    }
     
-    //guiInt.exitButton.addActionListener(e -> 
-    //    guiInt.mainFrame.dispose());
-    
+    public void guiLoadCtr(){
+
+    }
+
+    public void guiCreateClassCtr(){
+
+    }
+
+    public void createMethodCtr(){
+
+    }
+
+    public void createFieldCtr(){
+
+    }
+
+    public void createRelationshipCtr(){
+
+    }
+
+    public void deleteClassCtr(){
+
+    }
+
+    public void deleteMethodCtr(){
+
+    }
+
+    public void deleteFieldCtr(){
+
+    }
+
+    public void deleteRelationshipCtr(){
+
+    }
+
+    public void renameClassCtr(){
+
+    }
+
+    public void renameMethodCtr(){
+
+    }
+
+    public void editMethodReturnCtr(){
+
+    }
+
+    public void editMethodParams(){
+
+    }
+
+    public void renameFieldCtr(){
+
+    }
+
+    public void editFieldType(){
+
+    }
 }
