@@ -36,7 +36,7 @@ public class CLIController {
 
             // Create Method
             // Command: create method <class_name> <method_name> <type> <param>
-            if (tokens[1].equalsIgnoreCase("Method")) {
+            if (tokens[1].equalsIgnoreCase("Method") && tokens.length > 4) {
                 System.out.println(dg.createMethod(tokens[2], tokens[4], tokens[3], tokens));
                 return;
             }
@@ -56,6 +56,13 @@ public class CLIController {
             // Command: delete field <class_name> <field_name>
             if (tokens[1].equalsIgnoreCase("Field") && lengthChecker(tokens, 4)) {
                 System.out.println(dg.deleteField(tokens[2], tokens[3]));
+                return;
+            }
+
+            // delete method
+            // Command: delete method <class_name> <method_name> <method_type> <param>
+            if (tokens[1].equalsIgnoreCase("Method") && tokens.length > 4) {
+                System.out.println(dg.deleteMethod(tokens[2], tokens[4], tokens[3], tokens));
                 return;
             }
 
@@ -146,6 +153,9 @@ public class CLIController {
             System.out.printf("%-60s%-50s\n", "rename field <class_name> <old_name> <new_name>",
                     "renames an field");
             System.out.printf("%-60s%-50s\n", "delete field <class_name> <field_name>", "deletes a field");
+
+            System.out.printf("%-60s%-50s\n", "create method <class_name> <method_name> <method_type> <parameters>", "creates a method");
+            System.out.printf("%-60s%-50s\n", "delete method <class_name> <method_name> <method_type> <parameters>", "deletes a method");
 
             System.out.printf("%-60s%-50s\n", "save <file_name>", "saves a file to a JSON/ YAML format");
             System.out.printf("%-60s%-50s\n", "load <file_name>", "loads a file from a JSON/ YAML format");

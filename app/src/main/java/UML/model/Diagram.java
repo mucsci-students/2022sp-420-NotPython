@@ -242,6 +242,35 @@ public class Diagram {
         return "Method with name \"" + methodName + "\" added to class \"" + className + "\"";
     }
 
+    //Delete method
+    //Command: delete method <class_name> <method_name> <method_type> <parameters>
+    public String deleteMethod(String className, String type, String methodName, String[] param)
+    {
+        //Check if class exists
+        Class tempClass = getClass(className);
+        ArrayList <String> parameter = new ArrayList <String> ();
+        if(tempClass != null)
+        {
+            for(int i = 5; i < param.length - 1; i += 2)
+            {
+                parameter.add(param[i + 1]);
+                parameter.add(param[i]);
+            }
+            Method tempMethod = getMethod(className, methodName, type, parameter);
+            if (tempMethod == null)
+            {
+                return "ERROR: Method with name \"" + methodName + "\" for \"" + className + "\" does not exist";
+            }
+            //delete method from arraylist
+            tempClass.methods.remove(tempMethod);
+            return "Method \"" + methodName + "\" removed from Class \"" + className + "\"";
+        }
+        else
+        {
+            return "ERROR: Class with name \"" + className + "\" does not exist";
+        }
+    }
+
     //create relationship
     //Command: create relationship <relationship_type> <src> <dest>
     public String createRelationship(String type, String src, String dest)
