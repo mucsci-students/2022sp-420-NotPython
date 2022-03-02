@@ -23,7 +23,7 @@ public class CLIController {
             // Create Field
             // Command: create field <class_name> <field_name> <field_type> 
             if (tokens[1].equalsIgnoreCase("Field") && lengthChecker(tokens, 5)) {
-                dg.createField(tokens[2], tokens[3], tokens[4]);
+                System.out.println(dg.createField(tokens[2], tokens[3], tokens[4]));
                 return;
             }
 
@@ -31,6 +31,13 @@ public class CLIController {
             // Command: create relationship <relationship_type> <src> <dest>
             if (tokens[1].equalsIgnoreCase("Relationship") && lengthChecker(tokens, 5)) {
                 System.out.println(dg.createRelationship(tokens[2], tokens[3], tokens[4]));
+                return;
+            }
+
+            // Create Method
+            // Command: create method <class_name> <method_name> <type> <param>
+            if (tokens[1].equalsIgnoreCase("Method")) {
+                System.out.println(dg.createMethod(tokens[2], tokens[4], tokens[3], tokens));
                 return;
             }
         }
@@ -48,7 +55,7 @@ public class CLIController {
             // delete field
             // Command: delete field <class_name> <field_name>
             if (tokens[1].equalsIgnoreCase("Field") && lengthChecker(tokens, 4)) {
-                dg.deleteField(tokens[2], tokens[3]);
+                System.out.println(dg.deleteField(tokens[2], tokens[3]));
                 return;
             }
 
@@ -71,7 +78,7 @@ public class CLIController {
             // Rename field
             // Command: Rename field <class_name> <old_name> <new_name>
             if (tokens[1].equalsIgnoreCase("field") && lengthChecker(tokens, 5)) {
-                dg.renameField(tokens[2], tokens[3], tokens[4]);
+                System.out.println(dg.renameField(tokens[2], tokens[3], tokens[4]));
                 return;
             }
 

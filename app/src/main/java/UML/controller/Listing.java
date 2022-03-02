@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import UML.model.Class;
 import UML.model.Diagram;
 import UML.model.Field;
+import UML.model.Method;
+import UML.model.Parameter;
 import UML.model.Relationship;
 
 public class Listing {
@@ -32,7 +34,7 @@ public class Listing {
 					}
 					System.out.println("");
 					
-					printRow(classAux.name, 0, boxLength, false);
+					printRow(classAux.name, boxLength, false);
 					
 					System.out.print("|");
 					for(int j = 0; j < boxLength; j++) {
@@ -41,9 +43,24 @@ public class Listing {
 					System.out.println("|");
 					
 					for(Field fld: classAux.fields) {
-						printRow(fld.name, 1, boxLength, false);
+						printRow(fld.type + " " + fld.name, boxLength, false);
 					}
-					
+
+					String methodString = "";
+					for(Method m: classAux.methods) {
+						int counter = 0;
+						methodString = m.type + " " + m.name + " (";
+						for(Parameter p: m.parameters) {
+							methodString += p.type + " " + p.name;
+							if(counter < m.parameters.size() - 1) {
+								methodString += ", ";
+							}
+							counter++;
+						}
+						methodString += ")";
+						printRow(methodString, boxLength, false);
+					}
+
 					System.out.print("|");
 					for(int j = 0; j < boxLength; j++) {
 						System.out.print("_");
@@ -112,7 +129,7 @@ public class Listing {
 	//Auxiliar function to print the relationships
 	public static void printRelationship(String type, String class1, String class2) {
 		int dashes = (28 - type.length())/2;
-		printRow(class1, 0, class1.length()+10, true);
+		printRow(class1, class1.length()+10, true);
 		System.out.print("     ");
 		for(int i = 0; i < dashes; i++) {
 			System.out.print("-");
@@ -122,14 +139,14 @@ public class Listing {
 			System.out.print("-");
 		}
 		System.out.print(">     ");
-		printRow(class2, 0, class2.length()+10, true);
+		printRow(class2, class2.length()+10, true);
 		System.out.println("");
 	}
 	
 	//Auxiliar function to print a row(either a class name or a field name)
-	private static void printRow(String phrase, int isField, int length, boolean isRelationship) {
+	private static void printRow(String phrase, int length, boolean isRelationship) {
 		int blankSpaces = length;
-		int remaining = blankSpaces-phrase.length()-(isField * 3);
+		int remaining = blankSpaces-phrase.length() - 3;
 		int counter = 1;
 		
 		System.out.print("|");
@@ -137,10 +154,7 @@ public class Listing {
 			System.out.print(" ");
 			counter++;
 		}
-		if(isField == 0)
-			System.out.print(phrase);
-		else
-			System.out.print("<> " + phrase);
+		System.out.print("<> " + phrase);
 		for(int i = 0; i <= remaining-counter; i++) {
 			System.out.print(" ");
 		}
@@ -159,11 +173,22 @@ public class Listing {
 		}
 		
 		for(Field fld: classSample.fields) {
-			if(fld.name.length()>maxLength) {
-				maxLength = fld.name.length();
+			if((fld.name.length() + fld.type.length() + 1)>maxLength) {
+				maxLength = fld.name.length() + fld.type.length() + 1;
 			}
 		}
-		
+
+		int methodlength = 0;
+		for(Method m: classSample.methods) {
+			methodlength = m.name.length() + m.type.length() + 3;
+			for(Parameter p: m.parameters)
+			{
+				methodlength += p.name.length() + p.type.length() + 3;
+			}
+			if(methodlength > maxLength) {
+				maxLength = methodlength;
+			}
+		}
 		return maxLength;
 	}
 

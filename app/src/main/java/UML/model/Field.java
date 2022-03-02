@@ -9,7 +9,7 @@ package UML.model;
 public class Field {
     public String name;
     public String type;
-    
+  
     /*
     * attaches the field to the class
     */

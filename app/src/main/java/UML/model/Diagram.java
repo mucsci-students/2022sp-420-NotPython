@@ -107,7 +107,7 @@ public class Diagram {
 
     //Create field
     //Command: create field <class_name> <field_type> <field_name>
-    public String createField(String clasName, String fldType, String fldName){
+    public String createField(String clasName, String fldName, String fldType){
         //Check if class exists
         Class tempClass = getClass(clasName);
         if(tempClass != null)
@@ -124,7 +124,7 @@ public class Diagram {
             }
             //Add field to arraylist
             tempClass.fields.add(new Field(fldName, fldType));
-            return "Field \"" + fldName + "of type \"" + fldType + "\" Added to Class \"" + clasName + "\"";
+            return "Field \"" + fldName + "\" of type \"" + fldType + "\" Added to Class \"" + clasName + "\"";
         }
         else
         {
@@ -194,6 +194,54 @@ public class Diagram {
         return "Field \"" + oldName + "\" was renamed to \"" + newName + "\"";
     }
 
+    // Create Method
+    // Command: create method <class_name> <method_name> <type> <param>
+    public String createMethod(String className, String type, String methodName, String[] param)
+    {
+        ArrayList <String> parameter = new ArrayList <String> ();
+        Class c = getClass(className);
+        //checks if class exists
+        if(c == null)
+        {
+            return "ERROR: Class with name \"" + className + "\" does not exist";
+        }
+        //checks if type is valid
+        String error = validation_check(type);
+        if(!error.equals(""))
+        {
+            return error + " in method type";
+        }
+        //checks if method name is valid
+        error = validation_check(methodName);
+        if(!error.equals(""))
+        {
+            return error + " in method name";
+        }
+        //checks parameter list
+        for(int i = 5; i < param.length - 1; i += 2)
+        {
+            error = validation_check(param[i]);
+            if(!error.equals(""))
+            {
+                return error + " in method parameter name";
+            }
+            error = validation_check(param[i + 1]);
+            if(!error.equals(""))
+            {
+                return error + " in method parameter type";
+            }
+            parameter.add(param[i]);
+            parameter.add(param[i + 1]);
+        }
+        //check if method exists
+        if(getMethod(className, methodName, type, parameter) != null)
+        {
+            return "ERROR: method already exists";
+        }
+        c.methods.add(new Method(type, methodName, parameter));
+        return "Method with name \"" + methodName + "\" added to class \"" + className + "\"";
+    }
+
     //create relationship
     //Command: create relationship <relationship_type> <src> <dest>
     public String createRelationship(String type, String src, String dest)
@@ -227,15 +275,13 @@ public class Diagram {
         if (!(type.equalsIgnoreCase("aggregation") || type.equalsIgnoreCase("composition") ||
               type.equalsIgnoreCase("inheritance") || type.equalsIgnoreCase("realization")))
         {
-            System.out.println("ERROR: Incorrect type: \"" + type + "\" valid types are Aggregation, Composition, Inheritance and Realization");
-            return;
+            return "ERROR: Incorrect type: \"" + type + "\" valid types are Aggregation, Composition, Inheritance and Realization";
         }
 
         //check to see if relationship exists already
         if (getRelationship (src, dest) != null || getRelationship(dest, src) != null)
         {
-            System.out.println("ERROR: Relationship from " + src + " to " + dest +" of type " + type + " already exists");
-            return;
+            return "ERROR: Relationship from " + src + " to " + dest +" of type " + type + " already exists";
         }
 
         //add the new relationship to the relationship list
@@ -357,6 +403,42 @@ public class Diagram {
         return null;
     }
 
+    //get a method with class name, method name, type, and parameter
+    public static Method getMethod(String className, String methodName, String type, ArrayList <String> param)
+    {
+        Parameter p;
+        int counter = 0;
+        int neflag = 0;
+        Class c = getClass(className);
+        if(c != null)
+        {
+            for(Method m : c.methods)
+            {
+                if(m.name.equals(methodName) && m.type.equals(type) && !m.parameters.isEmpty() && !param.isEmpty() && m.parameters.size() == (param.size() / 2))
+                {
+                    for(int i = 0; i < param.size() - 1; i += 2)
+                    {
+                        p = m.parameters.get(counter);
+                        if(p.name.equals(param.get(i + 1)) && p.type.equals(param.get(i)))
+                        {
+                            neflag++;
+                        }
+                        ++counter;
+                    }
+                    if(counter == neflag)
+                    {
+                        return m;
+                    }
+                }
+                else if(m.name.equals(methodName) && m.type.equals(type) && m.parameters.isEmpty() && param.isEmpty())
+                {
+                    return m;
+                }
+            }
+        }
+        return null;
+    }
+    
     /*
     * Checks the passed string for invalid characters
     * “`\\|:'\"<.>/?
