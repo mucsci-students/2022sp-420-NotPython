@@ -102,6 +102,24 @@ public class CLIController {
             //}
         }
 
+
+        if (tokens[0].equalsIgnoreCase("Change")) {
+            // Change single parameter
+            // Command: Change parameter <class_name> <method_name> <method_type> <old_parameter> <new_parameter> <new_parameter_type> 
+            if (tokens[1].equalsIgnoreCase("Parameter") && lengthChecker(tokens, 8)) {
+                System.out.println(dg.changeParameter(tokens[2], tokens[3], tokens[4], tokens[5], tokens[6], tokens[7]));
+                return;
+            }
+
+            // Change list of parameters
+            // Command: Change parameters <class_name> <method_name> <method_type> <param>
+            if (tokens[1].equalsIgnoreCase("Parameters") && tokens.length > 4) {
+                System.out.println(dg.changeParameters(tokens[2], tokens[3], tokens[4], tokens));
+                return;
+            }
+
+        }
+
         // All list commands go here with an if statement for class, classes and
         // relationships as second token
         if (tokens[0].equalsIgnoreCase("List")) {
