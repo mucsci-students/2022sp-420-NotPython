@@ -196,9 +196,8 @@ public class Diagram {
 
     // Create Method
     // Command: create method <class_name> <method_name> <type> <param>
-    public String createMethod(String className, String type, String methodName, String[] param)
+    public String createMethod(String className, String type, String methodName, ArrayList <String> parameter)
     {
-        ArrayList <String> parameter = new ArrayList <String> ();
         Class c = getClass(className);
         //checks if class exists
         if(c == null)
@@ -218,20 +217,18 @@ public class Diagram {
             return error + " in method name";
         }
         //checks parameter list
-        for(int i = 5; i < param.length - 1; i += 2)
+        for(int i = 0; i < parameter.size() - 1; i += 2)
         {
-            error = validation_check(param[i]);
+            error = validation_check(parameter.get(i));
             if(!error.equals(""))
             {
                 return error + " in method parameter name";
             }
-            error = validation_check(param[i + 1]);
+            error = validation_check(parameter.get(i + 1));
             if(!error.equals(""))
             {
                 return error + " in method parameter type";
             }
-            parameter.add(param[i]);
-            parameter.add(param[i + 1]);
         }
         //check if method exists
         if(getMethod(className, methodName, type, parameter) != null)
