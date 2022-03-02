@@ -12,6 +12,7 @@ public class Class
     public Class (String initName)
     {
         name = initName;
+        fields = new ArrayList<Field>();
         methods = new ArrayList<Method>();
     }
 

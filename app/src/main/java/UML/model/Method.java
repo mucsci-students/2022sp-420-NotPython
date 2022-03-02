@@ -13,7 +13,7 @@ public class Method {
         this.name = name;
         for(int i = 0; i < param.size() - 1; i += 2)
         {
-            parameters.add(new Parameter(param.get(i + 1), param.get(i)));
+            parameters.add(new Parameter(param.get(i), param.get(i + 1)));
         }
     }
 }

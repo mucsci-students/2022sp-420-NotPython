@@ -107,7 +107,7 @@ public class Diagram {
 
     //Create field
     //Command: create field <class_name> <field_type> <field_name>
-    public String createField(String clasName, String fldType, String fldName){
+    public String createField(String clasName, String fldName, String fldType){
         //Check if class exists
         Class tempClass = getClass(clasName);
         if(tempClass != null)
@@ -124,7 +124,7 @@ public class Diagram {
             }
             //Add field to arraylist
             tempClass.fields.add(new Field(fldName, fldType));
-            return "Field \"" + fldName + "of type \"" + fldType + "\" Added to Class \"" + clasName + "\"";
+            return "Field \"" + fldName + "\" of type \"" + fldType + "\" Added to Class \"" + clasName + "\"";
         }
         else
         {
