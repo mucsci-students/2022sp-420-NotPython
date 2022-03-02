@@ -10,9 +10,9 @@ public class GUI {
     GUIController guiCtr = new GUIController();
 
     JFrame mainFrame;
-    //JPanel topPanel;
     JPanel mainPanel;
-    //JPanel bottomPanel;
+    JPanel statusBarPanel;
+    JLabel statusMsg;
     JMenuBar mainBar;
     JButton saveButton;
     JButton loadButton;
@@ -34,6 +34,14 @@ public class GUI {
         JMenu deleteMenu = new JMenu("Delete");
         JMenu editMenu = new JMenu("Modify");
         JMenu listMenu = new JMenu("List");
+
+        //Status Bar
+        statusMsg = new JLabel(" " + "Status Messages", JLabel.LEFT);
+        statusBarPanel.setLayout(new BorderLayout());
+        statusBarPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        statusBarPanel.setBackground(Color.BLACK);
+        statusBarPanel.add(statusMsg, BorderLayout.WEST);
+        mainFrame.add("South", statusBarPanel);
 
         //File Menu Options
         JMenuItem saveMenuItem = new JMenuItem("Save");
@@ -98,85 +106,117 @@ public class GUI {
         mainBar.add(editMenu);
         mainBar.add(listMenu);
         mainBar.add(Box.createRigidArea(new Dimension(550,35)));
-        
+
         mainPanel.add(mainBar);
         mainFrame.add(mainPanel);
         mainFrame.setVisible(true);
         
         //FILE LISTENER
         //Save button listener
-        saveMenuItem.addActionListener(e -> 
-            guiCtr.guiSaveCtr() );
-
+        saveMenuItem.addActionListener(e -> {
+            String Message = guiCtr.guiSaveCtr(); 
+        });
         //Load button listener
-        loadMenuItem.addActionListener(e -> 
-            guiCtr.guiLoadCtr() );
-
+        loadMenuItem.addActionListener(e -> {
+            String Message = guiCtr.guiLoadCtr();
+        });
         //Exit button listener
-        exitMenuItem.addActionListener(e -> 
-            mainFrame.dispose());
+        exitMenuItem.addActionListener(e -> {
+            mainFrame.dispose();
+        });
 
         //CREATE LISTENER
         //Create Class Button
-        createClassMenuItem.addActionListener(e -> 
-            guiCtr.guiCreateClassCtr() );
+        createClassMenuItem.addActionListener(e -> {
+            String Message = guiCtr.guiCreateClassCtr(); 
+        });
         //Create Method Button
-        createMethodMenuItem.addActionListener(e -> 
-            guiCtr.createMethodCtr() );
+        createMethodMenuItem.addActionListener(e -> {
+            guiCtr.createMethodCtr();
+        });
         //Create Field Button
-        createFieldMenuItem.addActionListener(e -> 
-            guiCtr.createFieldCtr() );
+        createFieldMenuItem.addActionListener(e -> {
+            guiCtr.createFieldCtr();
+        });
         //Create Relationship Button
-        createRelationshipMenuItem.addActionListener(e -> 
-            guiCtr.createRelationshipCtr() );
+        createRelationshipMenuItem.addActionListener(e -> {
+            guiCtr.createRelationshipCtr(); 
+        });
 
         //DELETE LISTENER
         //Delete Class Button
-        deleteClassMenuItem.addActionListener(e ->
-            guiCtr.deleteClassCtr() );
+        deleteClassMenuItem.addActionListener(e -> {
+            guiCtr.deleteClassCtr(); 
+        });
         //Delete Class Button
-        deleteMethodMenuItem.addActionListener(e ->
-            guiCtr.deleteMethodCtr() );
+        deleteMethodMenuItem.addActionListener(e -> {
+            guiCtr.deleteMethodCtr(); 
+        });
         //Delete Class Button
-        deleteFieldMenuItem.addActionListener(e ->
-            guiCtr.deleteFieldCtr() );
+        deleteFieldMenuItem.addActionListener(e -> {
+            guiCtr.deleteFieldCtr(); 
+        });
         //Delete Class Button
-        deleteRelationshipMenuItem.addActionListener(e ->
-            guiCtr.deleteRelationshipCtr() );
+        deleteRelationshipMenuItem.addActionListener(e -> {
+            guiCtr.deleteRelationshipCtr(); 
+        });
 
         //MODIFY LISTENER
         //Modify Class Name Button
-        editClassnameItem.addActionListener(e ->
-            guiCtr.renameClassCtr() );
+        editClassnameItem.addActionListener(e -> {
+            guiCtr.renameClassCtr(); 
+        });
         //Modify Method Name Button
-        editMethodnameItem.addActionListener(e -> 
-            guiCtr.renameMethodCtr() );
+        editMethodnameItem.addActionListener(e -> {
+            guiCtr.renameMethodCtr(); 
+        });
         //Modify Method Return Type
-        editMethodReturnItem.addActionListener(e ->
-            guiCtr.editMethodReturnCtr() );
+        editMethodReturnItem.addActionListener(e -> {
+            guiCtr.editMethodReturnCtr(); 
+        });
         //Modify Method Params
-        editMethodParamItem.addActionListener(e ->
-            guiCtr.editMethodParams() );
+        editMethodParamItem.addActionListener(e -> {
+            guiCtr.editMethodParamsCtr(); 
+        });
         //Modify Field Name
-        editFieldnameItem.addActionListener(e -> 
-            guiCtr.renameFieldCtr() );
+        editFieldnameItem.addActionListener(e -> {
+            guiCtr.renameFieldCtr(); 
+        });
         //Modify Field Type
-        editFieldTypeItem.addActionListener(e ->
-            guiCtr.editFieldType() );
+        editFieldTypeItem.addActionListener(e -> {
+            guiCtr.editFieldTypeCtr(); 
+        });
             
         //LIST LISTENER
         //List Class
-        listClass.addActionListener(e ->
-            guiCtr.listClassCtr() );
+        listClass.addActionListener(e -> {
+            guiCtr.listClassCtr();
+            listClassView(); 
+        });
         //List Classes
-        listClasses.addActionListener(e ->
-            guiCtr.listClassesCtr() );
+        listClasses.addActionListener(e -> {
+            guiCtr.listClassesCtr();
+            listClassesView();
+        });
         //List Relationships
-        listRelationships.addActionListener(e -> 
-            guiCtr.listRelationshipsCtr() );
+        listRelationships.addActionListener(e -> {
+            guiCtr.listRelationshipsCtr();
+            listRelationshipsView(); 
+        });
 
-            
-    }    
+    }
+    
+    public void listClassView(){
+
+    }
+
+    public void listClassesView(){
+
+    }
+
+    public void listRelationshipsView(){
+
+    }
 
 
 }

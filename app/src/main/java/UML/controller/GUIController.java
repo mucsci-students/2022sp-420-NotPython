@@ -4,21 +4,32 @@ import javax.swing.*;
 import java.awt.*;
 
 import UML.model.Diagram;
+import UML.view.GUIPopup;
 
 public class GUIController {
 
     Diagram dg = new Diagram();
+    GUIPopup guiPop = new GUIPopup();
 
-    public void guiSaveCtr(){
-
+    public String guiSaveCtr(){
+        String message;
+        String fileName = guiPop.guiSavePop();
+        message = dg.saveDiagram(fileName);
+        return message;
     }
     
-    public void guiLoadCtr(){
-
+    public String guiLoadCtr(){
+        String message;
+        String fileName = guiPop.guiLoadPop();
+        message = dg.loadDiagram(fileName);
+        return message;
     }
 
-    public void guiCreateClassCtr(){
-
+    public String guiCreateClassCtr(){
+        String message;
+        String className = guiPop.guiCreateClassPop();
+        message = dg.createClass(className);
+        return message;
     }
 
     public void createMethodCtr(){
@@ -61,7 +72,7 @@ public class GUIController {
 
     }
 
-    public void editMethodParams(){
+    public void editMethodParamsCtr(){
 
     }
 
@@ -69,7 +80,7 @@ public class GUIController {
 
     }
 
-    public void editFieldType(){
+    public void editFieldTypeCtr(){
 
     }
 
@@ -82,6 +93,6 @@ public class GUIController {
     }
 
     public void listRelationshipsCtr(){
-        
+
     }
 }
