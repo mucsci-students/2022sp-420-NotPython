@@ -271,6 +271,50 @@ public class Diagram {
         }
     }
 
+    //Rename method
+    //Command: rename method <class_name> <old_name> <new_name> <type> <param>
+    public String renameMethod(String clas, String oldName, String newName, String type, String[] param)
+    {
+        //Check if class exists
+        Class tempClass = getClass(clas);
+        if (tempClass == null)
+        {
+            return "ERROR: Class \"" + clas + "\" does not exist";
+        }
+
+        ArrayList <String> parameter = new ArrayList <String> ();
+        for(int i = 5; i < param.length - 1; i += 2)
+        {
+            parameter.add(param[i + 1]);
+            parameter.add(param[i]);
+        }
+        //Check if method exists
+        if (getMethod(clas, oldName, type, parameter) == null)
+        {
+            return "ERROR: Method with name \"" + oldName + "\" for \"" + clas + "\" does not exist";
+        }
+
+        //Check if method with new name already exists
+        if (getMethod(clas, newName, type, parameter) != null)
+        {
+            return "ERROR: Method \"" + newName + "\" already exists";
+        }
+        
+        //check to see if the name contains any invalid characters
+        String error = validation_check(newName);
+        if (!error.trim().equals(""))
+        {
+            return error;
+        }
+
+        //change method name and set object in classlist
+        Method tempMtd = getMethod(clas, oldName, type, parameter);
+        int index = tempClass.methods.indexOf(tempMtd);
+        tempMtd.rename_method(newName);
+        tempClass.methods.set(index, tempMtd);
+        return "Method \"" + oldName + "\" was renamed to \"" + newName + "\"";
+    }
+
     //create relationship
     //Command: create relationship <relationship_type> <src> <dest>
     public String createRelationship(String type, String src, String dest)

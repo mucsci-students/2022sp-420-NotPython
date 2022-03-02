@@ -90,11 +90,11 @@ public class CLIController {
             }
 
             // Rename method
-            // Command: Rename method <class_name> <old_name> <new_name>
-            //if (tokens[1].equalsIgnoreCase("method") && lengthChecker(tokens, 5)) {
-            //    dg.renameMethod(tokens[2], tokens[3], tokens[4]);
-            //    return;
-            //}
+            // Command: Rename method <class_name> <old_name> <new_name> <type> <param> 
+            if (tokens[1].equalsIgnoreCase("method") && tokens.length > 4) {
+                dg.renameMethod(tokens[2], tokens[3], tokens[4], tokens[5], tokens);
+                return;
+            }
         }
 
         // All list commands go here with an if statement for class, classes and
@@ -154,8 +154,9 @@ public class CLIController {
                     "renames an field");
             System.out.printf("%-60s%-50s\n", "delete field <class_name> <field_name>", "deletes a field");
 
-            System.out.printf("%-60s%-50s\n", "create method <class_name> <method_name> <method_type> <parameters>", "creates a method");
-            System.out.printf("%-60s%-50s\n", "delete method <class_name> <method_name> <method_type> <parameters>", "deletes a method");
+            System.out.printf("%-60s%-50s\n", "create method <class_name> <method_name> <type> <parameters>", "creates a method");
+            System.out.printf("%-60s%-50s\n", "delete method <class_name> <method_name> <type> <parameters>", "deletes a method");
+            System.out.printf("%-60s%-50s\n", "rename method <class_name> <old_name> <type> <param> <new_name>", "renames an field");
 
             System.out.printf("%-60s%-50s\n", "save <file_name>", "saves a file to a JSON/ YAML format");
             System.out.printf("%-60s%-50s\n", "load <file_name>", "loads a file from a JSON/ YAML format");
