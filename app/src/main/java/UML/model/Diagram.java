@@ -377,8 +377,53 @@ public class Diagram {
         {
             return "ERROR: Class with name \"" + className + "\" does not exist";
         }
-    } 
+    }
 
+    //Change parameters method
+    //Command: Change parameters <className> <method_name> <method_type> <parameters>
+    public String changeParameters(String className, String method_name, String method_type, String[] param){
+
+        ArrayList <String> parameter = new ArrayList <String> ();
+        String error = "";
+        //Check if class exists
+        Class tempClass = getClass(className);
+        if(tempClass != null){
+            //Check if method exists
+            Method tempMethod = getMethod(className, method_name, method_type);
+            if(tempMethod != null){
+                for(int i = 5; i < param.length - 1; i += 2)
+                {
+                    error = validation_check(param[i]);
+                    if(!error.equals(""))
+                    {
+                        return error + " in method parameter name";
+                    }
+                    error = validation_check(param[i + 1]);
+                    if(!error.equals(""))
+                    {
+                        return error + " in method parameter type";
+                    }
+                    parameter.add(param[i]);
+                    parameter.add(param[i + 1]);
+                }
+                
+                tempMethod.parameters.clear();
+                for(int i = 0; i < parameter.size() - 1; i += 2)
+                {
+                    tempMethod.parameters.add(new Parameter(parameter.get(i), parameter.get(i + 1)));
+                }
+                return "Parameters for method \"" + method_name + "\" changed to the new parameters list provided.";
+            }
+            else
+            {
+                return "ERROR: Method with name \"" + method_name + "\" does not exist";
+            }
+        }
+        else
+        {
+            return "ERROR: Class with name \"" + className + "\" does not exist";
+        }
+    }
 
     //saves program to .json or .yaml file
     public String saveDiagram(String fileName)

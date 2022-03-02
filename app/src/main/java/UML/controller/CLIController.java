@@ -109,7 +109,7 @@ public class CLIController {
             // Change list of parameters
             // Command: Change parameters <class_name> <method_name> <method_type> <param>
             if (tokens[1].equalsIgnoreCase("Parameters") && tokens.length > 4) {
-                System.out.println(dg.createMethod(tokens[2], tokens[4], tokens[3], tokens));
+                System.out.println(dg.changeParameters(tokens[2], tokens[3], tokens[4], tokens));
                 return;
             }
 
