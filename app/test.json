@@ -1,0 +1,35 @@
+{
+	"classes": [
+	{ 
+		"name": "cool",
+		"attributes": [
+		{
+		}
+		]
+	},
+	{ 
+		"name": "bar",
+		"attributes": [
+		{
+		}
+		]
+	},
+	{ 
+		"name": "class",
+		"attributes": [
+		{
+		}
+		]
+	}
+	],
+	"relationships": [
+	{
+		"src": "cool",
+		"dest": "bar"
+	},
+	{
+		"src": "bar",
+		"dest": "class"
+	}
+	]
+}

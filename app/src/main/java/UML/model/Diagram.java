@@ -106,7 +106,7 @@ public class Diagram {
     }
 
     //Create field
-    //Command: create field <class_name> <field_type> <field_name>
+    //Command: create field <className> <field_type> <field_name>
     public String createField(String clasName, String fldName, String fldType){
         //Check if class exists
         Class tempClass = getClass(clasName);
@@ -133,7 +133,7 @@ public class Diagram {
     }
 
     //Delete field
-    //Command: delete field <class_name> <field_name>
+    //Command: delete field <className> <field_name>
     public String deleteField(String clasName, String fldName)
     {
         //Check if class exists
@@ -156,7 +156,7 @@ public class Diagram {
     }
 
     //Rename field method
-    //Command: rename field <class_name> <old_name> <new_name>
+    //Command: rename field <className> <old_name> <new_name>
     public String renameField(String clas, String oldName, String newName)
     {
         //Check if class exists
@@ -195,7 +195,7 @@ public class Diagram {
     }
 
     // Create Method
-    // Command: create method <class_name> <method_name> <type> <param>
+    // Command: create method <className> <method_name> <type> <param>
     public String createMethod(String className, String type, String methodName, String[] param)
     {
         ArrayList <String> parameter = new ArrayList <String> ();
@@ -243,7 +243,7 @@ public class Diagram {
     }
 
     //Delete method
-    //Command: delete method <class_name> <method_name> <method_type> <parameters>
+    //Command: delete method <className> <method_name> <method_type> <parameters>
     public String deleteMethod(String className, String type, String methodName, String[] param)
     {
         //Check if class exists
@@ -335,6 +335,50 @@ public class Diagram {
         return "Relationship from " + src + " to " + dest +" deleted";
     }
 
+    //Change parameter method
+    //Command: Change parameter <className> <method_name> <method_type> <old_parameter> <new_parameter> <new_parameter_type>
+    public String changeParameter(String className, String method_name, String method_type, String old_parameter, String new_parameter, String new_parameter_type){
+
+        //Check if class exists
+        Class tempClass = getClass(className);
+        if(tempClass != null){
+            //Check if method exists
+            Method tempMethod = getMethod(className, method_name, method_type);
+            if(tempMethod != null){
+                //Check if parameter exists
+                Parameter tempParameter = getParameter(tempMethod, old_parameter);
+                if(tempParameter != null){
+                    //Check if new parameter name is valid
+                    String error = validation_check(new_parameter);
+                    if(!error.equals(""))
+                    {
+                        return error + " in new parameter name";
+                    }
+                    //Check if new parameter type is valid
+                    error = validation_check(new_parameter_type);
+                    if(!error.equals(""))
+                    {
+                        return error + " in new parameter type";
+                    }
+                    tempParameter.name = new_parameter;
+                    tempParameter.type = new_parameter_type;
+                    return "Parameter with name \"" + old_parameter + "\" changed to \"" + new_parameter + "\" with type \"" + new_parameter_type + "\"";
+                }
+                else{
+                    return "ERROR: Parameter with name \"" + old_parameter + "\" does not exist";
+                }
+            }
+            else
+            {
+                return "ERROR: Method with name \"" + method_name + "\" does not exist";
+            }
+        }
+        else
+        {
+            return "ERROR: Class with name \"" + className + "\" does not exist";
+        }
+    } 
+
 
     //saves program to .json or .yaml file
     public String saveDiagram(String fileName)
@@ -372,7 +416,7 @@ public class Diagram {
     }
 
     //List class
-    //Command: list class <class_name>
+    //Command: list class <className>
     public void listClass(String className) {
         Listing listing = new Listing();
     	listing.listClass(classList, className);
@@ -462,6 +506,39 @@ public class Diagram {
                 else if(m.name.equals(methodName) && m.type.equals(type) && m.parameters.isEmpty() && param.isEmpty())
                 {
                     return m;
+                }
+            }
+        }
+        return null;
+    }
+
+    //Get a method with class name, method name and type
+    public static Method getMethod(String className, String methodName, String type)
+    {
+        Class c = getClass(className);
+        if(c != null)
+        {
+            for(Method m : c.methods)
+            {
+                if(m.name.equals(methodName) && m.type.equals(type))
+                {
+                    return m;
+                }
+            }
+        }
+        return null;
+    }
+
+    //Get a parameter with method, parameter name
+    public static Parameter getParameter(Method method, String parameterName)
+    {
+        if(method != null)
+        {
+            for(Parameter p : method.parameters)
+            {
+                if(p.name.equals(parameterName))
+                {
+                    return p;
                 }
             }
         }
