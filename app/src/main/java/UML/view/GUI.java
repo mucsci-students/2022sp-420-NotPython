@@ -36,6 +36,7 @@ public class GUI {
         JMenu listMenu = new JMenu("List");
 
         //Status Bar
+        statusBarPanel = new JPanel();
         statusMsg = new JLabel(" " + "Status Messages", JLabel.LEFT);
         statusBarPanel.setLayout(new BorderLayout());
         statusBarPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -114,21 +115,25 @@ public class GUI {
         //FILE LISTENER
         //Save button listener
         saveMenuItem.addActionListener(e -> {
-            String Message = guiCtr.guiSaveCtr(); 
+            String message = guiCtr.guiSaveCtr(); 
+            statusMsg.setText(message);
         });
         //Load button listener
         loadMenuItem.addActionListener(e -> {
-            String Message = guiCtr.guiLoadCtr();
+            String message = guiCtr.guiLoadCtr();
+            statusMsg.setText(message);
         });
         //Exit button listener
         exitMenuItem.addActionListener(e -> {
-            mainFrame.dispose();
+            //mainFrame.dispose();
+            System.exit(0);
         });
 
         //CREATE LISTENER
         //Create Class Button
         createClassMenuItem.addActionListener(e -> {
-            String Message = guiCtr.guiCreateClassCtr(); 
+            String message = guiCtr.guiCreateClassCtr();
+            statusMsg.setText(message); 
         });
         //Create Method Button
         createMethodMenuItem.addActionListener(e -> {
@@ -146,7 +151,8 @@ public class GUI {
         //DELETE LISTENER
         //Delete Class Button
         deleteClassMenuItem.addActionListener(e -> {
-            guiCtr.deleteClassCtr(); 
+            String message = guiCtr.deleteClassCtr(); 
+            statusMsg.setText(message);
         });
         //Delete Class Button
         deleteMethodMenuItem.addActionListener(e -> {

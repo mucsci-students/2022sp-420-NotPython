@@ -37,8 +37,10 @@ public class GUIPopup {
 
     }
 
-    public void deleteClassPop(){
-
+    public String deleteClassPop(){
+        JFrame deleteClassPop = new JFrame("Delete Class");
+        String getClassName = JOptionPane.showInputDialog(deleteClassPop, "Enter Class Name");
+        return getClassName;
     }
 
     public void deleteMethodPop(){

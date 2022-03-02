@@ -44,8 +44,11 @@ public class GUIController {
 
     }
 
-    public void deleteClassCtr(){
-
+    public String deleteClassCtr(){
+        String message;
+        String className = guiPop.deleteClassPop();
+        message = dg.deleteClass(className);
+        return message;
     }
 
     public void deleteMethodCtr(){

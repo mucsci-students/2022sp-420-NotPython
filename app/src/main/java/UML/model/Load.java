@@ -63,11 +63,11 @@ public class Load {
                 attrNames = JSONObject.getNames(attrObject);
                 c = new Class(className);
                 
-                for (int j = 0; attrNames != null && j < attrNames.length; ++j)
+                /*for (int j = 0; attrNames != null && j < attrNames.length; ++j)
                 {
                     attribute = (String) attrObject.get(attrNames[j]);
                     c.attributes.add(new Attribute(attribute));
-                }
+                }*/
                 
                 classList.add(c);
             }
@@ -80,7 +80,7 @@ public class Load {
                 src = (String) relObject.get("src");
                 dest = (String) relObject.get("dest");
 
-                relationshipList.add(new Relationship(src, dest));
+                //relationshipList.add(new Relationship(src, dest));
             }
             
         } 

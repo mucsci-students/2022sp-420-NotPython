@@ -3,7 +3,7 @@
  *
  * @authors: notPython
  *
- */
+ *
 package UML;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -121,4 +121,4 @@ public class LoadTest
         assertTrue("Relationship from bar to class not loaded", dc.getRelationship("cool", "bar") != null);
         assertTrue("Relationship from bar to class not loaded", dc.getRelationship("bar", "class") != null);
     }
-}
+}*/

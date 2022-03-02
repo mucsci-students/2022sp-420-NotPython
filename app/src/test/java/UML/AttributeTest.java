@@ -3,7 +3,7 @@
  *
  * @author Alex Lim
  *  tests attribute
- */
+ *
 package UML;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -14,7 +14,7 @@ import UML.model.Diagram;
 public class AttributeTest {
 	/**
 	 * 
-	 */
+	 *
 	@Test
 	public void testConstructor() {
 		//Diagram s = new Diagram( );
@@ -71,4 +71,4 @@ public class AttributeTest {
 
 	}
 }
-	
+	*/

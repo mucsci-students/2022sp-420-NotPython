@@ -3,7 +3,7 @@
  *
  * @author NotPython
  *  tests relationship
- */
+ *
 
 package UML;
 import org.junit.Test;
@@ -51,4 +51,4 @@ public class RelationshipTest {
         d.deleteClass("y");
     }
 
-}
+}*/

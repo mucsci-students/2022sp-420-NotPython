@@ -52,7 +52,7 @@ public class Save {
           text += "\t\t\"attributes\": [\n\t\t{\n";
           
           attributeCounter = 1;
-          for(Attribute a: c.attributes)
+          /*for(Attribute a: c.attributes)
           {
             
             text += "\t\t\t\"attribute" + attributeCounter + "\":\"" + a.name + "\"";
@@ -62,7 +62,7 @@ public class Save {
             }
             text += "\n";
             ++attributeCounter;
-          }
+          }*/
          
           text += "\t\t}\n\t\t]";
           text+= "\n\t}";
