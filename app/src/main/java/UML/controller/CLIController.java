@@ -77,6 +77,13 @@ public class CLIController {
                 System.out.println(dg.deleteRelationship(tokens[2], tokens[3]));
                 return;
             }
+
+            // Delete parameter
+            // Command: Delete parameter <class_name> <method_name> <method_type> <parameter>
+            if (tokens[1].equalsIgnoreCase("Parameter") && lengthChecker(tokens, 6)) {
+                System.out.println(dg.deleteParameter(tokens[2], tokens[3], tokens[4], tokens[5]));
+                return;
+            }
         }
 
         if (tokens[0].equalsIgnoreCase("Rename")) {

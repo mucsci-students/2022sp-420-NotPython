@@ -460,6 +460,50 @@ public class Diagram {
         }
     }
 
+    //Delete parameter method
+    //Command: Delete parameter <className> <method_name> <method_type> <parameter>
+    public String deleteParameter(String className, String method_name, String method_type, String parameter){
+
+        ArrayList <String> parameters = new ArrayList <String> ();
+        String error = "";
+        //Check if class exists
+        Class tempClass = getClass(className);
+        if(tempClass != null){
+            //Check if method exists
+            Method tempMethod = getMethod(className, method_name, method_type);
+            if(tempMethod != null){
+                //Check if parameter exists
+                Parameter tempParameter = getParameter(tempMethod, parameter);
+                if(tempParameter != null){
+                    for(Parameter p: tempMethod.parameters){
+                        if(!p.name.equals(parameter)){
+                            parameters.add(p.name);
+                            parameters.add(p.type);
+                        }
+                    }
+                    tempMethod.parameters.clear();
+                    for(int i = 0; i < parameters.size() - 1; i += 2)
+                    {
+                        tempMethod.parameters.add(new Parameter(parameters.get(i), parameters.get(i + 1)));
+                    }
+                    
+                    return "Parameter \"" + parameter + "\" removed from method \"" + method_name + "\"";
+                }
+                else{
+                    return "ERROR: Parameter with name \"" + parameter + "\" does not exist";
+                }
+            }
+            else
+            {
+                return "ERROR: Method with name \"" + method_name + "\" does not exist";
+            }
+        }
+        else
+        {
+            return "ERROR: Class with name \"" + className + "\" does not exist";
+        }
+    }
+
     //saves program to .json or .yaml file
     public String saveDiagram(String fileName)
     {
