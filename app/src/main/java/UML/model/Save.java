@@ -3,94 +3,158 @@ package UML.model;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 public class Save {
- 
 
-    //class constructor
-    public Save ()
-    {
-      
-      
+  // class constructor
+  public Save() {
 
+  }
+
+  // pass both class and atrribute objects, then iterate through attributes, make
+  // relationships whole other section
+  public void saveFile(String fileName, ArrayList<Class> classes, ArrayList<Relationship> relations) {
+
+    try {
+
+      FileWriter writer = new FileWriter(fileName);
+
+      if (fileName.contains(".json")) {
+        writer.write(diagramJSON(classes, relations));
+      }
+
+      writer.close();
+    } catch (IOException e) {
+      System.out.println("An error occurred.");
+      e.printStackTrace();
     }
+  }
 
-
-    //pass both class and atrribute objects, then iterate through attributes, make relationships whole other section
-    public void saveFile(String fileName, ArrayList <Class> classes, ArrayList <Relationship> relations)
+  private String diagramJSON(ArrayList<Class> classes, ArrayList<Relationship> relations)
+  {
+    String diagramString = "{\n\t\"classes\": [";
+    for (Class c: classes)
     {
+      diagramString += classJSON(c);
 
-    
-      try{
-   
-          FileWriter writer = new FileWriter(fileName);
-          String contents = ""; 
-
-          if (fileName.contains(".json"))
-          {
-            contents = saveJson(classes, relations);
-          }
-          writer.write(contents);
-          writer.close();
-    } catch (IOException e) 
+      if (classes.indexOf(c) < classes.size()-1)
       {
-          System.out.println("An error occurred.");
-          e.printStackTrace();
+        diagramString += ",";
       }
-    }
-
-
-    private static String saveJson(ArrayList <Class> classes, ArrayList <Relationship> relations)
-    {
-      int attributeCounter;
-      //int classCounter = 1;
-      String text =  "{\n\t\"classes\": [";
-      for(Class c : classes)
-      {  
-          text += "\n\t{ \n\t\t\"name\": \"" + c.name +"\"" + ",\n";
-
-          text += "\t\t\"attributes\": [\n\t\t{\n";
-          
-          attributeCounter = 1;
-          //for(Attribute a: c.attributes)
-          //{
-          //  
-          //  text += "\t\t\t\"attribute" + attributeCounter + "\":\"" + a.name + "\"";
-          //  if(c.attributes.indexOf(a) != c.attributes.size() -1 )
-          //  {
-          //  text += ",";        
-          //  }
-          //  text += "\n";
-          //  ++attributeCounter;
-          //}
-         
-          text += "\t\t}\n\t\t]";
-          text+= "\n\t}";
-          if(classes.indexOf(c) != classes.size() -1)
-          {
-            text+= ",";
-          }
-      }
-      
-      text += "\n";
-      text += "\t],\n";
-      text +=  "\t\"relationships\": [\n";
-      for (Relationship r : relations)
+      else
       {
-        //add typing here or somewhere
-        text += "\t{\n"; //\t\t\"name\": \"" + r.name +"\"" + ",\n";
-
-        text += "\t\t\"src\": \"" + r.src +"\"" + ",\n";
-        
-        text += "\t\t\"dest\": \"" + r.dest +"\"" + "\n\t}";
-        if(relations.indexOf(r) != relations.size() -1)
-          {
-            text+= ",";
-          }
-          text+= "\n";
+        diagramString += "\n\t";
       }
-      text+= "\t]\n}";
-      return text;
     }
+    diagramString += "],";
+
+    diagramString += "\n\t\"relationships\": [";
+    for (Relationship r: relations)
+    {
+      diagramString += relationshipJSON(r);
+
+      if (relations.indexOf(r) < relations.size()-1)
+      {
+        diagramString += ",";
+      }
+      else
+      {
+        diagramString += "\n\t";
+      }
+    }
+    diagramString += "]\n}";
+    return diagramString;
+  }
+
+  private String classJSON(Class c)
+  {
+    String classString = "\n\t{\n\t\t";
+    classString += "\"name\": \"" + c.name + "\",\n\t\t";
+    classString += "\"fields\": [";
+
+    for(Field f: c.fields)
+    {
+      classString += fieldJSON(f);
+      if (c.fields.indexOf(f) < c.fields.size()-1)
+      {
+        classString += ",";
+      }
+      else
+      {
+        classString += "\n\t\t";
+      }
+    }
+    classString += "],\n\t\t";
     
+    classString += "\"methods\": [";
+    for(Method m: c.methods)
+    {
+      classString += methodJSON(m);
+      if (c.methods.indexOf(m) < c.methods.size()-1)
+      {
+        classString += ",";
+      }
+      else
+      {
+        classString += "\n\t\t";
+      }
+    }
+    classString += "]";
+    
+    classString += "\n\t}";
+    return classString;
+  }
+
+  private String fieldJSON(Field f)
+  {
+    String fieldString = "\n\t\t\t{ ";
+    fieldString += "\"name\": \"" + f.name + "\", \"type\": \"" + f.type + "\"";
+    fieldString += " }";
+    return fieldString;
+  }
+
+  private String methodJSON(Method m)
+  {
+    String methodString = "\n\t\t\t{\n\t\t\t\t";
+    methodString += "\"name\": \"" + m.name + "\",\n\t\t\t\t";
+    methodString += "\"return_type\": \"" + m.type + "\",\n\t\t\t\t";
+    methodString += "\"params\": [";
+
+    for(Parameter p: m.parameters)
+    {
+      methodString += paramJSON(p);
+      if (m.parameters.indexOf(p) < m.parameters.size()-1)
+      {
+        methodString += ",";
+      }
+      else
+      {
+        methodString += "\n\t\t\t\t";
+      }
+    }
+    methodString += "]\n\t\t\t";
+    methodString += "}";
+    return methodString;
+  }
+
+
+  private String paramJSON(Parameter p)
+  {
+    String paramString = "\n\t\t\t\t\t{ ";
+    paramString += "\"name\": \"" + p.name + "\", \"type\": \"" + p.type + "\"";
+    paramString += " }";
+    return paramString;
+  }
+
+  private String relationshipJSON(Relationship r)
+  {
+    String relationString = "\n\t\t{";
+    relationString += "\n\t\t\t\"source\": \"" + r.src + "\",";
+    relationString += "\n\t\t\t\"destination\": \"" + r.dest + "\",";
+    relationString += "\n\t\t\t\"type\": \"" + r.type + "\"";
+    relationString += "\n\t\t}";
+    return relationString;
+  }
 }

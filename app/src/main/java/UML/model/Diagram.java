@@ -231,7 +231,7 @@ public class Diagram {
             }
         }
         //check if method exists
-        if(getMethod(className, methodName, type, parameter) != null)
+        if(getMethod(className, methodName, type) != null)
         {
             return "ERROR: method already exists";
         }
@@ -241,19 +241,13 @@ public class Diagram {
 
     //Delete method
     //Command: delete method <className> <method_name> <method_type> <parameters>
-    public String deleteMethod(String className, String type, String methodName, String[] param)
+    public String deleteMethod(String className, String type, String methodName)
     {
         //Check if class exists
         Class tempClass = getClass(className);
-        ArrayList <String> parameter = new ArrayList <String> ();
         if(tempClass != null)
         {
-            for(int i = 5; i < param.length - 1; i += 2)
-            {
-                parameter.add(param[i + 1]);
-                parameter.add(param[i]);
-            }
-            Method tempMethod = getMethod(className, methodName, type, parameter);
+            Method tempMethod = getMethod(className, methodName, type);
             if (tempMethod == null)
             {
                 return "ERROR: Method with name \"" + methodName + "\" for \"" + className + "\" does not exist";
@@ -268,46 +262,8 @@ public class Diagram {
         }
     }
 
-    //Rename method
-    //Command: rename method <class_name> <old_name> <new_name> <type> <param>
-    public String renameMethod(String clas, String oldName, String newName, String type, ArrayList param)
-    {
-        //Check if class exists
-        Class tempClass = getClass(clas);
-        if (tempClass == null)
-        {
-            return "ERROR: Class \"" + clas + "\" does not exist";
-        }
-
-        //Check if method exists
-        if (getMethod(clas, oldName, type, param) == null)
-        {
-            return "ERROR: Method with name \"" + oldName + "\" for \"" + clas + "\" does not exist";
-        }
-
-        //Check if method with new name already exists
-        if (getMethod(clas, newName, type, param) != null)
-        {
-            return "ERROR: Method \"" + newName + "\" already exists";
-        }
-        
-        //check to see if the name contains any invalid characters
-        String error = validation_check(newName);
-        if (!error.trim().equals(""))
-        {
-            return error;
-        }
-
-        //change method name and set object in classlist
-        Method tempMtd = getMethod(clas, oldName, type, param);
-        int index = tempClass.methods.indexOf(tempMtd);
-        tempMtd.rename_method(newName);
-        tempClass.methods.set(index, tempMtd);
-        return "Method \"" + oldName + "\" was renamed to \"" + newName + "\"";
-    }
-
     //create relationship
-    //Command: create relationship <relationship_type> <src> <dest>
+    //Command: create relationship <relationship_type> <source> <dest>
     public String createRelationship(String type, String src, String dest)
     {
         //check to see if source exists already
@@ -355,7 +311,7 @@ public class Diagram {
 
 
     // delete relationship method
-    //Command: delete relationship <src> <dest>
+    //Command: delete relationship <source> <dest>
     public String deleteRelationship(String src, String dest)
     {
         //if relationship exists then delete
@@ -460,76 +416,6 @@ public class Diagram {
         }
     }
 
-    //Delete parameter method
-    //Command: Delete parameter <className> <method_name> <method_type> <parameter>
-    public String deleteParameter(String className, String method_name, String method_type, String parameter){
-
-        ArrayList <String> parameters = new ArrayList <String> ();
-        String error = "";
-        //Check if class exists
-        Class tempClass = getClass(className);
-        if(tempClass != null){
-            //Check if method exists
-            Method tempMethod = getMethod(className, method_name, method_type);
-            if(tempMethod != null){
-                //Check if parameter exists
-                Parameter tempParameter = getParameter(tempMethod, parameter);
-                if(tempParameter != null){
-                    for(Parameter p: tempMethod.parameters){
-                        if(!p.name.equals(parameter)){
-                            parameters.add(p.name);
-                            parameters.add(p.type);
-                        }
-                    }
-                    tempMethod.parameters.clear();
-                    for(int i = 0; i < parameters.size() - 1; i += 2)
-                    {
-                        tempMethod.parameters.add(new Parameter(parameters.get(i), parameters.get(i + 1)));
-                    }
-                    
-                    return "Parameter \"" + parameter + "\" removed from method \"" + method_name + "\"";
-                }
-                else{
-                    return "ERROR: Parameter with name \"" + parameter + "\" does not exist";
-                }
-            }
-            else
-            {
-                return "ERROR: Method with name \"" + method_name + "\" does not exist";
-            }
-        }
-        else
-        {
-            return "ERROR: Class with name \"" + className + "\" does not exist";
-        }
-    }
-
-        //Delete parameters method
-    //Command: Delete parameters <className> <method_name> <method_type>
-    public String deleteParameters(String className, String method_name, String method_type){
-
-        String error = "";
-        //Check if class exists
-        Class tempClass = getClass(className);
-        if(tempClass != null){
-            //Check if method exists
-            Method tempMethod = getMethod(className, method_name, method_type);
-            if(tempMethod != null){
-                tempMethod.parameters.clear();
-                    
-                return "All parameters removed from method \"" + method_name + "\"";
-            }
-            else
-            {
-                return "ERROR: Method with name \"" + method_name + "\" does not exist";
-            }
-        }
-        else
-        {
-            return "ERROR: Class with name \"" + className + "\" does not exist";
-        }
-    }
-
     //saves program to .json or .yaml file
     public String saveDiagram(String fileName)
     {
@@ -621,42 +507,6 @@ public class Diagram {
             if (src.equals(r.src) && dest.equals(r.dest))
             {
                 return r;
-            }
-        }
-        return null;
-    }
-
-    //get a method with class name, method name, type, and parameter
-    public static Method getMethod(String className, String methodName, String type, ArrayList <String> param)
-    {
-        Parameter p;
-        int counter = 0;
-        int neflag = 0;
-        Class c = getClass(className);
-        if(c != null)
-        {
-            for(Method m : c.methods)
-            {
-                if(m.name.equals(methodName) && m.type.equals(type) && !m.parameters.isEmpty() && !param.isEmpty() && m.parameters.size() == (param.size() / 2))
-                {
-                    for(int i = 0; i < param.size() - 1; i += 2)
-                    {
-                        p = m.parameters.get(counter);
-                        if(p.name.equals(param.get(i + 1)) && p.type.equals(param.get(i)))
-                        {
-                            neflag++;
-                        }
-                        ++counter;
-                    }
-                    if(counter == neflag)
-                    {
-                        return m;
-                    }
-                }
-                else if(m.name.equals(methodName) && m.type.equals(type) && m.parameters.isEmpty() && param.isEmpty())
-                {
-                    return m;
-                }
             }
         }
         return null;
