@@ -32,6 +32,7 @@ public class Save {
     }
   }
 
+  //creates JSON diagram representation
   private String diagramJSON(ArrayList<Class> classes, ArrayList<Relationship> relations)
   {
     String diagramString = "{\n\t\"classes\": [";
@@ -68,6 +69,7 @@ public class Save {
     return diagramString;
   }
 
+  //creates json class representation
   private String classJSON(Class c)
   {
     String classString = "\n\t{\n\t\t";
@@ -107,6 +109,7 @@ public class Save {
     return classString;
   }
 
+  //creates json field representation
   private String fieldJSON(Field f)
   {
     String fieldString = "\n\t\t\t{ ";
@@ -115,6 +118,7 @@ public class Save {
     return fieldString;
   }
 
+  //creates json method representation
   private String methodJSON(Method m)
   {
     String methodString = "\n\t\t\t{\n\t\t\t\t";
@@ -139,7 +143,7 @@ public class Save {
     return methodString;
   }
 
-
+  //creates json parameter representation
   private String paramJSON(Parameter p)
   {
     String paramString = "\n\t\t\t\t\t{ ";
@@ -148,6 +152,7 @@ public class Save {
     return paramString;
   }
 
+  //creates the json relationship representation
   private String relationshipJSON(Relationship r)
   {
     String relationString = "\n\t\t{";
