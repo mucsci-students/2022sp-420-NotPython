@@ -670,4 +670,43 @@ public class Diagram {
         }
         return "";
     }
+
+    public String[] convertClassListArray(){
+        int size = classList.size();
+        String[] arrList = new String[size];
+        for(int i = 0; i < size; i++){
+            arrList[i] = classList.get(i).name;
+        }
+        return arrList;
+    }
+
+    public String[] convertFieldListArray(String className){
+        Class clas = getClass(className);
+        int size = clas.fields.size();
+        String[] arrList = new String[size];
+        for(int i = 0; i < size; i++){
+            arrList[i] = clas.fields.get(i).name;
+        }
+        return arrList;
+    }
+
+    public String[] convertMethodListArray(String className){
+        Class clas = getClass(className);
+        int size = clas.methods.size();
+        String[] arrList = new String[size];
+        for(int i = 0; i < size; i++){
+            arrList[i] = clas.methods.get(i).name;
+        }
+        return arrList;
+    }
+
+    public int getMethodSize(String className){
+        Class clas = getClass(className);
+        return clas.methods.size();
+    }
+
+    public int getFieldSize(String className){
+        Class clas = getClass(className);
+        return clas.fields.size();
+    }
 }
