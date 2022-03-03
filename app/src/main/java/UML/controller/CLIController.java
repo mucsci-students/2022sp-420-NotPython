@@ -65,9 +65,9 @@ public class CLIController {
             }
 
             // delete method
-            // Command: delete method <class_name> <method_name> <method_type> <param>
-            if (tokens[1].equalsIgnoreCase("Method") && tokens.length > 4) {
-                System.out.println(dg.deleteMethod(tokens[2], tokens[4], tokens[3], tokens));
+            // Command: delete method <class_name> <method_name> <method_type> 
+            if (tokens[1].equalsIgnoreCase("Method") && lengthChecker(tokens, 5)) {
+                System.out.println(dg.deleteMethod(tokens[2], tokens[4], tokens[3]));
                 return;
             }
 
@@ -95,15 +95,9 @@ public class CLIController {
             }
 
             // Rename method
-            // Command: Rename method <class_name> <old_name> <new_name> <type> <param> 
-            if (tokens[1].equalsIgnoreCase("method") && tokens.length > 5) {
-                ArrayList <String> parameter = new ArrayList <String> ();
-                for(int i = 5; i < tokens.length - 5; i += 2)
-                    {
-                    parameter.add(tokens[i]);
-                    parameter.add(tokens[i + 1]);
-                    }   
-                dg.renameMethod(tokens[2], tokens[3], tokens[4], tokens[5], parameter);
+            // Command: Rename method <class_name> <old_name> <new_name> <type> 
+            if (tokens[1].equalsIgnoreCase("method") && lengthChecker(tokens, 6)) {
+                System.out.println(dg.renameMethod(tokens[2], tokens[3], tokens[4], tokens[5]));
                 return;
             }
         }
