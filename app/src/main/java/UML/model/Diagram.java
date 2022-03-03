@@ -504,6 +504,32 @@ public class Diagram {
         }
     }
 
+        //Delete parameters method
+    //Command: Delete parameters <className> <method_name> <method_type>
+    public String deleteParameters(String className, String method_name, String method_type){
+
+        String error = "";
+        //Check if class exists
+        Class tempClass = getClass(className);
+        if(tempClass != null){
+            //Check if method exists
+            Method tempMethod = getMethod(className, method_name, method_type);
+            if(tempMethod != null){
+                tempMethod.parameters.clear();
+                    
+                return "All parameters removed from method \"" + method_name + "\"";
+            }
+            else
+            {
+                return "ERROR: Method with name \"" + method_name + "\" does not exist";
+            }
+        }
+        else
+        {
+            return "ERROR: Class with name \"" + className + "\" does not exist";
+        }
+    }
+
     //saves program to .json or .yaml file
     public String saveDiagram(String fileName)
     {
