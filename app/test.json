@@ -1,0 +1,44 @@
+{
+	"classes": [
+	{ 
+		"name": "cool",
+		"attributes": [
+		{
+			"attribute1":"bar",
+			"attribute2":"silly",
+			"attribute3":"class"
+		}
+		]
+	},
+	{ 
+		"name": "bar",
+		"attributes": [
+		{
+			"attribute1":"bar",
+			"attribute2":"silly",
+			"attribute3":"class"
+		}
+		]
+	},
+	{ 
+		"name": "class",
+		"attributes": [
+		{
+			"attribute1":"bar",
+			"attribute2":"silly",
+			"attribute3":"class"
+		}
+		]
+	}
+	],
+	"relationships": [
+	{
+		"src": "cool",
+		"dest": "bar"
+	},
+	{
+		"src": "bar",
+		"dest": "class"
+	}
+	]
+}
