@@ -1,0 +1,31 @@
+{
+	"classes": [
+	{ 
+		"name": "surf",
+		"attributes": [
+		{
+		}
+		]
+	},
+	{ 
+		"name": "ski",
+		"attributes": [
+		{
+		}
+		]
+	},
+	{ 
+		"name": "talll",
+		"attributes": [
+		{
+		}
+		]
+	}
+	],
+	"relationships": [
+	{
+		"src": "talll",
+		"dest": "surf"
+	}
+	]
+}

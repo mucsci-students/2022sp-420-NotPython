@@ -1,13 +1,16 @@
 package UML.view;
 
 import UML.controller.GUIController;
+import UML.controller.Listing;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.*;
 
 public class GUI {
 
     GUIController guiCtr = new GUIController();
+    Listing lister = new Listing();
 
     JFrame mainFrame;
     JPanel mainPanel;
@@ -16,6 +19,7 @@ public class GUI {
     JMenuBar mainBar;
     JButton saveButton;
     JButton loadButton;
+    JTextArea listingArea;
 
     public void GUI_view() { 
         mainFrame = new JFrame ("UML Editor");
@@ -38,6 +42,7 @@ public class GUI {
         //Status Bar
         statusBarPanel = new JPanel();
         statusMsg = new JLabel(" " + "Status Messages", JLabel.LEFT);
+        statusMsg.setForeground(Color.WHITE);
         statusBarPanel.setLayout(new BorderLayout());
         statusBarPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         statusBarPanel.setBackground(Color.BLACK);
@@ -108,7 +113,20 @@ public class GUI {
         mainBar.add(listMenu);
         mainBar.add(Box.createRigidArea(new Dimension(550,35)));
 
+        //UML Display Area
+        listingArea = new JTextArea("UML Diagram\n", 33, 83);
+        listingArea.setEditable(false);
+
+        // Remember old output stream (optional)
+        PrintStream stdout = System.out;
+        stdout.println("Starting gui for console output"); // Still works
+        // Stream for output to gui
+        GuiOutputStream rawout = new GuiOutputStream(listingArea);
+        // Set new stream for System.out
+        System.setOut(new PrintStream(rawout, true));
+
         mainPanel.add(mainBar);
+        mainPanel.add(new JScrollPane(listingArea));
         mainFrame.add(mainPanel);
         mainFrame.setVisible(true);
         
@@ -125,7 +143,6 @@ public class GUI {
         });
         //Exit button listener
         exitMenuItem.addActionListener(e -> {
-            //mainFrame.dispose();
             System.exit(0);
         });
 
@@ -137,15 +154,18 @@ public class GUI {
         });
         //Create Method Button
         createMethodMenuItem.addActionListener(e -> {
-            guiCtr.createMethodCtr();
+            String message = guiCtr.createMethodCtr();
+            statusMsg.setText(message);
         });
         //Create Field Button
         createFieldMenuItem.addActionListener(e -> {
-            guiCtr.createFieldCtr();
+            String message = guiCtr.createFieldCtr();
+            statusMsg.setText(message);
         });
         //Create Relationship Button
         createRelationshipMenuItem.addActionListener(e -> {
-            guiCtr.createRelationshipCtr(); 
+            String message = guiCtr.createRelationshipCtr(); 
+            statusMsg.setText(message);
         });
 
         //DELETE LISTENER
@@ -156,67 +176,87 @@ public class GUI {
         });
         //Delete Class Button
         deleteMethodMenuItem.addActionListener(e -> {
-            guiCtr.deleteMethodCtr(); 
+            String message = guiCtr.deleteMethodCtr(); 
+            statusMsg.setText(message);
         });
         //Delete Class Button
         deleteFieldMenuItem.addActionListener(e -> {
-            guiCtr.deleteFieldCtr(); 
+            String message = guiCtr.deleteFieldCtr(); 
+            statusMsg.setText(message);
         });
         //Delete Class Button
         deleteRelationshipMenuItem.addActionListener(e -> {
-            guiCtr.deleteRelationshipCtr(); 
+            String message = guiCtr.deleteRelationshipCtr(); 
+            statusMsg.setText(message);
         });
 
         //MODIFY LISTENER
         //Modify Class Name Button
         editClassnameItem.addActionListener(e -> {
-            guiCtr.renameClassCtr(); 
+            String message = guiCtr.renameClassCtr(); 
+            statusMsg.setText(message);
         });
         //Modify Method Name Button
         editMethodnameItem.addActionListener(e -> {
-            guiCtr.renameMethodCtr(); 
+            String message = guiCtr.renameMethodCtr(); 
+            statusMsg.setText(message);
         });
         //Modify Method Return Type
         editMethodReturnItem.addActionListener(e -> {
-            guiCtr.editMethodReturnCtr(); 
+            String message = guiCtr.editMethodReturnCtr(); 
+            statusMsg.setText(message);
         });
         //Modify Method Params
         editMethodParamItem.addActionListener(e -> {
-            guiCtr.editMethodParamsCtr(); 
+            String message = guiCtr.editMethodParamsCtr(); 
+            statusMsg.setText(message);
         });
         //Modify Field Name
         editFieldnameItem.addActionListener(e -> {
-            guiCtr.renameFieldCtr(); 
+            String message = guiCtr.renameFieldCtr(); 
+            statusMsg.setText(message);
         });
         //Modify Field Type
         editFieldTypeItem.addActionListener(e -> {
-            guiCtr.editFieldTypeCtr(); 
+            String message = guiCtr.editFieldTypeCtr(); 
+            statusMsg.setText(message);
         });
             
         //LIST LISTENER
         //List Class
         listClass.addActionListener(e -> {
-            guiCtr.listClassCtr();
+            String message = guiCtr.listClassCtr();
+            statusMsg.setText(message);
             listClassView(); 
         });
         //List Classes
         listClasses.addActionListener(e -> {
+            //String message = guiCtr.listClassesCtr();
+            //statusMsg.setText(message);
+            listingArea.setText("UML Diagram\n");
             guiCtr.listClassesCtr();
             listClassesView();
+            //redirectSystemStreams();
+            statusMsg.setText("Printed Diagram");
         });
         //List Relationships
         listRelationships.addActionListener(e -> {
-            guiCtr.listRelationshipsCtr();
+            String message = guiCtr.listRelationshipsCtr();
+            statusMsg.setText(message);
             listRelationshipsView(); 
         });
 
     }
     
-    public void listClassView(){
-
+    public void listSelector(){
+        
     }
 
     public void listClassesView(){
+        
+    }
+
+    public void listClassView(){
 
     }
 
@@ -224,6 +264,18 @@ public class GUI {
 
     }
 
+    private class GuiOutputStream extends OutputStream {
+        JTextArea textArea;
+
+        public GuiOutputStream(JTextArea textArea) {
+            this.textArea = textArea;
+        }
+
+        @Override
+        public void write(int data) throws IOException {
+            textArea.append(new String(new byte[] { (byte) data }));
+        }
+    }
 
 }
 
