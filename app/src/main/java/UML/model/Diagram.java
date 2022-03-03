@@ -231,7 +231,7 @@ public class Diagram {
             }
         }
         //check if method exists
-        if(getMethod(className, methodName, type, parameter) != null)
+        if(getMethod(className, methodName, type) != null)
         {
             return "ERROR: method already exists";
         }
@@ -241,19 +241,14 @@ public class Diagram {
 
     //Delete method
     //Command: delete method <className> <method_name> <method_type> <parameters>
-    public String deleteMethod(String className, String type, String methodName, String[] param)
+    public String deleteMethod(String className, String type, String methodName)
     {
         //Check if class exists
         Class tempClass = getClass(className);
         ArrayList <String> parameter = new ArrayList <String> ();
         if(tempClass != null)
         {
-            for(int i = 5; i < param.length - 1; i += 2)
-            {
-                parameter.add(param[i + 1]);
-                parameter.add(param[i]);
-            }
-            Method tempMethod = getMethod(className, methodName, type, parameter);
+            Method tempMethod = getMethod(className, methodName, type);
             if (tempMethod == null)
             {
                 return "ERROR: Method with name \"" + methodName + "\" for \"" + className + "\" does not exist";
@@ -270,7 +265,7 @@ public class Diagram {
 
     //Rename method
     //Command: rename method <class_name> <old_name> <new_name> <type> <param>
-    public String renameMethod(String clas, String oldName, String newName, String type, ArrayList param)
+    public String renameMethod(String clas, String oldName, String newName, String type)
     {
         //Check if class exists
         Class tempClass = getClass(clas);
@@ -280,13 +275,13 @@ public class Diagram {
         }
 
         //Check if method exists
-        if (getMethod(clas, oldName, type, param) == null)
+        if (getMethod(clas, oldName, type) == null)
         {
             return "ERROR: Method with name \"" + oldName + "\" for \"" + clas + "\" does not exist";
         }
 
         //Check if method with new name already exists
-        if (getMethod(clas, newName, type, param) != null)
+        if (getMethod(clas, newName, type) != null)
         {
             return "ERROR: Method \"" + newName + "\" already exists";
         }
@@ -299,7 +294,7 @@ public class Diagram {
         }
 
         //change method name and set object in classlist
-        Method tempMtd = getMethod(clas, oldName, type, param);
+        Method tempMtd = getMethod(clas, oldName, type);
         int index = tempClass.methods.indexOf(tempMtd);
         tempMtd.rename_method(newName);
         tempClass.methods.set(index, tempMtd);
@@ -626,41 +621,6 @@ public class Diagram {
         return null;
     }
 
-    //get a method with class name, method name, type, and parameter
-    public static Method getMethod(String className, String methodName, String type, ArrayList <String> param)
-    {
-        Parameter p;
-        int counter = 0;
-        int neflag = 0;
-        Class c = getClass(className);
-        if(c != null)
-        {
-            for(Method m : c.methods)
-            {
-                if(m.name.equals(methodName) && m.type.equals(type) && !m.parameters.isEmpty() && !param.isEmpty() && m.parameters.size() == (param.size() / 2))
-                {
-                    for(int i = 0; i < param.size() - 1; i += 2)
-                    {
-                        p = m.parameters.get(counter);
-                        if(p.name.equals(param.get(i + 1)) && p.type.equals(param.get(i)))
-                        {
-                            neflag++;
-                        }
-                        ++counter;
-                    }
-                    if(counter == neflag)
-                    {
-                        return m;
-                    }
-                }
-                else if(m.name.equals(methodName) && m.type.equals(type) && m.parameters.isEmpty() && param.isEmpty())
-                {
-                    return m;
-                }
-            }
-        }
-        return null;
-    }
 
     //Get a method with class name, method name and type
     public static Method getMethod(String className, String methodName, String type)
