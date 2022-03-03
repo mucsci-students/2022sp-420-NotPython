@@ -91,7 +91,16 @@ public class GUIController {
     }
 
     public String deleteFieldCtr(){
-        return "";
+        int csize = dg.classList.size();
+        String[] classes = new String[csize];
+        classes = dg.convertClassListArray();
+        String className = guiPop.getClassPop(classes);
+        int fsize = dg.getFieldSize(className);
+        String[] fields = new String[fsize];
+        fields = dg.convertFieldListArray(className);
+        String fieldName = guiPop.deleteFieldPop(fields);
+        String message = dg.deleteField(className, fieldName);
+        return message;
     }
 
     //Delete Relationship GUI Controller
@@ -140,9 +149,9 @@ public class GUIController {
         return message;
     }
 
-    public String editMethodReturnCtr(){
+    /*public String editMethodReturnCtr(){
         return "";
-    }
+    }*/
 
     public String editMethodParamsCtr(){
         return "";
@@ -169,6 +178,7 @@ public class GUIController {
     }
 
     public void listClassCtr(String className){
+        //guiPop.getListClassRequest(className);
         dg.listClass(className);
     }
 

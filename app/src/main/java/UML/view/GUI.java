@@ -86,10 +86,10 @@ public class GUI {
         editClassMenu.add(editClassnameItem);
         JMenu editMethodMenu = new JMenu("Method ");
         JMenuItem editMethodnameItem = new JMenuItem("Method Name");
-        JMenuItem editMethodReturnItem = new JMenuItem("Method Return Type");
+        //JMenuItem editMethodReturnItem = new JMenuItem("Method Return Type");
         JMenuItem editMethodParamItem = new JMenuItem("Method Parameters");
         editMethodMenu.add(editMethodnameItem);
-        editMethodMenu.add(editMethodReturnItem);
+        //editMethodMenu.add(editMethodReturnItem);
         editMethodMenu.add(editMethodParamItem);
         JMenu editFieldMenu = new JMenu("Field");
         JMenuItem editFieldnameItem = new JMenuItem("Field Name");
@@ -217,11 +217,11 @@ public class GUI {
             statusMsg.setText(message);
         });
         //Modify Method Return Type
-        editMethodReturnItem.addActionListener(e -> {
+        /*editMethodReturnItem.addActionListener(e -> {
             String message = guiCtr.editMethodReturnCtr(); 
             listSelector();
             statusMsg.setText(message);
-        });
+        });*/
         //Modify Method Params
         editMethodParamItem.addActionListener(e -> {
             String message = guiCtr.editMethodParamsCtr(); 
@@ -270,17 +270,11 @@ public class GUI {
         });
 
     }
-    
-    public void listSelector(String listClassName){
+
+    public void listSelector(){
         if(listOption == 1){
             listClassView(listClassName);
         }
-        else {
-            statusMsg.setText("ERROR: LISTING SELECTION INVALID");
-        }
-    }
-
-    public void listSelector(){
         if(listOption == 2){
             listClassesView();
         }

@@ -161,19 +161,12 @@ public class GUIPopup {
     }
 
     //Popup Window for Delete Field
-    public String[] deleteFieldPop(String[] classes, String[] fields, String[] input){
+    public String deleteFieldPop(String[] fields){
         //Create the Frame and Panel
         JFrame deleteFieldPop = new JFrame("Delete Field");
         JPanel panel = new JPanel(new GridLayout(2, 2));
 
         //Creating Input Field 1
-        JLabel classNameLabel = new JLabel("Select Class Name:");
-        panel.add(classNameLabel);
-        JComboBox classNames = new JComboBox(classes);
-        classNames.setSelectedIndex(-1);
-        panel.add(classNames);
-
-        //Creating Input Field 2
         JLabel fieldNameLabel = new JLabel("Select Field Name:");
         panel.add(fieldNameLabel);
         JComboBox fieldNames = new JComboBox(fields);
@@ -183,9 +176,7 @@ public class GUIPopup {
         //Creating the frame and getting the data
         deleteFieldPop.add(panel);
         JOptionPane.showMessageDialog(deleteFieldPop, panel);
-        input[0] = String.valueOf(classNames.getSelectedItem());
-        input[1] = String.valueOf(fieldNames.getSelectedItem());
-        return input;
+        return String.valueOf(fieldNames.getSelectedItem());
     }
 
     //Popup Window for Delete Relationship
@@ -273,46 +264,6 @@ public class GUIPopup {
         input[1] = text.getText();
         input[2] = text2.getText();
         return input;
-
-        // //Create the Frame and Panel
-        // JFrame framePop = new JFrame("Rename Method");
-        // JPanel panel = new JPanel(new GridLayout(3, 2));
-
-        // JLabel classLabel = new JLabel("Select Class:");
-        // panel.add(classLabel);
-        // JComboBox classNames = new JComboBox(classes);
-        // classNames.setSelectedIndex(-1);
-        // panel.add(classNames);
-
-        // // JLabel methodNameLabel = new JLabel("Select Method Name:");
-        // // panel.add(methodNameLabel);
-        // // JComboBox methodNames = new JComboBox(method);
-        // // methodNames.setSelectedIndex(-1);
-        // // panel.add(methodNames);
-
-        // JLabel methodNameLabel1 = new JLabel("Enter New Name:");
-        // panel.add(methodNameLabel1);
-        // JTextField text1 = new JTextField(5);
-        // panel.add(text1);
-
-        // JLabel methodNameLabel2 = new JLabel("Enter New Name:");
-        // panel.add(methodNameLabel2);
-        // JTextField text2 = new JTextField(5);
-        // panel.add(text2);
-
-        // JLabel methodNameLabel3 = new JLabel("Enter New Name:");
-        // panel.add(methodNameLabel3);
-        // JTextField text3 = new JTextField(5);
-        // panel.add(text3);
-
-        // //Creating the frame and getting the data
-        // framePop.add(panel);
-        // JOptionPane.showMessageDialog(framePop, panel);
-        // input[0] = String.valueOf(classNames.getSelectedItem());
-        // input[1] = text1.getText();
-        // input[2] = text2.getText();
-        // input[3] = text3.getText();
-        // return input;
     }
 
     public void editMethodReturnPop(){
@@ -370,4 +321,5 @@ public class GUIPopup {
         String getClassName = JOptionPane.showInputDialog(createClassPop, "Enter Class Name");
         return getClassName;
     }
+
 }
