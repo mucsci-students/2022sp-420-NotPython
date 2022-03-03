@@ -91,19 +91,7 @@ public class GUIController {
     }
 
     public String deleteFieldCtr(){
-        String message, clasName, fieldName;
-        String[] input = new String[2];
-        int size = dg.classList.size();
-        String[] classes = new String[size];
-        classes = dg.convertClassListArray();
-        int fsize = dg.fields.size();
-        String[] fields = new String[fsize];
-        fields = dg.convertFieldListArray();
-        input = guiPop.deleteFieldPop(classes, fields, input);
-        clasName = input[0];
-        fieldName = input[1];
-        message = dg.deleteField(clasName, fieldName);
-        return message;
+        return "";
     }
 
     //Delete Relationship GUI Controller
@@ -134,8 +122,22 @@ public class GUIController {
         return message;
     }
 
+    //Rename Method GUI Controller
     public String renameMethodCtr(){
-        return "";
+        String[] input = new String[3];
+        int csize = dg.classList.size();
+        String[] classes = new String[csize];
+        classes = dg.convertClassListArray();
+        String className = guiPop.getClassPop(classes);
+        int msize = dg.getMethodSize(className);
+        String[] methods = new String[msize];
+        methods = dg.convertMethodListArray(className);
+        input = guiPop.renameMethodPop(methods, input);
+        String oldName = input[0];
+        String newName = input[1];
+        String type = input[2];
+        String message = dg.renameMethod(className, oldName, newName, type);
+        return message;
     }
 
     public String editMethodReturnCtr(){
@@ -147,18 +149,18 @@ public class GUIController {
     }
 
     public String renameFieldCtr(){
-        String[] input = new String[3];
-        int size = dg.classList.size();
-        String[] classes = new String[size];
+        String[] input = new String[2];
+        int csize = dg.classList.size();
+        String[] classes = new String[csize];
         classes = dg.convertClassListArray();
-        int fsize = dg.fields.size();
+        String className = guiPop.getClassPop(classes);
+        int fsize = dg.getFieldSize(className);
         String[] fields = new String[fsize];
-        fields = dg.convertFieldListArray();
-        input = guiPop.renameFieldPop(classes, fields, input);
-        String className = input[0];
-        String field = input[1];
-        String type = input[2];
-        String message = dg.createField(className, field, type);
+        fields = dg.convertFieldListArray(className);
+        input = guiPop.renameFieldPop(fields, input);
+        String oldName = input[0];
+        String newName = input[1];
+        String message = dg.renameField(className, oldName, newName);
         return message;
     }
 
@@ -166,16 +168,16 @@ public class GUIController {
         return "";
     }
 
-    public String listClassCtr(){
-        return "";
+    public void listClassCtr(String className){
+        dg.listClass(className);
     }
 
     public void listClassesCtr(){
         dg.listClasses();
     }
 
-    public String listRelationshipsCtr(){
-        return "";
+    public void listRelationshipsCtr(){
+        dg.listRelationships();
     }
 
 

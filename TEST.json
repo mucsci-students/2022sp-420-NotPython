@@ -1,21 +1,21 @@
 {
 	"classes": [
 	{ 
-		"name": "surf",
+		"name": "bob",
 		"attributes": [
 		{
 		}
 		]
 	},
 	{ 
-		"name": "ski",
+		"name": "sally",
 		"attributes": [
 		{
 		}
 		]
 	},
 	{ 
-		"name": "talll",
+		"name": "ernest",
 		"attributes": [
 		{
 		}
@@ -23,9 +23,5 @@
 	}
 	],
 	"relationships": [
-	{
-		"src": "talll",
-		"dest": "surf"
-	}
 	]
 }

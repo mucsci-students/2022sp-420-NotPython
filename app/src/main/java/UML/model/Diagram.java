@@ -264,6 +264,44 @@ public class Diagram {
         }
     }
 
+    //Rename method
+    //Command: rename method <class_name> <old_name> <new_name> <type> 
+    public String renameMethod(String clas, String oldName, String newName, String type)
+    {
+        //Check if class exists
+        Class tempClass = getClass(clas);
+        if (tempClass == null)
+        {
+            return "ERROR: Class \"" + clas + "\" does not exist";
+        }
+
+        //Check if method exists
+        if (getMethod(clas, oldName, type) == null)
+        {
+            return "ERROR: Method with name \"" + oldName + "\" for \"" + clas + "\" does not exist";
+        }
+
+        //Check if method with new name already exists
+        if (getMethod(clas, newName, type) != null)
+        {
+            return "ERROR: Method \"" + newName + "\" already exists";
+        }
+
+        //check to see if the name contains any invalid characters
+        String error = validation_check(newName);
+        if (!error.trim().equals(""))
+        {
+            return error;
+        }
+
+        //change method name and set object in classlist
+        Method tempMtd = getMethod(clas, oldName, type);
+        int index = tempClass.methods.indexOf(tempMtd);
+        tempMtd.rename_method(newName);
+        tempClass.methods.set(index, tempMtd);
+        return "Method \"" + oldName + "\" was renamed to \"" + newName + "\"";
+    }
+
     //create relationship
     //Command: create relationship <relationship_type> <src> <dest>
     public String createRelationship(String type, String src, String dest)
@@ -608,12 +646,33 @@ public class Diagram {
         return arrList;
     }
 
-    public String[] convertFieldListArray(){
-        int size = fields.size();
+    public String[] convertFieldListArray(String className){
+        Class clas = getClass(className);
+        int size = clas.fields.size();
         String[] arrList = new String[size];
         for(int i = 0; i < size; i++){
-            arrList[i] = fields.get(i).name;
+            arrList[i] = clas.fields.get(i).name;
         }
         return arrList;
+    }
+
+    public String[] convertMethodListArray(String className){
+        Class clas = getClass(className);
+        int size = clas.methods.size();
+        String[] arrList = new String[size];
+        for(int i = 0; i < size; i++){
+            arrList[i] = clas.methods.get(i).name;
+        }
+        return arrList;
+    }
+
+    public int getMethodSize(String className){
+        Class clas = getClass(className);
+        return clas.methods.size();
+    }
+
+    public int getFieldSize(String className){
+        Class clas = getClass(className);
+        return clas.fields.size();
     }
 }

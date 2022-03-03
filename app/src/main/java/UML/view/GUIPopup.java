@@ -20,12 +20,6 @@ public class GUIPopup {
         return getFileName;
     }
 
-    public String guiCreateClassPop(){
-        JFrame createClassPop = new JFrame("Create Class");
-        String getClassName = JOptionPane.showInputDialog(createClassPop, "Enter Class Name");
-        return getClassName;
-    }
-
     public ArrayList<String> createMethodPop(){
         ArrayList<String> details = new ArrayList<String>();
         JFrame createMethodPop = new JFrame("Create Method");
@@ -36,6 +30,23 @@ public class GUIPopup {
         // 2
         details.add(JOptionPane.showInputDialog(createMethodPop, "Enter type of method"));
         return details;
+    }
+
+    public String getClassPop(String[] classes){
+        //Create the Frame and Panel
+        JFrame getClassPop = new JFrame("Class Selector");
+        JPanel panel = new JPanel(new GridLayout(1, 2));
+
+        //Creating Input Field 1
+        JLabel classNameLabel = new JLabel("Select Class Name:");
+        panel.add(classNameLabel);
+        JComboBox classNames = new JComboBox(classes);
+        classNames.setSelectedIndex(-1);
+        panel.add(classNames);
+
+        getClassPop.add(panel);
+        JOptionPane.showMessageDialog(getClassPop, panel);
+        return String.valueOf(classNames.getSelectedItem());
     }
 
     public ArrayList<String> getParams(JFrame frame, int counter, ArrayList<String> array) {
@@ -230,8 +241,78 @@ public class GUIPopup {
         return input;
     }
 
-    public void renameMethodPop(){
+    //Popup Window For Rename Method
+    public String[] renameMethodPop(String[] method, String[] input){
+        //Create the Frame and Panel
+        JFrame framePop = new JFrame("Rename Field");
+        JPanel panel = new JPanel(new GridLayout(3, 2));
 
+        //Creating Input Field 1
+        JLabel fieldNameLabel = new JLabel("Select Field Name:");
+        panel.add(fieldNameLabel);
+        JComboBox fieldNames = new JComboBox(method);
+        fieldNames.setSelectedIndex(-1);
+        panel.add(fieldNames);
+
+        //Creating Input Field 2
+        JLabel fieldNameLabel2 = new JLabel("Enter New Name:");
+        panel.add(fieldNameLabel2);
+        JTextField text = new JTextField(5);
+        panel.add(text);
+
+        //Creating Input Field 3
+        JLabel fieldNameLabel3 = new JLabel("Enter Type:");
+        panel.add(fieldNameLabel3);
+        JTextField text2 = new JTextField(5);
+        panel.add(text2);
+
+        //Creating the frame and getting the data
+        framePop.add(panel);
+        JOptionPane.showMessageDialog(framePop, panel);
+        input[0] = String.valueOf(fieldNames.getSelectedItem());
+        input[1] = text.getText();
+        input[2] = text2.getText();
+        return input;
+
+        // //Create the Frame and Panel
+        // JFrame framePop = new JFrame("Rename Method");
+        // JPanel panel = new JPanel(new GridLayout(3, 2));
+
+        // JLabel classLabel = new JLabel("Select Class:");
+        // panel.add(classLabel);
+        // JComboBox classNames = new JComboBox(classes);
+        // classNames.setSelectedIndex(-1);
+        // panel.add(classNames);
+
+        // // JLabel methodNameLabel = new JLabel("Select Method Name:");
+        // // panel.add(methodNameLabel);
+        // // JComboBox methodNames = new JComboBox(method);
+        // // methodNames.setSelectedIndex(-1);
+        // // panel.add(methodNames);
+
+        // JLabel methodNameLabel1 = new JLabel("Enter New Name:");
+        // panel.add(methodNameLabel1);
+        // JTextField text1 = new JTextField(5);
+        // panel.add(text1);
+
+        // JLabel methodNameLabel2 = new JLabel("Enter New Name:");
+        // panel.add(methodNameLabel2);
+        // JTextField text2 = new JTextField(5);
+        // panel.add(text2);
+
+        // JLabel methodNameLabel3 = new JLabel("Enter New Name:");
+        // panel.add(methodNameLabel3);
+        // JTextField text3 = new JTextField(5);
+        // panel.add(text3);
+
+        // //Creating the frame and getting the data
+        // framePop.add(panel);
+        // JOptionPane.showMessageDialog(framePop, panel);
+        // input[0] = String.valueOf(classNames.getSelectedItem());
+        // input[1] = text1.getText();
+        // input[2] = text2.getText();
+        // input[3] = text3.getText();
+        // return input;
     }
 
     public void editMethodReturnPop(){
@@ -242,26 +323,19 @@ public class GUIPopup {
 
     }
 
-    public String[] renameFieldPop(String[] classes, String[] fields, String[] input){
+    public String[] renameFieldPop(String[] fields, String[] input){
         //Create the Frame and Panel
         JFrame framePop = new JFrame("Rename Field");
         JPanel panel = new JPanel(new GridLayout(3, 2));
 
         //Creating Input Field 1
-        JLabel classLabel = new JLabel("Select Class:");
-        panel.add(classLabel);
-        JComboBox classNames = new JComboBox(classes);
-        classNames.setSelectedIndex(-1);
-        panel.add(classNames);
-
-        //Creating Input Field 2
         JLabel fieldNameLabel = new JLabel("Select Field Name:");
         panel.add(fieldNameLabel);
         JComboBox fieldNames = new JComboBox(fields);
         fieldNames.setSelectedIndex(-1);
         panel.add(fieldNames);
 
-        //Creating Input Field 3
+        //Creating Input Field 2
         JLabel fieldNameLabel2 = new JLabel("Enter New Name:");
         panel.add(fieldNameLabel2);
         JTextField text = new JTextField(5);
@@ -270,9 +344,8 @@ public class GUIPopup {
         //Creating the frame and getting the data
         framePop.add(panel);
         JOptionPane.showMessageDialog(framePop, panel);
-        input[0] = String.valueOf(classNames.getSelectedItem());
-        input[1] = String.valueOf(fieldNames.getSelectedItem());
-        input[2] = text.getText();
+        input[0] = String.valueOf(fieldNames.getSelectedItem());
+        input[1] = text.getText();
         return input;
     }
 
@@ -290,5 +363,11 @@ public class GUIPopup {
 
     public void listRelationshipsPop(){
 
+    }
+    
+    public String guiCreateClassPop(){
+        JFrame createClassPop = new JFrame("Create Class");
+        String getClassName = JOptionPane.showInputDialog(createClassPop, "Enter Class Name");
+        return getClassName;
     }
 }

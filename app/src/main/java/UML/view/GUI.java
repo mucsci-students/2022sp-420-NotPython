@@ -21,6 +21,9 @@ public class GUI {
     JButton loadButton;
     JTextArea listingArea;
 
+    int listOption = 2;
+    String listClassName;
+
     public void GUI_view() { 
         mainFrame = new JFrame ("UML Editor");
         mainPanel = new JPanel();
@@ -134,11 +137,13 @@ public class GUI {
         //Save button listener
         saveMenuItem.addActionListener(e -> {
             String message = guiCtr.guiSaveCtr(); 
+            listSelector();
             statusMsg.setText(message);
         });
         //Load button listener
         loadMenuItem.addActionListener(e -> {
             String message = guiCtr.guiLoadCtr();
+            listSelector();
             statusMsg.setText(message);
         });
         //Exit button listener
@@ -150,21 +155,25 @@ public class GUI {
         //Create Class Button
         createClassMenuItem.addActionListener(e -> {
             String message = guiCtr.guiCreateClassCtr();
+            listSelector();
             statusMsg.setText(message); 
         });
         //Create Method Button
         createMethodMenuItem.addActionListener(e -> {
             String message = guiCtr.createMethodCtr();
+            listSelector();
             statusMsg.setText(message);
         });
         //Create Field Button
         createFieldMenuItem.addActionListener(e -> {
             String message = guiCtr.createFieldCtr();
+            listSelector();
             statusMsg.setText(message);
         });
         //Create Relationship Button
         createRelationshipMenuItem.addActionListener(e -> {
             String message = guiCtr.createRelationshipCtr(); 
+            listSelector();
             statusMsg.setText(message);
         });
 
@@ -172,21 +181,25 @@ public class GUI {
         //Delete Class Button
         deleteClassMenuItem.addActionListener(e -> {
             String message = guiCtr.deleteClassCtr(); 
+            listSelector();
             statusMsg.setText(message);
         });
         //Delete Class Button
         deleteMethodMenuItem.addActionListener(e -> {
             String message = guiCtr.deleteMethodCtr(); 
+            listSelector();
             statusMsg.setText(message);
         });
         //Delete Class Button
         deleteFieldMenuItem.addActionListener(e -> {
             String message = guiCtr.deleteFieldCtr(); 
+            listSelector();
             statusMsg.setText(message);
         });
         //Delete Class Button
         deleteRelationshipMenuItem.addActionListener(e -> {
             String message = guiCtr.deleteRelationshipCtr(); 
+            listSelector();
             statusMsg.setText(message);
         });
 
@@ -194,74 +207,104 @@ public class GUI {
         //Modify Class Name Button
         editClassnameItem.addActionListener(e -> {
             String message = guiCtr.renameClassCtr(); 
+            listSelector();
             statusMsg.setText(message);
         });
         //Modify Method Name Button
         editMethodnameItem.addActionListener(e -> {
             String message = guiCtr.renameMethodCtr(); 
+            listSelector();
             statusMsg.setText(message);
         });
         //Modify Method Return Type
         editMethodReturnItem.addActionListener(e -> {
             String message = guiCtr.editMethodReturnCtr(); 
+            listSelector();
             statusMsg.setText(message);
         });
         //Modify Method Params
         editMethodParamItem.addActionListener(e -> {
             String message = guiCtr.editMethodParamsCtr(); 
+            listSelector();
             statusMsg.setText(message);
         });
         //Modify Field Name
         editFieldnameItem.addActionListener(e -> {
             String message = guiCtr.renameFieldCtr(); 
+            listSelector();
             statusMsg.setText(message);
         });
         //Modify Field Type
         editFieldTypeItem.addActionListener(e -> {
             String message = guiCtr.editFieldTypeCtr(); 
+            listSelector();
             statusMsg.setText(message);
         });
             
         //LIST LISTENER
         //List Class
         listClass.addActionListener(e -> {
-            String message = guiCtr.listClassCtr();
-            statusMsg.setText(message);
-            listClassView(); 
+            //String message = guiCtr.listClassCtr();
+            //guiCtr.listClassCtr();
+            listOption = 1;
+            listClassView(listClassName); 
+            statusMsg.setText("Printed Diagram");
         });
         //List Classes
         listClasses.addActionListener(e -> {
             //String message = guiCtr.listClassesCtr();
             //statusMsg.setText(message);
-            listingArea.setText("UML Diagram\n");
-            guiCtr.listClassesCtr();
+            //listingArea.setText("UML Diagram\n");
+            //guiCtr.listClassesCtr();
+            listOption = 2;
             listClassesView();
-            //redirectSystemStreams();
             statusMsg.setText("Printed Diagram");
         });
         //List Relationships
         listRelationships.addActionListener(e -> {
-            String message = guiCtr.listRelationshipsCtr();
-            statusMsg.setText(message);
+            //String message = guiCtr.listRelationshipsCtr();
+            //guiCtr.listRelationshipsCtr();
+            listOption = 3;
             listRelationshipsView(); 
+            statusMsg.setText("Printed Diagram");
         });
 
     }
     
+    public void listSelector(String listClassName){
+        if(listOption == 1){
+            listClassView(listClassName);
+        }
+        else {
+            statusMsg.setText("ERROR: LISTING SELECTION INVALID");
+        }
+    }
+
     public void listSelector(){
-        
+        if(listOption == 2){
+            listClassesView();
+        }
+        else if(listOption == 3){
+            listRelationshipsView();
+        }
+        else {
+            statusMsg.setText("ERROR: LISTING SELECTION INVALID");
+        }
     }
 
     public void listClassesView(){
-        
+        listingArea.setText("UML Diagram\n");
+        guiCtr.listClassesCtr();
     }
 
-    public void listClassView(){
-
+    public void listClassView(String listClassName){
+        listingArea.setText("UML Diagram\n");
+        guiCtr.listClassCtr(listClassName);
     }
 
     public void listRelationshipsView(){
-
+        listingArea.setText("UML Diagram\n");
+        guiCtr.listRelationshipsCtr();
     }
 
     private class GuiOutputStream extends OutputStream {

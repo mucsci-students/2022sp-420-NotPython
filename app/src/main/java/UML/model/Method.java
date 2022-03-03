@@ -16,4 +16,9 @@ public class Method {
             parameters.add(new Parameter(param.get(i), param.get(i + 1)));
         }
     }
+
+    public void rename_method (String newName)
+    {
+        this.name = newName;
+    }
 }
