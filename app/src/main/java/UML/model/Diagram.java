@@ -6,6 +6,8 @@ import UML.controller.Listing;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.HashSet;
 
 public class Diagram {
 
@@ -197,7 +199,8 @@ public class Diagram {
     // Create Method
     // Command: create method <class_name> <method_name> <type> <param>
     public String createMethod(String className, String type, String methodName, ArrayList <String> parameter)
-    {
+    {   
+        Set <String> paramNames = new HashSet<String>();
         Class c = getClass(className);
         //checks if class exists
         if(c == null)
@@ -229,6 +232,12 @@ public class Diagram {
             {
                 return error + " in method parameter name";
             }
+
+            if (!paramNames.add(parameter.get(i)))
+            {
+                return "ERROR: Duplicate parameter name \"" + parameter.get(i) + "\" in parameter list";
+            }
+
             error = validation_check(parameter.get(i + 1));
             if(!error.equals(""))
             {
@@ -416,7 +425,7 @@ public class Diagram {
     //Change parameters method
     //Command: Change parameters <className> <method_name> <parameters>
     public String changeParameters(String className, String method_name, String[] param){
-
+        Set <String> paramNames = new HashSet<String>();
         ArrayList <String> parameter = new ArrayList <String> ();
         String error = "";
         //Check if class exists
@@ -434,6 +443,12 @@ public class Diagram {
                         return error + " in method parameter name";
                     }
                     error = validation_check(param[i + 1]);
+
+                    if (!paramNames.add(param[i]))
+                    {
+                        return "ERROR: Duplicate parameter name \"" + parameter.get(i) + "\" in parameter list";
+                    }
+
                     if(!error.equals(""))
                     {
                         return error + " in method parameter type";
