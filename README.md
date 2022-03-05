@@ -2,7 +2,6 @@
 Install Gradle 7.2 if you don't have it<br>
 Make sure to have the most recent version of Java installed<br>
 json: 20211205<br>
-json-simple: 1.1.1<br>
 junit: 4.13.2<br>
 
 ## Step 1:
