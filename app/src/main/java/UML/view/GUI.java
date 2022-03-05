@@ -70,15 +70,20 @@ public class GUI {
         createMenu.add(createFieldMenuItem);
         createMenu.add(createRelationshipMenuItem);
 
+      
         //Delete Menu Options
         JMenuItem deleteClassMenuItem = new JMenuItem("Class");
         JMenuItem deleteMethodMenuItem = new JMenuItem("Method");
         JMenuItem deleteFieldMenuItem = new JMenuItem("Field");
         JMenuItem deleteRelationshipMenuItem = new JMenuItem("Relationship");
+        JMenuItem deleteSingleParamMenuItem = new JMenuItem("Parameter");
+        JMenuItem deleteParamsMenuItem = new JMenuItem("Parameters");
         deleteMenu.add(deleteClassMenuItem);
         deleteMenu.add(deleteMethodMenuItem);
         deleteMenu.add(deleteFieldMenuItem);
         deleteMenu.add(deleteRelationshipMenuItem);
+        deleteMenu.add(deleteSingleParamMenuItem);
+        deleteMenu.add(deleteParamsMenuItem);
 
         //Modify Menu Options
         JMenu editClassMenu = new JMenu("Class");
@@ -86,16 +91,14 @@ public class GUI {
         editClassMenu.add(editClassnameItem);
         JMenu editMethodMenu = new JMenu("Method ");
         JMenuItem editMethodnameItem = new JMenuItem("Method Name");
-        //JMenuItem editMethodReturnItem = new JMenuItem("Method Return Type");
+        JMenuItem editMethodSingleParam = new JMenuItem("Method Single Parameter");
         JMenuItem editMethodParamItem = new JMenuItem("Method Parameters");
         editMethodMenu.add(editMethodnameItem);
-        //editMethodMenu.add(editMethodReturnItem);
+        editMethodMenu.add(editMethodSingleParam);
         editMethodMenu.add(editMethodParamItem);
         JMenu editFieldMenu = new JMenu("Field");
         JMenuItem editFieldnameItem = new JMenuItem("Field Name");
-        JMenuItem editFieldTypeItem = new JMenuItem("Field Type");
         editFieldMenu.add(editFieldnameItem);
-        editFieldMenu.add(editFieldTypeItem);
         editMenu.add(editClassMenu);
         editMenu.add(editMethodMenu);
         editMenu.add(editFieldMenu);
@@ -104,7 +107,6 @@ public class GUI {
         JMenuItem listClass = new JMenuItem("Class");
         JMenuItem listClasses = new JMenuItem("Classes");
         JMenuItem listRelationships = new JMenuItem("Relationships");
-        listMenu.add(listClass);
         listMenu.add(listClasses);
         listMenu.add(listRelationships);
 
@@ -117,15 +119,15 @@ public class GUI {
         mainBar.add(Box.createRigidArea(new Dimension(550,35)));
 
         //UML Display Area
-        listingArea = new JTextArea("UML Diagram\n", 33, 83);
+        listingArea = new JTextArea("UML Diagram\n", 38, 111);
         listingArea.setEditable(false);
+        Font font = new Font("Courier New", Font.BOLD, 12);
+        listingArea.setFont(font);
 
-        // Remember old output stream (optional)
+        // Retreiving CLI Output 
         PrintStream stdout = System.out;
-        stdout.println("Starting gui for console output"); // Still works
-        // Stream for output to gui
+        stdout.println("Starting gui for console output"); 
         GuiOutputStream rawout = new GuiOutputStream(listingArea);
-        // Set new stream for System.out
         System.setOut(new PrintStream(rawout, true));
 
         mainPanel.add(mainBar);
@@ -202,7 +204,19 @@ public class GUI {
             listSelector();
             statusMsg.setText(message);
         });
-
+        //Delete Single Parameter Button
+        deleteSingleParamMenuItem.addActionListener(e -> {
+            String message = guiCtr.deleteSingleParamCtr(); 
+            listSelector();
+            statusMsg.setText(message);
+        });
+        //Delete Parameters Button
+        deleteParamsMenuItem.addActionListener(e -> {
+            String message = guiCtr.deleteParamsCtr(); 
+            listSelector();
+            statusMsg.setText(message);
+        });
+        
         //MODIFY LISTENER
         //Modify Class Name Button
         editClassnameItem.addActionListener(e -> {
@@ -216,12 +230,12 @@ public class GUI {
             listSelector();
             statusMsg.setText(message);
         });
-        //Modify Method Return Type
-        /*editMethodReturnItem.addActionListener(e -> {
-            String message = guiCtr.editMethodReturnCtr(); 
+        //Modify Method Single Param
+        editMethodSingleParam.addActionListener(e -> {
+            String message = guiCtr.editMethodSingleParam(); 
             listSelector();
             statusMsg.setText(message);
-        });*/
+        });
         //Modify Method Params
         editMethodParamItem.addActionListener(e -> {
             String message = guiCtr.editMethodParamsCtr(); 
@@ -234,36 +248,16 @@ public class GUI {
             listSelector();
             statusMsg.setText(message);
         });
-        //Modify Field Type
-        editFieldTypeItem.addActionListener(e -> {
-            String message = guiCtr.editFieldTypeCtr(); 
-            listSelector();
-            statusMsg.setText(message);
-        });
             
         //LIST LISTENER
-        //List Class
-        listClass.addActionListener(e -> {
-            //String message = guiCtr.listClassCtr();
-            //guiCtr.listClassCtr();
-            listOption = 1;
-            listClassView(listClassName); 
-            statusMsg.setText("Printed Diagram");
-        });
         //List Classes
         listClasses.addActionListener(e -> {
-            //String message = guiCtr.listClassesCtr();
-            //statusMsg.setText(message);
-            //listingArea.setText("UML Diagram\n");
-            //guiCtr.listClassesCtr();
             listOption = 2;
             listClassesView();
             statusMsg.setText("Printed Diagram");
         });
         //List Relationships
         listRelationships.addActionListener(e -> {
-            //String message = guiCtr.listRelationshipsCtr();
-            //guiCtr.listRelationshipsCtr();
             listOption = 3;
             listRelationshipsView(); 
             statusMsg.setText("Printed Diagram");
@@ -272,9 +266,6 @@ public class GUI {
     }
 
     public void listSelector(){
-        if(listOption == 1){
-            listClassView(listClassName);
-        }
         if(listOption == 2){
             listClassesView();
         }
@@ -289,11 +280,6 @@ public class GUI {
     public void listClassesView(){
         listingArea.setText("UML Diagram\n");
         guiCtr.listClassesCtr();
-    }
-
-    public void listClassView(String listClassName){
-        listingArea.setText("UML Diagram\n");
-        guiCtr.listClassCtr(listClassName);
     }
 
     public void listRelationshipsView(){
