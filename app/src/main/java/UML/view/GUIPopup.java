@@ -20,16 +20,28 @@ public class GUIPopup {
         return getFileName;
     }
 
-    public ArrayList<String> createMethodPop(){
-        ArrayList<String> details = new ArrayList<String>();
-        JFrame createMethodPop = new JFrame("Create Method");
-        // 0
-        details.add(JOptionPane.showInputDialog(createMethodPop, "Enter Method Name"));
-        // 1
-        details.add(JOptionPane.showInputDialog(createMethodPop, "Enter class to add method to"));
-        // 2
-        details.add(JOptionPane.showInputDialog(createMethodPop, "Enter type of method"));
-        return details;
+    public String[] createMethodPop(String[] input){
+        //Create the Frame and Panel
+        JFrame getMethodPop = new JFrame("Create Method");
+        JPanel panel = new JPanel(new GridLayout(2, 1));
+
+        //Creating Input Field 1
+        JLabel methodNameLabel = new JLabel("Select Method Name:");
+        panel.add(methodNameLabel);
+        JTextField methodName = new JTextField(5);
+        panel.add(methodName);
+
+        //Creating Input Field 2
+        JLabel methodTypeLabel = new JLabel("Enter Method Type: ");
+        panel.add(methodTypeLabel);
+        JTextField methodType = new JTextField(5);
+        panel.add(methodType);
+
+        getMethodPop.add(panel);
+        JOptionPane.showMessageDialog(getMethodPop, panel);
+        input[0] = methodName.getText();
+        input[1] = methodType.getText();
+        return input;
     }
 
     public String getClassPop(String[] classes){

@@ -37,6 +37,23 @@ public class GUIController {
     }
 
     public String createMethodCtr(){
+        JFrame x = new JFrame("Edit Parameters");
+        ArrayList<String> params = new ArrayList<String>();
+        String[] input = new String [2];
+        
+        //Get Class List
+        int csize = dg.classList.size();
+        String[] classes = new String[csize];
+        classes = dg.convertClassListArray();
+        String className = guiPop.getClassPop(classes);
+        input = guiPop.createMethodPop(input);
+        String methodName = input[0];
+        String type =  input[1];
+        
+        params = guiPop.getParams(params);
+        String message = dg.createMethod(className, type, methodName, params);
+        return message;
+
         // JFrame x = new JFrame("test");
         // ArrayList<String> y = new ArrayList<>();
         // ArrayList<String> details = guiPop.createMethodPop();
@@ -44,7 +61,6 @@ public class GUIController {
 
         // String message = dg.createMethod(details.get(1), details.get(2), details.get(0), parameters);
         // return message;
-        return "";
     }
 
     public String createFieldCtr(){
