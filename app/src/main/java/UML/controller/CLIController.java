@@ -65,9 +65,9 @@ public class CLIController {
             }
 
             // delete method
-            // Command: delete method <class_name> <method_name> <method_type> <param>
-            if (tokens[1].equalsIgnoreCase("Method") && tokens.length > 4) {
-                System.out.println(dg.deleteMethod(tokens[2], tokens[4], tokens[3]));
+            // Command: delete method <class_name> <method_name> 
+            if (tokens[1].equalsIgnoreCase("Method") && lengthChecker(tokens, 3)) {
+                System.out.println(dg.deleteMethod(tokens[2], tokens[3]));
                 return;
             }
 
@@ -133,7 +133,7 @@ public class CLIController {
 
             // Change list of parameters
             // Command: Change parameters <class_name> <method_name> <method_type> <param>
-            if (tokens[1].equalsIgnoreCase("Parameters") && lengthChecker(tokens, 3)) {
+            if (tokens[1].equalsIgnoreCase("Parameters") && tokens.length > 3) {
                 System.out.println(dg.changeParameters(tokens[2], tokens[3], tokens));
                 return;
             }

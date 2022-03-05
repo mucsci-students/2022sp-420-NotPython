@@ -282,11 +282,13 @@ public class GUI {
         guiCtr.listClassesCtr();
     }
 
+    
     public void listRelationshipsView(){
         listingArea.setText("UML Diagram\n");
         guiCtr.listRelationshipsCtr();
     }
 
+    //Gets Stream from Command Line
     private class GuiOutputStream extends OutputStream {
         JTextArea textArea;
 

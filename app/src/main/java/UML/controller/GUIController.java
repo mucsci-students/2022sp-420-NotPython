@@ -2,7 +2,6 @@ package UML.controller;
 
 import javax.swing.*;
 import java.util.*;
-// import java.awt.*;
 
 import UML.model.*;
 import UML.view.GUIPopup;
@@ -28,7 +27,7 @@ public class GUIController {
         return message;
     }
 
-    //Create Class GUI Controller
+    //GUI Create Class GUI Controller
     public String guiCreateClassCtr(){
         String message;
         String className = guiPop.guiCreateClassPop();
@@ -36,12 +35,13 @@ public class GUIController {
         return message;
     }
 
+    //GUI Create Method Controller
     public String createMethodCtr(){
         JFrame x = new JFrame("Edit Parameters");
         ArrayList<String> params = new ArrayList<String>();
         String[] input = new String [2];
         
-        //Get Class List
+        //Get Data
         int csize = dg.classList.size();
         String[] classes = new String[csize];
         classes = dg.convertClassListArray();
@@ -49,22 +49,17 @@ public class GUIController {
         input = guiPop.createMethodPop(input);
         String methodName = input[0];
         String type =  input[1];
-        
-        params = guiPop.getParams(params);
+        params = guiPop.getParams();
+
         String message = dg.createMethod(className, type, methodName, params);
         return message;
-
-        // JFrame x = new JFrame("test");
-        // ArrayList<String> y = new ArrayList<>();
-        // ArrayList<String> details = guiPop.createMethodPop();
-        // ArrayList<String> parameters = guiPop.getParams(x, 0 , y);
-
-        // String message = dg.createMethod(details.get(1), details.get(2), details.get(0), parameters);
-        // return message;
     }
 
+    //GUI Create Field Controller
     public String createFieldCtr(){
         String[] input = new String[3];
+
+        //Get Data
         int size = dg.classList.size();
         String[] classes = new String[size];
         classes = dg.convertClassListArray();
@@ -72,12 +67,16 @@ public class GUIController {
         String className = input[0];
         String field = input[1];
         String type = input[2];
+
         String message = dg.createField(className, field, type);
         return message;
     }
 
+    //GUI Create Relationship Controller
     public String createRelationshipCtr(){
         String[] input = new String[3];
+
+        //Get Data
         int size = dg.classList.size();
         String[] classes = new String[size];
         classes = dg.convertClassListArray();
@@ -86,27 +85,36 @@ public class GUIController {
         String type = input[0];
         String src = input[1];
         String dest = input[2];
+
         String message = dg.createRelationship(type, src, dest);
         return message;
     }
 
-    //Delete Class GUI Controller
+    //GUI Delete Class GUI Controller
     public String deleteClassCtr(){
-        String message;
         int size = dg.classList.size();
         String[] classes = new String[size];
         classes = dg.convertClassListArray();
         String className = guiPop.deleteClassPop(classes);
-        message = dg.deleteClass(className);
+        String message = dg.deleteClass(className);
         return message;
     }
 
+    //GUI Delete Method Controller
     public String deleteMethodCtr(){
-        ArrayList<String> details = guiPop.deleteMethodPop();
-        String message = dg.deleteMethod(details.get(1), details.get(2), details.get(0));
+        int csize = dg.classList.size();
+        String[] classes = new String[csize];
+        classes = dg.convertClassListArray();
+        String className = guiPop.getClassPop(classes);
+        int msize = dg.getMethodSize(className);
+        String[] methods = new String[msize];
+        methods = dg.convertMethodListArray(className);
+        String methodName = guiPop.deleteMethodPop(methods);
+        String message = dg.deleteMethod(className, methodName);
         return message;
     }
 
+    //GUI Delete Field Controller
     public String deleteFieldCtr(){
         int csize = dg.classList.size();
         String[] classes = new String[csize];
@@ -165,6 +173,7 @@ public class GUIController {
         return message;
     }
 
+    //GUI Modify Single Parameter Controller
     public String editMethodSingleParam(){
         //Get Class List
         String[] input = new String[3];
@@ -188,6 +197,7 @@ public class GUIController {
         return message;
     }
 
+    //GUI Modify Parameters Controller
     public String editMethodParamsCtr(){
         JFrame x = new JFrame("Edit Parameters");
         ArrayList<String> input = new ArrayList<String>();
@@ -204,12 +214,16 @@ public class GUIController {
         String methodName = guiPop.getMethodPop(methods);
         String[] params = new String[msize];
         params = dg.convertMethodParamsListArray(className, methodName);
-        input = guiPop.getParams(input);
-        String[] inputLst = input.toArray(new String[input.size()]);
+        input = guiPop.getParams();
+        String[] inputLst = new String[input.size() + 5];
+        for (int i = 5; i < inputLst.length; i++){
+            inputLst[i] = input.get(i - 5);
+        }
         String message = dg.changeParameters(className, methodName, inputLst);
         return message;
     }
 
+    //GUI Rename Field Controller
     public String renameFieldCtr(){
         String[] input = new String[2];
         int csize = dg.classList.size();
@@ -226,6 +240,7 @@ public class GUIController {
         return message;
     }
 
+    //GUI Delete Parameter Controller
     public String deleteSingleParamCtr(){
         //Get Class List
         String[] input = new String[3];
@@ -245,6 +260,7 @@ public class GUIController {
         return message;
     }
 
+    //GUI Delete Parameters Controller
     public String deleteParamsCtr(){
         //Get Class List
         String[] input = new String[3];
@@ -261,10 +277,12 @@ public class GUIController {
         return message;
     }
 
+    //GUI List Classes Controller
     public void listClassesCtr(){
         dg.listClasses();
     }
 
+    //GUI List Relationships Controller
     public void listRelationshipsCtr(){
         dg.listRelationships();
     }
