@@ -86,7 +86,7 @@ public class GUIController {
 
     public String deleteMethodCtr(){
         ArrayList<String> details = guiPop.deleteMethodPop();
-        String message = dg.deleteMethod(details.get(1), details.get(2), details.get(0));
+        String message = dg.deleteMethod(details.get(1), details.get(0));
         return message;
     }
 
@@ -145,7 +145,7 @@ public class GUIController {
         String oldName = input[0];
         String newName = input[1];
         String type = input[2];
-        String message = dg.renameMethod(className, oldName, newName, type);
+        String message = dg.renameMethod(className, oldName, newName);
         return message;
     }
 

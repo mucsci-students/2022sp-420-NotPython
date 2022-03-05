@@ -6,6 +6,8 @@ import UML.controller.Listing;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.HashSet;
 
 public class Diagram {
 
@@ -197,7 +199,8 @@ public class Diagram {
     // Create Method
     // Command: create method <class_name> <method_name> <type> <param>
     public String createMethod(String className, String type, String methodName, ArrayList <String> parameter)
-    {
+    {   
+        Set <String> paramNames = new HashSet<String>();
         Class c = getClass(className);
         //checks if class exists
         if(c == null)
@@ -216,6 +219,11 @@ public class Diagram {
         {
             return error + " in method name";
         }
+
+        if((parameter.size() % 2) != 0)
+        {
+            return "ERROR: Parameter list length is incorrect";
+        }
         //checks parameter list
         for(int i = 0; i < parameter.size() - 1; i += 2)
         {
@@ -224,6 +232,12 @@ public class Diagram {
             {
                 return error + " in method parameter name";
             }
+
+            if (!paramNames.add(parameter.get(i)))
+            {
+                return "ERROR: Duplicate parameter name \"" + parameter.get(i) + "\" in parameter list";
+            }
+
             error = validation_check(parameter.get(i + 1));
             if(!error.equals(""))
             {
@@ -231,7 +245,7 @@ public class Diagram {
             }
         }
         //check if method exists
-        if(getMethod(className, methodName, type) != null)
+        if(getMethod(className, methodName) != null)
         {
             return "ERROR: method already exists";
         }
@@ -240,15 +254,14 @@ public class Diagram {
     }
 
     //Delete method
-    //Command: delete method <className> <method_name> <method_type> <parameters>
-    public String deleteMethod(String className, String type, String methodName)
+    //Command: delete method <className> <method_name>
+    public String deleteMethod(String className, String methodName)
     {
         //Check if class exists
         Class tempClass = getClass(className);
-        ArrayList <String> parameter = new ArrayList <String> ();
         if(tempClass != null)
         {
-            Method tempMethod = getMethod(className, methodName, type);
+            Method tempMethod = getMethod(className, methodName);
             if (tempMethod == null)
             {
                 return "ERROR: Method with name \"" + methodName + "\" for \"" + className + "\" does not exist";
@@ -264,8 +277,8 @@ public class Diagram {
     }
 
     //Rename method
-    //Command: rename method <class_name> <old_name> <new_name> <type> <param>
-    public String renameMethod(String clas, String oldName, String newName, String type)
+    //Command: rename method <class_name> <old_name> <new_name>
+    public String renameMethod(String clas, String oldName, String newName)
     {
         //Check if class exists
         Class tempClass = getClass(clas);
@@ -275,13 +288,13 @@ public class Diagram {
         }
 
         //Check if method exists
-        if (getMethod(clas, oldName, type) == null)
+        if (getMethod(clas, oldName) == null)
         {
             return "ERROR: Method with name \"" + oldName + "\" for \"" + clas + "\" does not exist";
         }
 
         //Check if method with new name already exists
-        if (getMethod(clas, newName, type) != null)
+        if (getMethod(clas, newName) != null)
         {
             return "ERROR: Method \"" + newName + "\" already exists";
         }
@@ -294,7 +307,7 @@ public class Diagram {
         }
 
         //change method name and set object in classlist
-        Method tempMtd = getMethod(clas, oldName, type);
+        Method tempMtd = getMethod(clas, oldName);
         int index = tempClass.methods.indexOf(tempMtd);
         tempMtd.rename_method(newName);
         tempClass.methods.set(index, tempMtd);
@@ -367,13 +380,13 @@ public class Diagram {
 
     //Change parameter method
     //Command: Change parameter <className> <method_name> <method_type> <old_parameter> <new_parameter> <new_parameter_type>
-    public String changeParameter(String className, String method_name, String method_type, String old_parameter, String new_parameter, String new_parameter_type){
+    public String changeParameter(String className, String method_name, String old_parameter, String new_parameter, String new_parameter_type){
 
         //Check if class exists
         Class tempClass = getClass(className);
         if(tempClass != null){
             //Check if method exists
-            Method tempMethod = getMethod(className, method_name, method_type);
+            Method tempMethod = getMethod(className, method_name);
             if(tempMethod != null){
                 //Check if parameter exists
                 Parameter tempParameter = getParameter(tempMethod, old_parameter);
@@ -410,18 +423,19 @@ public class Diagram {
     }
 
     //Change parameters method
-    //Command: Change parameters <className> <method_name> <method_type> <parameters>
-    public String changeParameters(String className, String method_name, String method_type, String[] param){
-
+    //Command: Change parameters <className> <method_name> <parameters>
+    public String changeParameters(String className, String method_name, String[] param){
+        Set <String> paramNames = new HashSet<String>();
         ArrayList <String> parameter = new ArrayList <String> ();
         String error = "";
         //Check if class exists
         Class tempClass = getClass(className);
-        if(tempClass != null){
+        if(tempClass != null)
+        {
             //Check if method exists
-            Method tempMethod = getMethod(className, method_name, method_type);
+            Method tempMethod = getMethod(className, method_name);
             if(tempMethod != null){
-                for(int i = 5; i < param.length - 1; i += 2)
+                for(int i = 4; i < param.length - 1; i += 2)
                 {
                     error = validation_check(param[i]);
                     if(!error.equals(""))
@@ -429,6 +443,12 @@ public class Diagram {
                         return error + " in method parameter name";
                     }
                     error = validation_check(param[i + 1]);
+
+                    if (!paramNames.add(param[i]))
+                    {
+                        return "ERROR: Duplicate parameter name \"" + parameter.get(i) + "\" in parameter list";
+                    }
+
                     if(!error.equals(""))
                     {
                         return error + " in method parameter type";
@@ -436,7 +456,12 @@ public class Diagram {
                     parameter.add(param[i]);
                     parameter.add(param[i + 1]);
                 }
-                
+
+                if((param.length % 2) != 0)
+                {
+                    return "ERROR: Parameter list length is incorrect";
+                }
+
                 tempMethod.parameters.clear();
                 for(int i = 0; i < parameter.size() - 1; i += 2)
                 {
@@ -456,8 +481,8 @@ public class Diagram {
     }
 
     //Delete parameter method
-    //Command: Delete parameter <className> <method_name> <method_type> <parameter>
-    public String deleteParameter(String className, String method_name, String method_type, String parameter){
+    //Command: Delete parameter <className> <method_name> <parameter>
+    public String deleteParameter(String className, String method_name, String parameter){
 
         ArrayList <String> parameters = new ArrayList <String> ();
         String error = "";
@@ -465,7 +490,7 @@ public class Diagram {
         Class tempClass = getClass(className);
         if(tempClass != null){
             //Check if method exists
-            Method tempMethod = getMethod(className, method_name, method_type);
+            Method tempMethod = getMethod(className, method_name);
             if(tempMethod != null){
                 //Check if parameter exists
                 Parameter tempParameter = getParameter(tempMethod, parameter);
@@ -500,15 +525,15 @@ public class Diagram {
     }
 
         //Delete parameters method
-    //Command: Delete parameters <className> <method_name> <method_type>
-    public String deleteParameters(String className, String method_name, String method_type){
+    //Command: Delete parameters <className> <method_name>
+    public String deleteParameters(String className, String method_name){
 
         String error = "";
         //Check if class exists
         Class tempClass = getClass(className);
         if(tempClass != null){
             //Check if method exists
-            Method tempMethod = getMethod(className, method_name, method_type);
+            Method tempMethod = getMethod(className, method_name);
             if(tempMethod != null){
                 tempMethod.parameters.clear();
                     
@@ -623,14 +648,14 @@ public class Diagram {
 
 
     //Get a method with class name, method name and type
-    public static Method getMethod(String className, String methodName, String type)
+    public static Method getMethod(String className, String methodName)
     {
         Class c = getClass(className);
         if(c != null)
         {
             for(Method m : c.methods)
             {
-                if(m.name.equals(methodName) && m.type.equals(type))
+                if(m.name.equals(methodName))
                 {
                     return m;
                 }

@@ -65,9 +65,9 @@ public class CLIController {
             }
 
             // delete method
-            // Command: delete method <class_name> <method_name> <method_type> <param>
-            if (tokens[1].equalsIgnoreCase("Method") && tokens.length > 4) {
-                System.out.println(dg.deleteMethod(tokens[2], tokens[4], tokens[3]));
+            // Command: delete method <class_name> <method_name>
+            if (tokens[1].equalsIgnoreCase("Method") && lengthChecker(tokens, 4)) {
+                System.out.println(dg.deleteMethod(tokens[2], tokens[3]));
                 return;
             }
 
@@ -79,16 +79,16 @@ public class CLIController {
             }
 
             // Delete parameter
-            // Command: Delete parameter <class_name> <method_name> <method_type> <parameter>
-            if (tokens[1].equalsIgnoreCase("Parameter") && lengthChecker(tokens, 6)) {
-                System.out.println(dg.deleteParameter(tokens[2], tokens[3], tokens[4], tokens[5]));
+            // Command: Delete parameter <class_name> <method_name>  <parameter>
+            if (tokens[1].equalsIgnoreCase("Parameter") && lengthChecker(tokens, 5)) {
+                System.out.println(dg.deleteParameter(tokens[2], tokens[3], tokens[4]));
                 return;
             }
 
             // Delete parameters
-            // Command: Delete parameters <class_name> <method_name> <method_type>
-            if (tokens[1].equalsIgnoreCase("Parameters") && lengthChecker(tokens, 5)) {
-                System.out.println(dg.deleteParameters(tokens[2], tokens[3], tokens[4]));
+            // Command: Delete parameters <class_name> <method_name>
+            if (tokens[1].equalsIgnoreCase("Parameters") && lengthChecker(tokens, 4)) {
+                System.out.println(dg.deleteParameters(tokens[2], tokens[3]));
                 return;
             }
         }
@@ -110,14 +110,14 @@ public class CLIController {
 
             // Rename method
             // Command: Rename method <class_name> <old_name> <new_name> <type> <param> 
-            if (tokens[1].equalsIgnoreCase("method") && tokens.length > 5) {
+            if (tokens[1].equalsIgnoreCase("method") && tokens.length > 4) {
                 ArrayList <String> parameter = new ArrayList <String> ();
                 for(int i = 5; i < tokens.length - 5; i += 2)
                     {
                     parameter.add(tokens[i]);
                     parameter.add(tokens[i + 1]);
                     }   
-                dg.renameMethod(tokens[2], tokens[3], tokens[4], tokens[5]);
+                System.out.println(dg.renameMethod(tokens[2], tokens[3], tokens[4]));
                 return;
             }
         }
@@ -125,16 +125,16 @@ public class CLIController {
 
         if (tokens[0].equalsIgnoreCase("Change")) {
             // Change single parameter
-            // Command: Change parameter <class_name> <method_name> <method_type> <old_parameter> <new_parameter> <new_parameter_type> 
-            if (tokens[1].equalsIgnoreCase("Parameter") && lengthChecker(tokens, 8)) {
-                System.out.println(dg.changeParameter(tokens[2], tokens[3], tokens[4], tokens[5], tokens[6], tokens[7]));
+            // Command: Change parameter <class_name> <method_name> <old_parameter> <new_parameter> <new_parameter_type> 
+            if (tokens[1].equalsIgnoreCase("Parameter") && lengthChecker(tokens, 7)) {
+                System.out.println(dg.changeParameter(tokens[2], tokens[3], tokens[4], tokens[5], tokens[6]));
                 return;
             }
 
             // Change list of parameters
-            // Command: Change parameters <class_name> <method_name> <method_type> <param>
-            if (tokens[1].equalsIgnoreCase("Parameters") && tokens.length > 4) {
-                System.out.println(dg.changeParameters(tokens[2], tokens[3], tokens[4], tokens));
+            // Command: Change parameters <class_name> <method_name> <param>
+            if (tokens[1].equalsIgnoreCase("Parameters") && tokens.length > 3) {
+                System.out.println(dg.changeParameters(tokens[2], tokens[3], tokens));
                 return;
             }
 
@@ -198,19 +198,19 @@ public class CLIController {
                     "renames an field");
             System.out.printf("%-70s\n\t%-50s\n", "delete field <class_name> <field_name>", "deletes a field");
 
-            System.out.printf("%-70s\n\t%-50s\n", "create method <class_name> <method_name> <method_type> <parameters>", "creates a method");
-            System.out.printf("%-70s\n\t%-50s\n", "delete method <class_name> <method_name> <method_type> <parameters>", "deletes a method");
-            System.out.printf("%-70s\n\t%-50s\n", "rename method <class_name> <old_name> <type> <param> <new_name>", "renames a field");
+            System.out.printf("%-70s\n\t%-50s\n", "create method <class_name> <method_name> <parameters>", "creates a method");
+            System.out.printf("%-70s\n\t%-50s\n", "delete method <class_name> <method_name> <parameters>", "deletes a method");
+            System.out.printf("%-70s\n\t%-50s\n", "rename method <class_name> <old_name> <param> <new_name>", "renames a field");
 
-            System.out.printf("%-70s\n\t%-50s\n", "change parameter <class_name> <method_name> <method_type> <old_parameter> <new_parameter> <new_parameter_type>", 
+            System.out.printf("%-70s\n\t%-50s\n", "change parameter <class_name> <method_name> <old_parameter> <new_parameter> <new_parameter_type>", 
                     "changes a single parameter");
-            System.out.printf("%-70s\n\t%-50s\n", "change parameters <class_name> <method_name> <method_type> <parameters>", 
+            System.out.printf("%-70s\n\t%-50s\n", "change parameters <class_name> <method_name> <parameters>", 
                     "changes the whole list of parameters");
-            System.out.printf("%-70s\n\t%-50s\n", "delete parameter <class_name> <method_name> <method_type> <parameter>", "deletes a single parameter");
-            System.out.printf("%-70s\n\t%-50s\n", "delete parameters <class_name> <method_name> <method_type>", "deletes the whole list of parameters");
+            System.out.printf("%-70s\n\t%-50s\n", "delete parameter <class_name> <method_name>  <parameter>", "deletes a single parameter");
+            System.out.printf("%-70s\n\t%-50s\n", "delete parameters <class_name> <method_name>", "deletes the whole list of parameters");
 
-            System.out.printf("%-70s\n\t%-50s\n", "save <file_name>", "saves a file to a JSON/ YAML format");
-            System.out.printf("%-70s\n\t%-50s\n", "load <file_name>", "loads a file from a JSON/ YAML format");
+            System.out.printf("%-70s\n\t%-50s\n", "save <file_name>", "saves a file to a JSON format");
+            System.out.printf("%-70s\n\t%-50s\n", "load <file_name>", "loads a file from a JSON format");
 
             System.out.printf("%-70s\n\t%-50s\n", "list class <class_name>",
                     "lists the contents of a class given its name");
