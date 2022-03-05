@@ -206,7 +206,8 @@ public class CLIController {
                     "changes a single parameter");
             System.out.printf("%-70s\n\t%-50s\n", "change parameters <class_name> <method_name> <parameters>", 
                     "changes the whole list of parameters");
-            System.out.printf("%-70s\n\t%-50s\n", "delete parameter <class_name> <method_name>  <parameter>", "deletes a single parameter");
+
+            System.out.printf("%-70s\n\t%-50s\n", "delete parameter <class_name> <method_name> <parameter>", "deletes a single parameter");
             System.out.printf("%-70s\n\t%-50s\n", "delete parameters <class_name> <method_name>", "deletes the whole list of parameters");
 
             System.out.printf("%-70s\n\t%-50s\n", "save <file_name>", "saves a file to a JSON format");

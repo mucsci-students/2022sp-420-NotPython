@@ -277,7 +277,7 @@ public class Diagram {
     }
 
     //Rename method
-    //Command: rename method <class_name> <old_name> <new_name>
+    //Command: rename method <class_name> <old_name> <new_name> 
     public String renameMethod(String clas, String oldName, String newName)
     {
         //Check if class exists
@@ -379,7 +379,7 @@ public class Diagram {
     }
 
     //Change parameter method
-    //Command: Change parameter <className> <method_name> <method_type> <old_parameter> <new_parameter> <new_parameter_type>
+    //Command: Change parameter <className> <method_name> <old_parameter> <new_parameter> <new_parameter_type>
     public String changeParameter(String className, String method_name, String old_parameter, String new_parameter, String new_parameter_type){
 
         //Check if class exists
@@ -725,6 +725,17 @@ public class Diagram {
         return arrList;
     }
 
+    public String[] convertMethodParamsListArray(String className, String methodName){
+        Class clas = getClass(className);
+        Method metho = getMethod(className, methodName);
+        int psize = metho.parameters.size();
+        String[] arrList = new String[psize];
+        for(int i = 0; i < psize; i++){
+            arrList[i] = metho.parameters.get(i).name;
+        }
+        return arrList;
+    }
+
     public int getMethodSize(String className){
         Class clas = getClass(className);
         return clas.methods.size();
@@ -734,4 +745,5 @@ public class Diagram {
         Class clas = getClass(className);
         return clas.fields.size();
     }
+
 }

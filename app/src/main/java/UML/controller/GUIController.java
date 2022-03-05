@@ -37,13 +37,30 @@ public class GUIController {
     }
 
     public String createMethodCtr(){
-        JFrame x = new JFrame("test");
-        ArrayList<String> y = new ArrayList<>();
-        ArrayList<String> details = guiPop.createMethodPop();
-        ArrayList<String> parameters = guiPop.getParams(x, 0 , y);
-
-        String message = dg.createMethod(details.get(1), details.get(2), details.get(0), parameters);
+        JFrame x = new JFrame("Edit Parameters");
+        ArrayList<String> params = new ArrayList<String>();
+        String[] input = new String [2];
+        
+        //Get Class List
+        int csize = dg.classList.size();
+        String[] classes = new String[csize];
+        classes = dg.convertClassListArray();
+        String className = guiPop.getClassPop(classes);
+        input = guiPop.createMethodPop(input);
+        String methodName = input[0];
+        String type =  input[1];
+        
+        params = guiPop.getParams(params);
+        String message = dg.createMethod(className, type, methodName, params);
         return message;
+
+        // JFrame x = new JFrame("test");
+        // ArrayList<String> y = new ArrayList<>();
+        // ArrayList<String> details = guiPop.createMethodPop();
+        // ArrayList<String> parameters = guiPop.getParams(x, 0 , y);
+
+        // String message = dg.createMethod(details.get(1), details.get(2), details.get(0), parameters);
+        // return message;
     }
 
     public String createFieldCtr(){
@@ -133,7 +150,7 @@ public class GUIController {
 
     //Rename Method GUI Controller
     public String renameMethodCtr(){
-        String[] input = new String[3];
+        String[] input = new String[2];
         int csize = dg.classList.size();
         String[] classes = new String[csize];
         classes = dg.convertClassListArray();
@@ -144,17 +161,53 @@ public class GUIController {
         input = guiPop.renameMethodPop(methods, input);
         String oldName = input[0];
         String newName = input[1];
-        String type = input[2];
         String message = dg.renameMethod(className, oldName, newName);
         return message;
     }
 
-    /*public String editMethodReturnCtr(){
-        return "";
-    }*/
+    public String editMethodSingleParam(){
+        //Get Class List
+        String[] input = new String[3];
+        int csize = dg.classList.size();
+        String[] classes = new String[csize];
+        classes = dg.convertClassListArray();
+        String className = guiPop.getClassPop(classes);
+        //Get Method List
+        int msize = dg.getMethodSize(className);
+        String[] methods = new String[msize];
+        methods = dg.convertMethodListArray(className);
+        String methodName = guiPop.getMethodPop(methods);
+        String[] params = new String[msize];
+        params = dg.convertMethodParamsListArray(className, methodName);
+        String oldParam, newParam, newType;
+        input = guiPop.editMethodSingleParamPop(params, input);
+        oldParam = input[0];
+        newParam = input[1];
+        newType = input[2];
+        String message = dg.changeParameter(className, methodName, oldParam, newParam, newType);
+        return message;
+    }
 
     public String editMethodParamsCtr(){
-        return "";
+        JFrame x = new JFrame("Edit Parameters");
+        ArrayList<String> input = new ArrayList<String>();
+        
+        //Get Class List
+        int csize = dg.classList.size();
+        String[] classes = new String[csize];
+        classes = dg.convertClassListArray();
+        String className = guiPop.getClassPop(classes);
+        //Get Method List
+        int msize = dg.getMethodSize(className);
+        String[] methods = new String[msize];
+        methods = dg.convertMethodListArray(className);
+        String methodName = guiPop.getMethodPop(methods);
+        String[] params = new String[msize];
+        params = dg.convertMethodParamsListArray(className, methodName);
+        input = guiPop.getParams(input);
+        String[] inputLst = input.toArray(new String[input.size()]);
+        String message = dg.changeParameters(className, methodName, inputLst);
+        return message;
     }
 
     public String renameFieldCtr(){
@@ -173,13 +226,39 @@ public class GUIController {
         return message;
     }
 
-    public String editFieldTypeCtr(){
-        return "";
+    public String deleteSingleParamCtr(){
+        //Get Class List
+        String[] input = new String[3];
+        int csize = dg.classList.size();
+        String[] classes = new String[csize];
+        classes = dg.convertClassListArray();
+        String className = guiPop.getClassPop(classes);
+        //Get Method List
+        int msize = dg.getMethodSize(className);
+        String[] methods = new String[msize];
+        methods = dg.convertMethodListArray(className);
+        String methodName = guiPop.getMethodPop(methods);
+        String[] params = new String[msize];
+        params = dg.convertMethodParamsListArray(className, methodName);
+        String param = guiPop.deleteSingleParamPop(params, input);
+        String message = dg.deleteParameter(className, methodName, param);
+        return message;
     }
 
-    public void listClassCtr(String className){
-        //guiPop.getListClassRequest(className);
-        dg.listClass(className);
+    public String deleteParamsCtr(){
+        //Get Class List
+        String[] input = new String[3];
+        int csize = dg.classList.size();
+        String[] classes = new String[csize];
+        classes = dg.convertClassListArray();
+        String className = guiPop.getClassPop(classes);
+        //Get Method List
+        int msize = dg.getMethodSize(className);
+        String[] methods = new String[msize];
+        methods = dg.convertMethodListArray(className);
+        String methodName = guiPop.getMethodPop(methods);
+        String message = dg.deleteParameters(className, methodName);
+        return message;
     }
 
     public void listClassesCtr(){
