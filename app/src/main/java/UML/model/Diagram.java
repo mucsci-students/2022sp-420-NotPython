@@ -696,6 +696,7 @@ public class Diagram {
         return "";
     }
 
+    //Helper function to convert Classes ArrayList to Array
     public String[] convertClassListArray(){
         int size = classList.size();
         String[] arrList = new String[size];
@@ -705,6 +706,7 @@ public class Diagram {
         return arrList;
     }
 
+    //Helper function to convert Fields ArrayList to Array
     public String[] convertFieldListArray(String className){
         Class clas = getClass(className);
         int size = clas.fields.size();
@@ -715,6 +717,7 @@ public class Diagram {
         return arrList;
     }
 
+    //Helper function to convert Methods ArrayList to Array
     public String[] convertMethodListArray(String className){
         Class clas = getClass(className);
         int size = clas.methods.size();
@@ -725,6 +728,7 @@ public class Diagram {
         return arrList;
     }
 
+    //Helper function to convert Parameters ArrayList to Array
     public String[] convertMethodParamsListArray(String className, String methodName){
         Class clas = getClass(className);
         Method metho = getMethod(className, methodName);
@@ -736,11 +740,13 @@ public class Diagram {
         return arrList;
     }
 
+    //Helper function to get method size
     public int getMethodSize(String className){
         Class clas = getClass(className);
         return clas.methods.size();
     }
 
+    //Helper function to get field size
     public int getFieldSize(String className){
         Class clas = getClass(className);
         return clas.fields.size();

@@ -8,25 +8,28 @@ import java.awt.*;
 
 public class GUIPopup {
 
+    //GUI Save File Popup
     public String guiSavePop(){
         JFrame saveFilePop = new JFrame("Save File");
         String getFileName = JOptionPane.showInputDialog(saveFilePop, "Enter File Name");
         return getFileName;
     }
     
+    //GUI Load File Popup
     public String guiLoadPop(){
         JFrame loadFilePop = new JFrame("Load File");
         String getFileName = JOptionPane.showInputDialog(loadFilePop, "Enter File Name");
         return getFileName;
     }
 
+    //GUI Create Method Popup
     public String[] createMethodPop(String[] input){
         //Create the Frame and Panel
         JFrame getMethodPop = new JFrame("Create Method");
         JPanel panel = new JPanel(new GridLayout(2, 1));
 
         //Creating Input Field 1
-        JLabel methodNameLabel = new JLabel("Select Method Name:");
+        JLabel methodNameLabel = new JLabel("Enter Method Name:");
         panel.add(methodNameLabel);
         JTextField methodName = new JTextField(5);
         panel.add(methodName);
@@ -44,6 +47,7 @@ public class GUIPopup {
         return input;
     }
 
+    //GUI Get Class Popup
     public String getClassPop(String[] classes){
         //Create the Frame and Panel
         JFrame getClassPop = new JFrame("Class Selector");
@@ -61,6 +65,7 @@ public class GUIPopup {
         return String.valueOf(classNames.getSelectedItem());
     }
 
+    //GUI Get Method Popup
     public String getMethodPop(String[] methods){
         //Create the Frame and Panel
         JFrame getMethodPop = new JFrame("Method Selector");
@@ -78,7 +83,10 @@ public class GUIPopup {
         return String.valueOf(names.getSelectedItem());
     }
 
-    public ArrayList<String> getParams(ArrayList<String> array) {  
+    //GUI Get Parameters Popup
+    public ArrayList<String> getParams() {  
+        ArrayList<String> array = new ArrayList<>();
+
         //Create the Frame and Panel
         JFrame framePop = new JFrame("Class Selector");
         JPanel panel = new JPanel(new GridLayout(3, 1));
@@ -107,7 +115,7 @@ public class GUIPopup {
         String input1 = text1.getText();
         String input2 = text2.getText();
         
-        if(text1.getText().isEmpty() || text2.getText().isEmpty()){
+        if((text1.getText().isEmpty() || text2.getText().isEmpty()) && moreBox.isSelected()){
             JOptionPane.showMessageDialog(framePop, "ERROR: Previous entries were invalid and not recorded ");
         }
         else{
@@ -115,11 +123,12 @@ public class GUIPopup {
             array.add(input1);
         }
         if(moreBox.isSelected()){
-            getParams(array);            
+            array.addAll(getParams());            
         }
         return array;
     }
 
+    //GUI Create Feild Popup
     public String[] createFieldPop(String[] classes, String[] input){
         //Create the Frame and Panel
         JFrame framePop = new JFrame("Create Field");
@@ -153,6 +162,7 @@ public class GUIPopup {
         return input;
     }
 
+    //GUI Create Relationship Popup
     public String[] createRelationshipPop(String[] types, String[] classes, String[] input){
         //Create the Frame and Panel
         JFrame framePop = new JFrame("Create Relationship");
@@ -206,26 +216,29 @@ public class GUIPopup {
         return String.valueOf(classNames.getSelectedItem());
     }
 
-    public ArrayList<String> deleteMethodPop(){
-        ArrayList<String> details = new ArrayList<String>();
+    //GUI Delete Method Popup
+    public String deleteMethodPop(String[] methods){
+        //Create the Frame and Panel
+        JFrame methodDelPop = new JFrame("Delete Method");
+        JPanel panel = new JPanel(new GridLayout(2, 2));
 
-        JFrame createMethodPop = new JFrame("Create Method");
-        // 0
-        details.add(JOptionPane.showInputDialog(createMethodPop, "Enter Method Name"));
+        //Creating Input Field 1
+        JLabel methodNameLabel = new JLabel("Select Method Name:");
+        panel.add(methodNameLabel);
+        JComboBox methodNames = new JComboBox(methods);
+        methodNames.setSelectedIndex(-1);
+        panel.add(methodNames);
 
-        // 1
-        details.add(JOptionPane.showInputDialog(createMethodPop, "Enter class of method to delete"));
-
-        // 2
-        details.add(JOptionPane.showInputDialog(createMethodPop, "Enter type of method"));
-
-        return details;
+        //Creating the frame and getting the data
+        methodDelPop.add(panel);
+        JOptionPane.showMessageDialog(methodDelPop, panel);
+        return String.valueOf(methodNames.getSelectedItem());
     }
 
     //Popup Window for Delete Field
     public String deleteFieldPop(String[] fields){
         //Create the Frame and Panel
-        JFrame deleteFieldPop = new JFrame("Delete Field");
+        JFrame fieldDelPop = new JFrame("Delete Field");
         JPanel panel = new JPanel(new GridLayout(2, 2));
 
         //Creating Input Field 1
@@ -236,8 +249,8 @@ public class GUIPopup {
         panel.add(fieldNames);
 
         //Creating the frame and getting the data
-        deleteFieldPop.add(panel);
-        JOptionPane.showMessageDialog(deleteFieldPop, panel);
+        fieldDelPop.add(panel);
+        JOptionPane.showMessageDialog(fieldDelPop, panel);
         return String.valueOf(fieldNames.getSelectedItem());
     }
 
@@ -269,6 +282,7 @@ public class GUIPopup {
         return input;
     }
 
+    //GUI Rename Class Popup
     public String[] renameClassPop(String[] classes, String[] input){
         JFrame renameClassPop = new JFrame("Rename Class");
         JPanel panel = new JPanel(new GridLayout(2, 2));
@@ -321,6 +335,7 @@ public class GUIPopup {
         return input;
     }
 
+    //GUI Modify Method Parameter
     public String[] editMethodSingleParamPop(String[] params, String[] input){
         //Create the Frame and Panel
         JFrame framePop = new JFrame("Modify Method Parameters");
@@ -354,10 +369,7 @@ public class GUIPopup {
         return input;
     }
 
-    public void editMethodParamsPop(){
-
-    }
-
+    //GUI Rename Field Popup
     public String[] renameFieldPop(String[] fields, String[] input){
         //Create the Frame and Panel
         JFrame framePop = new JFrame("Rename Field");
@@ -384,6 +396,7 @@ public class GUIPopup {
         return input;
     }
 
+    //GUI Delete Single Parameter Popup
     public String deleteSingleParamPop(String[] params, String[] input){
         //Create the Frame and Panel
         JFrame framePop = new JFrame("Edit Single Parameter");
@@ -410,6 +423,7 @@ public class GUIPopup {
         //For future use
     }
     
+    //GUI Create Class Popup
     public String guiCreateClassPop(){
         JFrame createClassPop = new JFrame("Create Class");
         String getClassName = JOptionPane.showInputDialog(createClassPop, "Enter Class Name");
