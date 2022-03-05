@@ -6,6 +6,8 @@ import UML.controller.Listing;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.HashSet;
 
 public class Diagram {
 
@@ -197,7 +199,8 @@ public class Diagram {
     // Create Method
     // Command: create method <class_name> <method_name> <type> <param>
     public String createMethod(String className, String type, String methodName, ArrayList <String> parameter)
-    {
+    {   
+        Set <String> paramNames = new HashSet<String>();
         Class c = getClass(className);
         //checks if class exists
         if(c == null)
@@ -216,6 +219,11 @@ public class Diagram {
         {
             return error + " in method name";
         }
+
+        if((parameter.size() % 2) != 0)
+        {
+            return "ERROR: Parameter list length is incorrect";
+        }
         //checks parameter list
         for(int i = 0; i < parameter.size() - 1; i += 2)
         {
@@ -224,6 +232,12 @@ public class Diagram {
             {
                 return error + " in method parameter name";
             }
+
+            if (!paramNames.add(parameter.get(i)))
+            {
+                return "ERROR: Duplicate parameter name \"" + parameter.get(i) + "\" in parameter list";
+            }
+
             error = validation_check(parameter.get(i + 1));
             if(!error.equals(""))
             {
@@ -240,12 +254,11 @@ public class Diagram {
     }
 
     //Delete method
-    //Command: delete method <className> <method_name> <method_type> <parameters>
-    public String deleteMethod(String className, String type, String methodName)
+    //Command: delete method <className> <method_name>
+    public String deleteMethod(String className, String methodName)
     {
         //Check if class exists
         Class tempClass = getClass(className);
-        ArrayList <String> parameter = new ArrayList <String> ();
         if(tempClass != null)
         {
             Method tempMethod = getMethod(className, methodName);
@@ -412,16 +425,17 @@ public class Diagram {
     //Change parameters method
     //Command: Change parameters <className> <method_name> <parameters>
     public String changeParameters(String className, String method_name, String[] param){
-
+        Set <String> paramNames = new HashSet<String>();
         ArrayList <String> parameter = new ArrayList <String> ();
         String error = "";
         //Check if class exists
         Class tempClass = getClass(className);
-        if(tempClass != null){
+        if(tempClass != null)
+        {
             //Check if method exists
             Method tempMethod = getMethod(className, method_name);
             if(tempMethod != null){
-                for(int i = 5; i < param.length - 1; i += 2)
+                for(int i = 4; i < param.length - 1; i += 2)
                 {
                     error = validation_check(param[i]);
                     if(!error.equals(""))
@@ -429,6 +443,12 @@ public class Diagram {
                         return error + " in method parameter name";
                     }
                     error = validation_check(param[i + 1]);
+
+                    if (!paramNames.add(param[i]))
+                    {
+                        return "ERROR: Duplicate parameter name \"" + parameter.get(i) + "\" in parameter list";
+                    }
+
                     if(!error.equals(""))
                     {
                         return error + " in method parameter type";
@@ -436,7 +456,12 @@ public class Diagram {
                     parameter.add(param[i]);
                     parameter.add(param[i + 1]);
                 }
-                
+
+                if((param.length % 2) != 0)
+                {
+                    return "ERROR: Parameter list length is incorrect";
+                }
+
                 tempMethod.parameters.clear();
                 for(int i = 0; i < parameter.size() - 1; i += 2)
                 {
@@ -456,7 +481,7 @@ public class Diagram {
     }
 
     //Delete parameter method
-    //Command: Delete parameter <className> <method_name> <method_type> <parameter>
+    //Command: Delete parameter <className> <method_name> <parameter>
     public String deleteParameter(String className, String method_name, String parameter){
 
         ArrayList <String> parameters = new ArrayList <String> ();
@@ -500,7 +525,7 @@ public class Diagram {
     }
 
         //Delete parameters method
-    //Command: Delete parameters <className> <method_name> <method_type>
+    //Command: Delete parameters <className> <method_name>
     public String deleteParameters(String className, String method_name){
 
         String error = "";

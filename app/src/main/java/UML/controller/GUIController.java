@@ -103,7 +103,7 @@ public class GUIController {
 
     public String deleteMethodCtr(){
         ArrayList<String> details = guiPop.deleteMethodPop();
-        String message = dg.deleteMethod(details.get(1), details.get(2), details.get(0));
+        String message = dg.deleteMethod(details.get(1), details.get(0));
         return message;
     }
 

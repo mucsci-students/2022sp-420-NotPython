@@ -79,6 +79,12 @@ public class RelationshipTest {
 
         d.createRelationship("realization", "4", "5");
         assertTrue("Relationship of type realization was not created", d.getRelationship("4", "5") != null);
+
+        d.deleteClass("1");
+        d.deleteClass("2");
+        d.deleteClass("3");
+        d.deleteClass("4");
+        d.deleteClass("5");
     }
 
 }
