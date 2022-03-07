@@ -1,17 +1,19 @@
-package UML;
+package UML.model;
 
 import java.util.ArrayList;
 
 public class Class 
 {
     public String name;
-    public ArrayList <Attribute> attributes;
+    public ArrayList <Field> fields;
+    public ArrayList <Method> methods;
 
     //class constructor
     public Class (String initName)
     {
         name = initName;
-        attributes = new ArrayList<Attribute>();
+        fields = new ArrayList<Field>();
+        methods = new ArrayList<Method>();
     }
 
     //rename class
