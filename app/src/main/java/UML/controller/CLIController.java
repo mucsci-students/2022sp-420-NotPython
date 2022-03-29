@@ -186,11 +186,19 @@ public class CLIController {
             return;
         }
 
+        if (lengthChecker (tokens, 1) && tokens[0].equalsIgnoreCase("redo"))
+        {
+            System.out.println(dg.redo());
+            return;
+        }
+
         // help user
         if (lengthChecker(tokens, 1) && tokens[0].equalsIgnoreCase("Help")) {
             System.out.printf("%-70s\n\t%-50s\n", "COMMANDS", "USAGE");
 
             System.out.printf("%-70s\n\t%-50s\n", "help", "shows this help message");
+            System.out.printf("%-70s\n\t%-50s\n", "undo", "undoes the previous command");
+            System.out.printf("%-70s\n\t%-50s\n", "redo", "redoes the previously undone command");
             System.out.printf("%-70s\n\t%-50s\n", "create class <class_name>", "creates a class with the given name");
             System.out.printf("%-70s\n\t%-50s\n", "rename class <old_name> <new_name>", "renames the class");
             System.out.printf("%-70s\n\t%-50s\n", "delete class <class_name>", "deletes the class");

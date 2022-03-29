@@ -25,7 +25,7 @@ public class DiagramTest {
 
         try
         {
-            Diagram cloned = dg.copy();
+            Diagram cloned = dg.clone();
             assertFalse("Clone is still the old object", dg == cloned);
             //cloned.classList.get(0).rename("Bob");
             //assertFalse("Names same", cloned.classList.get(0).name.equals(dg.classList.get(0).name) );
