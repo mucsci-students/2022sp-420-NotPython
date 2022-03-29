@@ -9,19 +9,53 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
 
-public class Diagram {
+public class Diagram{
 
     //Arraylist for classes
     public static ArrayList <Class> classList = new ArrayList <Class> ();
+
     //ArrayList for relationships goes here
     public static ArrayList <Relationship> relationships = new ArrayList <Relationship> ();
-    //ArrayList for fields
-    public static ArrayList <Field> fields = new ArrayList <Field> ();
-    Save save = new Save();
-    Load load = new Load();
+
     //Default constructor
     public Diagram()
     {
+
+    }
+
+    public Diagram (ArrayList <Class> classes, ArrayList <Relationship> relList)
+    {
+        classList = new ArrayList <Class>();
+        relationships = new ArrayList <Relationship>();
+        for (Class c: classes)
+        {
+            Class tempClass = new Class(c.name);
+
+            for (Field f : c.fields)
+            {
+                Field tempFld = new Field(f.name, f.type);
+                tempClass.fields.add(tempFld);
+            }
+            
+            for(Method m : c.methods)
+            {
+                ArrayList <String> parms = new ArrayList<>();
+                for (Parameter p : m.parameters)
+                {
+                    parms.add(p.name);
+                    parms.add(p.type);
+                }
+                Method tempMethod = new Method(m.name, m.type, parms);
+                tempClass.methods.add(tempMethod);
+            }
+
+            classList.add(tempClass);
+        }
+
+        for (Relationship r: relList)
+        {
+            relationships.add(new Relationship(r.type, r.src, r.dest));
+        }
 
     }
 
@@ -553,6 +587,8 @@ public class Diagram {
     //saves program to .json or .yaml file
     public String saveDiagram(String fileName)
     {
+        Save save = new Save();
+
         //makes sure end of file name has .json or .yaml
         if (!(fileName.toLowerCase().contains(".json"))) //|| fileName.toLowerCase().contains(".yaml")))
         {
@@ -566,6 +602,8 @@ public class Diagram {
     //loads diagram from .json or .yaml file
     public String loadDiagram(String fileName)
     {
+        Load load = new Load();
+
         Map <ArrayList<Class>, ArrayList<Relationship>> map = new HashMap<ArrayList<Class>, ArrayList<Relationship>>();
         //makes sure end of file name has .json or .yaml
         if (!fileName.toLowerCase().contains(".json"))
@@ -750,6 +788,10 @@ public class Diagram {
     public int getFieldSize(String className){
         Class clas = getClass(className);
         return clas.fields.size();
+    }
+
+    public Diagram copy(){
+        return new Diagram(this.classList, this.relationships);
     }
 
 }
