@@ -26,8 +26,9 @@ dependencies {
     implementation 'com.google.guava:guava:30.1.1-jre'
     implementation 'org.json:json:20211205'
 
-    //Jline library for tab completion issue
-    implementation 'org.jline:jline:3.21.0'
+    // https://mvnrepository.com/artifact/jline/jline
+    implementation 'jline:jline:2.6'
+
 }
 
 apply plugin: 'application'
