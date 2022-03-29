@@ -6,10 +6,10 @@ import java.util.ArrayList;
 
 //this is the driver class
 public class CLIController {
+    Diagram dg = new Diagram();
 
     public void processCommand(String[] tokens) {
 
-        Diagram dg = new Diagram();
         // All create commands go here with an if statement for class, relationship, and
         // attribute as second token
         if (tokens[0].equalsIgnoreCase("Create")) {
@@ -178,6 +178,14 @@ public class CLIController {
             System.out.println(dg.loadDiagram(tokens[1]));
             return;
         }
+
+        //undo previous command
+        if (lengthChecker (tokens, 1) && tokens[0].equalsIgnoreCase("undo"))
+        {
+            System.out.println(dg.undo());
+            return;
+        }
+
         // help user
         if (lengthChecker(tokens, 1) && tokens[0].equalsIgnoreCase("Help")) {
             System.out.printf("%-70s\n\t%-50s\n", "COMMANDS", "USAGE");
