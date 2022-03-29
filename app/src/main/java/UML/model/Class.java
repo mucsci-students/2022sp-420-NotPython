@@ -35,7 +35,7 @@ public class Class
                 parms.add(p.name);
                 parms.add(p.type);
             }
-            this.methods.add(new Method(m.name, m.type, parms));
+            this.methods.add(new Method(m.type, m.name, parms));
         }
     }
 

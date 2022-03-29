@@ -17,6 +17,9 @@ public class Diagram{
     //ArrayList for relationships goes here
     public ArrayList <Relationship> relationships;
 
+    //for undoing and redoing
+    UndoRedo undoRedo = new UndoRedo();
+
     //Default constructor
     public Diagram()
     {
@@ -42,6 +45,7 @@ public class Diagram{
 
     //Create class method
     //Command: Create class <classname>
+    //undoable operation
     public String createClass(String name)
     {   
         String error = validation_check(name);
@@ -57,13 +61,15 @@ public class Diagram{
             return "ERROR: Class with name \"" + name + "\" already exists";
         }
 
-        //add the new class to the classList
+        //take snapshot then add the new class to the classList
+        snapshot();
         classList.add(new Class(name));
         return "Class \"" + name + "\" Added";
     }
 
     //Rename class method
     //Command: rename class <old_name> <new_name>
+    //undoable operation
     public String renameClass(String oldName, String newName)
     {
         //get class with old name
@@ -86,16 +92,17 @@ public class Diagram{
             return error;
         }
 
-        //change class name and set object again in classlist
+        //take snapshot then change class name and set object again in classlist
+        snapshot();
         int index = classList.indexOf(tempClass);
         tempClass.rename(newName);
-
         classList.set(index, tempClass);
         return "Class \"" + oldName + "\" was renamed to \"" + newName + "\"";
     }
 
     //Deletes a class and all of it's fields and methods
     //Command: delete class <classname>
+    //undoable operation
     public String deleteClass(String className)
     {
         //if class exists then delete
@@ -104,6 +111,9 @@ public class Diagram{
         {
             return "ERROR: Class with name \"" + className + "\" does not exist";
         }
+
+        //snapshot for undo
+        snapshot();
 
         //delete all relationships associated with class <className>
         Relationship tempRelationship;
@@ -124,6 +134,7 @@ public class Diagram{
 
     //Create field
     //Command: create field <className> <field_type> <field_name>
+    //undoable operation
     public String createField(String clasName, String fldName, String fldType){
         //Check if class exists
         Class tempClass = getClass(clasName);
@@ -139,7 +150,9 @@ public class Diagram{
             {
                 return "ERROR: Field with name \"" + fldName + "\" for \"" + clasName + "\" already exists";
             }
-            //Add field to arraylist
+
+            //Take snapshot then add field to arraylist
+            snapshot();
             tempClass.fields.add(new Field(fldName, fldType));
             return "Field \"" + fldName + "\" of type \"" + fldType + "\" Added to Class \"" + clasName + "\"";
         }
@@ -151,6 +164,7 @@ public class Diagram{
 
     //Delete field
     //Command: delete field <className> <field_name>
+    //undoable operation
     public String deleteField(String clasName, String fldName)
     {
         //Check if class exists
@@ -162,7 +176,8 @@ public class Diagram{
             {
                 return "ERROR: Field with name \"" + fldName + "\" for \"" + clasName + "\" does not exist";
             }
-            //delete field from arraylist
+            //take a snapshot then delete field from arraylist
+            snapshot();
             tempClass.fields.remove(tempFld);
             return "Field \"" + fldName + "\" removed from Class \"" + clasName + "\"";
         }
@@ -204,7 +219,8 @@ public class Diagram{
             return error;
         }
 
-        //change field name and set object again in classlist
+        //snapshot then change field name and set object again in classlist\
+        snapshot();
         int index = tempClass.fields.indexOf(tempFld);
         tempFld.rename_field(newName);
         tempClass.fields.set(index, tempFld);
@@ -213,6 +229,7 @@ public class Diagram{
 
     // Create Method
     // Command: create method <class_name> <method_name> <type> <param>
+    //undoable operation
     public String createMethod(String className, String type, String methodName, ArrayList <String> parameter)
     {   
         Set <String> paramNames = new HashSet<String>();
@@ -264,12 +281,16 @@ public class Diagram{
         {
             return "ERROR: method already exists";
         }
+
+        //snapshot then create new method
+        snapshot();
         c.methods.add(new Method(type, methodName, parameter));
         return "Method with name \"" + methodName + "\" added to class \"" + className + "\"";
     }
 
     //Delete method
     //Command: delete method <className> <method_name>
+    //undoable operation
     public String deleteMethod(String className, String methodName)
     {
         //Check if class exists
@@ -281,7 +302,9 @@ public class Diagram{
             {
                 return "ERROR: Method with name \"" + methodName + "\" for \"" + className + "\" does not exist";
             }
-            //delete method from arraylist
+
+            //snapshot then delete method from arraylist
+            snapshot();
             tempClass.methods.remove(tempMethod);
             return "Method \"" + methodName + "\" removed from Class \"" + className + "\"";
         }
@@ -293,6 +316,7 @@ public class Diagram{
 
     //Rename method
     //Command: rename method <class_name> <old_name> <new_name> 
+    //undoable command
     public String renameMethod(String clas, String oldName, String newName)
     {
         //Check if class exists
@@ -321,7 +345,8 @@ public class Diagram{
             return error;
         }
 
-        //change method name and set object in classlist
+        //snapshot then change method name and set object in classlist
+        snapshot();
         Method tempMtd = getMethod(clas, oldName);
         int index = tempClass.methods.indexOf(tempMtd);
         tempMtd.rename_method(newName);
@@ -331,6 +356,7 @@ public class Diagram{
 
     //create relationship
     //Command: create relationship <relationship_type> <src> <dest>
+    //undoable command
     public String createRelationship(String type, String src, String dest)
     {
         //check to see if source exists already
@@ -371,7 +397,8 @@ public class Diagram{
             return "ERROR: Relationship from " + src + " to " + dest +" of type " + type + " already exists";
         }
 
-        //add the new relationship to the relationship list
+        //snapshot then add the new relationship to the relationship list
+        snapshot();
         relationships.add(new Relationship(type, src, dest));
         return "Relationship from " + src + " to " + dest + " of type " + type + " added";
     }
@@ -379,6 +406,7 @@ public class Diagram{
 
     // delete relationship method
     //Command: delete relationship <src> <dest>
+    //undoable command
     public String deleteRelationship(String src, String dest)
     {
         //if relationship exists then delete
@@ -388,13 +416,15 @@ public class Diagram{
             return "ERROR: Relationship from " + src + " to " + dest +" does not exist";
         }
 
-        //delete the relationship from the relationship list
+        //snapshot then delete the relationship from the relationship list
+        snapshot();
         relationships.remove(tempRelationship);
         return "Relationship from " + src + " to " + dest +" deleted";
     }
 
     //Change parameter method
     //Command: Change parameter <className> <method_name> <old_parameter> <new_parameter> <new_parameter_type>
+    //undoable command
     public String changeParameter(String className, String method_name, String old_parameter, String new_parameter, String new_parameter_type){
 
         //Check if class exists
@@ -418,6 +448,9 @@ public class Diagram{
                     {
                         return error + " in new parameter type";
                     }
+
+                    //snapshot then change parameter name
+                    snapshot();
                     tempParameter.name = new_parameter;
                     tempParameter.type = new_parameter_type;
                     return "Parameter with name \"" + old_parameter + "\" changed to \"" + new_parameter + "\" with type \"" + new_parameter_type + "\"";
@@ -439,6 +472,7 @@ public class Diagram{
 
     //Change parameters method
     //Command: Change parameters <className> <method_name> <parameters>
+    //undoable command
     public String changeParameters(String className, String method_name, String[] param){
         Set <String> paramNames = new HashSet<String>();
         ArrayList <String> parameter = new ArrayList <String> ();
@@ -477,6 +511,8 @@ public class Diagram{
                     return "ERROR: Parameter list length is incorrect";
                 }
 
+                //snapshot then change the parameters
+                snapshot();
                 tempMethod.parameters.clear();
                 for(int i = 0; i < parameter.size() - 1; i += 2)
                 {
@@ -497,6 +533,7 @@ public class Diagram{
 
     //Delete parameter method
     //Command: Delete parameter <className> <method_name> <parameter>
+    //undoable command
     public String deleteParameter(String className, String method_name, String parameter){
 
         ArrayList <String> parameters = new ArrayList <String> ();
@@ -516,6 +553,9 @@ public class Diagram{
                             parameters.add(p.type);
                         }
                     }
+
+                    //snapshot then create new list of parameters
+                    snapshot();
                     tempMethod.parameters.clear();
                     for(int i = 0; i < parameters.size() - 1; i += 2)
                     {
@@ -539,8 +579,9 @@ public class Diagram{
         }
     }
 
-        //Delete parameters method
+    //Delete parameters method
     //Command: Delete parameters <className> <method_name>
+    //undoable command
     public String deleteParameters(String className, String method_name){
 
         String error = "";
@@ -550,6 +591,7 @@ public class Diagram{
             //Check if method exists
             Method tempMethod = getMethod(className, method_name);
             if(tempMethod != null){
+                snapshot();
                 tempMethod.parameters.clear();
                 return "All parameters removed from method \"" + method_name + "\"";
             }
@@ -770,14 +812,30 @@ public class Diagram{
         return clas.fields.size();
     }
 
-    public Diagram copy(){
+    //creates clone of current diagram
+    public Diagram clone(){
         return new Diagram(this.classList, this.relationships);
     }
 
+    //takes a snapshot of the current state of the diagram
     private void snapshot()
     {
-        UndoRedo undo = new UndoRedo();
-        undo.snapshotDiagram(copy());
+        undoRedo.snapshotDiagram(clone());
     }
+    
+    //undo command
+    public String undo()
+    {   
+        //check if we can undo first
+        if (!undoRedo.canUndo())
+        {
+            return "ERROR: No undoable operations have been completed";
+        }
 
+        //actually undo if no error
+        Diagram old = undoRedo.undo(copy());
+        this.classList = new ArrayList <Class> (old.classList);
+        this.relationships = new ArrayList <Relationship> (old.relationships);
+        return "Undo successful";
+    }
 }

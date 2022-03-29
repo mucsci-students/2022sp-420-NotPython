@@ -185,8 +185,8 @@ public class LoadTest
         parms.add("type3");
         parms.add("name4");
         parms.add("type4");
-        Diagram dg = new Diagram();
-        dg.createMethod("cool", "return_type", "method_name", parms);
+
+        dc.createMethod("cool", "return_type", "method_name", parms);
 
         dc.saveDiagram("test.json");
 
@@ -216,7 +216,7 @@ public class LoadTest
         assertTrue("Field class not loaded", dc.getField(clas, "class") != null);
         assertTrue("Field silly not loaded", dc.getField(clas, "silly") != null);
 
-        Method m = dg.getMethod("cool", "method_name");
+        Method m = dc.getMethod("cool", "method_name");
         assertTrue("method not loaded", m.type.equals("return_type"));
         assertTrue("method name not set correctly", m.name.equals("method_name"));
 
@@ -230,10 +230,6 @@ public class LoadTest
 
         assertTrue("Relationship from bar to class not loaded", dc.getRelationship("cool", "bar") != null);
         assertTrue("Relationship from bar to class not loaded", dc.getRelationship("bar", "class") != null);
-
-        dc.classList.clear();
-        dc.relationships.clear();
-        dc.saveDiagram("test.json");
     }
 }
 

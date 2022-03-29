@@ -11,6 +11,13 @@ public class GUIController {
     Diagram dg = new Diagram();
     GUIPopup guiPop = new GUIPopup();
 
+    //Undo File GUI
+    public String guiUndoCtr(){
+        String message;
+        message = dg.undo();
+        return message;
+    }
+    
     //Save File GUI
     public String guiSaveCtr(){
         String message;

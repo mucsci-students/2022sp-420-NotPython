@@ -53,9 +53,11 @@ public class GUI {
         mainFrame.add("South", statusBarPanel);
 
         //File Menu Options
+        JMenuItem undoMenuItem = new JMenuItem("Undo");
         JMenuItem saveMenuItem = new JMenuItem("Save");
         JMenuItem loadMenuItem = new JMenuItem("Load");
         JMenuItem exitMenuItem = new JMenuItem("Exit");
+        fileMenu.add(undoMenuItem);
         fileMenu.add(saveMenuItem);
         fileMenu.add(loadMenuItem);
         fileMenu.add(exitMenuItem);
@@ -136,6 +138,12 @@ public class GUI {
         mainFrame.setVisible(true);
         
         //FILE LISTENER
+        //Undo button listener
+        undoMenuItem.addActionListener(e -> {
+            String message = guiCtr.guiUndoCtr(); 
+            listSelector();
+            statusMsg.setText(message);
+        });
         //Save button listener
         saveMenuItem.addActionListener(e -> {
             String message = guiCtr.guiSaveCtr(); 

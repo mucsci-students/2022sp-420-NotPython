@@ -30,11 +30,11 @@ public class UndoRedo {
 
     public boolean canUndo()
     {
-        return undo.empty();
+        return !undo.isEmpty();
     }
 
     public boolean canRedo()
     {
-        return redo.empty();
+        return !redo.isEmpty();
     }
 }
