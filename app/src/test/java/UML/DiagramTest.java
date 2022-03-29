@@ -27,8 +27,11 @@ public class DiagramTest {
         {
             Diagram cloned = dg.copy();
             assertFalse("Clone is still the old object", dg == cloned);
-            assertFalse("Class List is pointing to the old object" + dg.classList + cloned.classList, dg.classList == cloned.classList);
+            //cloned.classList.get(0).rename("Bob");
+            //assertFalse("Names same", cloned.classList.get(0).name.equals(dg.classList.get(0).name) );
             assertFalse("Relationship List is pointing to the old object", dg.relationships == cloned.relationships);
+            assertFalse("Class List is pointing to the old object" + dg.classList + cloned.classList, dg.classList == cloned.classList);
+            
 
             assertTrue("Different number of classes in clone versus the original", dg.classList.size() == cloned.classList.size());
             assertTrue("Different number of relationships in clone versus the original", dg.relationships.size() == cloned.relationships.size());

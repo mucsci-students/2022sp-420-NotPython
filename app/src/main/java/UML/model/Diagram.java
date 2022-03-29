@@ -12,15 +12,16 @@ import java.util.HashSet;
 public class Diagram{
 
     //Arraylist for classes
-    public static ArrayList <Class> classList = new ArrayList <Class> ();
+    public ArrayList <Class> classList;
 
     //ArrayList for relationships goes here
-    public static ArrayList <Relationship> relationships = new ArrayList <Relationship> ();
+    public ArrayList <Relationship> relationships;
 
     //Default constructor
     public Diagram()
     {
-
+        classList = new ArrayList <Class> ();
+        relationships = new ArrayList <Relationship> ();
     }
 
     public Diagram (ArrayList <Class> classes, ArrayList <Relationship> relList)
@@ -29,27 +30,7 @@ public class Diagram{
         relationships = new ArrayList <Relationship>();
         for (Class c: classes)
         {
-            Class tempClass = new Class(c.name);
-
-            for (Field f : c.fields)
-            {
-                Field tempFld = new Field(f.name, f.type);
-                tempClass.fields.add(tempFld);
-            }
-            
-            for(Method m : c.methods)
-            {
-                ArrayList <String> parms = new ArrayList<>();
-                for (Parameter p : m.parameters)
-                {
-                    parms.add(p.name);
-                    parms.add(p.type);
-                }
-                Method tempMethod = new Method(m.name, m.type, parms);
-                tempClass.methods.add(tempMethod);
-            }
-
-            classList.add(tempClass);
+            classList.add(new Class(c));
         }
 
         for (Relationship r: relList)
@@ -570,7 +551,6 @@ public class Diagram{
             Method tempMethod = getMethod(className, method_name);
             if(tempMethod != null){
                 tempMethod.parameters.clear();
-                    
                 return "All parameters removed from method \"" + method_name + "\"";
             }
             else
@@ -645,7 +625,7 @@ public class Diagram{
     }
 
     //Test method to find class
-    public static Class getClass (String name)
+    public Class getClass (String name)
     {
         for (Class c: classList)
         {
@@ -658,7 +638,7 @@ public class Diagram{
     }
 
     //gets an field with fldName for curClass
-    public static Field getField(Class curClass, String fldName)
+    public Field getField(Class curClass, String fldName)
     {
         //Check if field already exists
         for (Field f: curClass.fields)
@@ -672,7 +652,7 @@ public class Diagram{
     }
 
     //get a relationship for with name <name>
-    public static Relationship getRelationship(String src, String dest)
+    public Relationship getRelationship(String src, String dest)
     {
         for (Relationship r: relationships)
         {
@@ -686,7 +666,7 @@ public class Diagram{
 
 
     //Get a method with class name, method name and type
-    public static Method getMethod(String className, String methodName)
+    public Method getMethod(String className, String methodName)
     {
         Class c = getClass(className);
         if(c != null)
@@ -703,7 +683,7 @@ public class Diagram{
     }
 
     //Get a parameter with method, parameter name
-    public static Parameter getParameter(Method method, String parameterName)
+    public Parameter getParameter(Method method, String parameterName)
     {
         if(method != null)
         {
@@ -792,6 +772,12 @@ public class Diagram{
 
     public Diagram copy(){
         return new Diagram(this.classList, this.relationships);
+    }
+
+    private void snapshot()
+    {
+        UndoRedo undo = new UndoRedo();
+        undo.snapshotDiagram(copy());
     }
 
 }

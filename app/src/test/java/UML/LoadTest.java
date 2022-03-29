@@ -159,9 +159,6 @@ public class LoadTest
     public void testLoadEverything()
     {
         Diagram dc = new Diagram();
-        
-        dc.classList.clear();
-        dc.relationships.clear();
 
         dc.createClass("cool");
         dc.createClass("bar");
