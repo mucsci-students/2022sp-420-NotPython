@@ -27,6 +27,12 @@ public class UndoRedo {
         return dg;
     }
 
+    public Diagram redo(Diagram state)
+    {
+        Diagram dg = redo.pop();
+        undo.push(state);
+        return dg;
+    }
 
     public boolean canUndo()
     {

@@ -833,9 +833,24 @@ public class Diagram{
         }
 
         //actually undo if no error
-        Diagram old = undoRedo.undo(copy());
+        Diagram old = undoRedo.undo(clone());
         this.classList = new ArrayList <Class> (old.classList);
         this.relationships = new ArrayList <Relationship> (old.relationships);
         return "Undo successful";
+    }
+
+    //redo command
+    public String redo()
+    {
+        if (!undoRedo.canRedo())
+        {
+            return "ERROR: No command has been undone";
+        }
+
+        //actually redo if no error
+        Diagram old = undoRedo.redo(clone());
+        this.classList = new ArrayList <Class> (old.classList);
+        this.relationships = new ArrayList <Relationship> (old.relationships);
+        return "Redo successful";
     }
 }

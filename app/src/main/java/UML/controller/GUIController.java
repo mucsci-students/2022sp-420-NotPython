@@ -13,11 +13,14 @@ public class GUIController {
 
     //Undo File GUI
     public String guiUndoCtr(){
-        String message;
-        message = dg.undo();
-        return message;
+        return dg.undo();
     }
     
+    //Undo File GUI
+    public String guiRedoCtr(){
+        return dg.redo();
+    }
+
     //Save File GUI
     public String guiSaveCtr(){
         String message;
