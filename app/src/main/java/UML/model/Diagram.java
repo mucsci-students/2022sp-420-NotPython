@@ -359,6 +359,11 @@ public class Diagram{
     //undoable command
     public String createRelationship(String type, String src, String dest)
     {
+        if (src.equals(dest))
+        {
+            return "ERROR: relationship cannot exist between a class and itself";
+        }
+
         //check to see if source exists already
         if (getClass(src) == null)
         {
