@@ -13,7 +13,7 @@ public class Save {
 
   }
 
-  // pass both class and atrribute objects, then iterate through attributes, make
+  // pass both class and attribute objects, then iterate through attributes, make
   // relationships whole other section
   public void saveFile(String fileName, ArrayList<Class> classes, ArrayList<Relationship> relations) {
 
@@ -103,6 +103,11 @@ public class Save {
         classString += "\n\t\t";
       }
     }
+    classString += "],\n\t\t";
+    
+    classString += "\"location\": [";
+    classString += locationJSON(l);
+
     classString += "]";
     
     classString += "\n\t}";
@@ -161,5 +166,14 @@ public class Save {
     relationString += "\n\t\t\t\"type\": \"" + r.type + "\"";
     relationString += "\n\t\t}";
     return relationString;
+  }
+
+  //creates the json location representation
+  private String locationJSON(Relationship r)
+  {
+    String locationString = "\n\t\t\t{ ";
+    locationString += "\"x\": \"" + l.x + "\", \"y\": \"" + l.y + "\"";
+    locationString += " }";
+    return locationString;
   }
 }

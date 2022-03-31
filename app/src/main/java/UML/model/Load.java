@@ -97,6 +97,12 @@ public class Load {
                     c.methods.add(new Method(type, name, params));
                     params.clear();
                 }
+
+                //get the location for the class from the file
+                locationArray = (JSONArray) classObject.get("location");
+                x = locationArray.getInt("x");
+                y = locationArray.getInt("y");
+                c.locationArray.add(new locationArray(x, y));
                 
                 //add the class
                 classList.add(c);
@@ -122,8 +128,5 @@ public class Load {
         
         map.put(classList, relationshipList);
         return map;
-    }
-
-
-    
+    }   
 }

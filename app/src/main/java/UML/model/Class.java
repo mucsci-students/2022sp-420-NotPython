@@ -1,12 +1,14 @@
 package UML.model;
 
 import java.util.ArrayList;
+import UML.model.*;
 
 public class Class 
 {
     public String name;
     public ArrayList <Field> fields;
     public ArrayList <Method> methods;
+    public ArrayList <Location> location;
 
     //class constructor
     public Class (String initName)
@@ -21,6 +23,7 @@ public class Class
         this.name = other.name;
         this.fields = new ArrayList <Field>();
         this.methods = new ArrayList <Method>();
+        this.location = new ArrayList <Location>();
     
         for (Field f : other.fields)
         {
@@ -37,6 +40,9 @@ public class Class
             }
             this.methods.add(new Method(m.type, m.name, parms));
         }
+
+        this.location.add(new Location(other.x, other.y));
+    
     }
 
     //rename class
