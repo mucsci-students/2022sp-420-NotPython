@@ -44,7 +44,7 @@ public class CLI {
     {
         try {
 
-            StringsCompleter completer1 = new StringsCompleter("help", "exit");
+            StringsCompleter completer1 = new StringsCompleter("help", "exit", "undo", "redo");
 
             ArgumentCompleter completer2 = new ArgumentCompleter(
                 new StringsCompleter("create"),
