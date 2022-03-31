@@ -11,6 +11,8 @@ import jline.TerminalFactory;
 import jline.console.ConsoleReader;
 import jline.console.completer.*;
 
+import java.nio.file.Paths;
+
 public class CLI {
     
     public void runCLI ()
@@ -43,7 +45,15 @@ public class CLI {
     public void runCLITAB ()
     {
         try {
-            StringsCompleter completer = new StringsCompleter("help", "create", "rename", "delete", "change", "save", "load", "list", "exit");
+            StringsCompleter keywordsTier1Completer = new StringsCompleter("help", "create", "rename", "delete", "change", "save", "load", "list", "exit");
+            ArgumentCompleter completer1 = new ArgumentCompleter(
+                keywordsTier1Completer,
+                new StringsCompleter("class"),
+                new StringsCompleter("rename"),
+                new FileNameCompleter());
+            
+            FileNameCompleter completer2 = new FileNameCompleter();
+            Completer completer = new AggregateCompleter(completer1, completer2);
 
             ConsoleReader console = new ConsoleReader();
             console.setPrompt(">> ");
