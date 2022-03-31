@@ -50,39 +50,47 @@ public class GUIController {
     }
 
     //GUI Create Class GUI Controller
-    public String guiCreateClassCtr(){
+    public String[] guiCreateClassCtr(){
         String message;
+        String[] returning = new String [2];
         String className = guiPop.guiCreateClassPop();
+        returning[0] = className;
 
         if (className.equals(""))
         {
-            return "ERROR: class name not entered";
+            returning[1] = "ERROR: class name not entered";
+            return returning;
         }
 
         message = dg.createClass(className);
-        return message;
+        returning[1] = message;
+        return returning;
     }
 
     //GUI Create Method Controller
-    public String createMethodCtr(){
+    public String[] createMethodCtr(){
         JFrame x = new JFrame("Edit Parameters");
         ArrayList<String> params = new ArrayList<String>();
         String[] input = new String [2];
+        String[] values = new String [2];
         
         //Get Data
         int csize = dg.classList.size();
 
         if (csize == 0)
         {
-            return "ERROR: no classes exist";
+            values[1] = "ERROR: no classes exist";
+            return values;
         }
 
         String[] classes = dg.convertClassListArray();
         String className = guiPop.getClassPop(classes);
+        values[0] = className;
 
         if (className.equals(""))
         {
-            return "ERROR: class name not selected";
+            values[1] = "ERROR: class name not selected";
+            return values;
         }
 
         input = guiPop.createMethodPop(input);
@@ -91,20 +99,23 @@ public class GUIController {
 
         if (methodName.equals(""))
         {
-            return "ERROR: method name not entered";
+            values[1] = "ERROR: method name not entered";
+            return values;
         }
 
         String type =  input[1];
 
         if (type.equals(""))
         {
-            return "ERROR: method type not entered";
+            values[1] = "ERROR: method type not entered";
+            return values;
         }
 
         params = guiPop.getParams();
-
+        
         String message = dg.createMethod(className, type, methodName, params);
-        return message;
+        values[1] = message;
+        return values;
     }
 
     //GUI Create Field Controller
@@ -632,6 +643,14 @@ public class GUIController {
 
         String message = dg.deleteParameters(className, methodName);
         return message;
+    }
+
+    public String updateFieldsCtr(String className){
+        return dg.fieldsToString(className);
+    }
+
+    public String updateMethodsCtr(String className){
+        return dg.methodsToString(className);
     }
 
     //GUI List Classes Controller

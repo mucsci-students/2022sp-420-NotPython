@@ -6,11 +6,14 @@ import UML.controller.Listing;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
+import java.util.HashMap;
 
 public class GUI {
 
     GUIController guiCtr = new GUIController();
     Listing lister = new Listing();
+
+    HashMap <String, ClassBox> boxes = new HashMap <String, ClassBox>();
 
     JFrame mainFrame;
     JPanel mainPanel;
@@ -19,20 +22,23 @@ public class GUI {
     JMenuBar mainBar;
     JButton saveButton;
     JButton loadButton;
-    JTextArea listingArea;
 
     int listOption = 2;
     String listClassName;
+    int index = 0;
 
     public void GUI_view() { 
         mainFrame = new JFrame ("UML Editor");
-        mainPanel = new JPanel();
-        mainPanel.setBackground(Color.gray);
         mainFrame.getContentPane().setLayout(new BorderLayout());
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setSize(800, 650);
+        mainFrame.setSize(1000, 850);
         //mainFrame.setLayout(new GridLayout(2, 1));
         mainFrame.setLocationRelativeTo(null); 
+
+        mainPanel = new JPanel();
+        mainPanel.setBackground(Color.gray);
+        mainPanel.setLayout(null);
+        
 
         //Initialize the Main Bar
         mainBar = new JMenuBar();
@@ -123,19 +129,19 @@ public class GUI {
         mainBar.add(Box.createRigidArea(new Dimension(550,35)));
 
         //UML Display Area
-        listingArea = new JTextArea("UML Diagram\n", 38, 111);
-        listingArea.setEditable(false);
-        Font font = new Font("Courier New", Font.BOLD, 12);
-        listingArea.setFont(font);
-
+        // listingArea = new JTextArea("UML Diagram\n", 38, 111);
+        // listingArea.setEditable(false);
+        // Font font = new Font("Courier New", Font.BOLD, 12);
+        // listingArea.setFont(font);
+        //
         // Retreiving CLI Output 
-        PrintStream stdout = System.out;
-        stdout.println("Starting gui for console output"); 
-        GuiOutputStream rawout = new GuiOutputStream(listingArea);
-        System.setOut(new PrintStream(rawout, true));
+        // PrintStream stdout = System.out;
+        // stdout.println("Starting gui for console output"); 
+        // GuiOutputStream rawout = new GuiOutputStream(listingArea);
+        // System.setOut(new PrintStream(rawout, true));
 
-        mainPanel.add(mainBar);
-        mainPanel.add(new JScrollPane(listingArea));
+        mainFrame.add("North", mainBar);
+        //mainPanel.add(new JScrollPane(listingArea));
         mainFrame.add(mainPanel);
         mainFrame.setVisible(true);
         
@@ -173,15 +179,28 @@ public class GUI {
         //CREATE LISTENER
         //Create Class Button
         createClassMenuItem.addActionListener(e -> {
-            String message = guiCtr.guiCreateClassCtr();
-            listSelector();
+            String[] values = guiCtr.guiCreateClassCtr();
+            String className = values[0];
+            String message = values[1];
+
             statusMsg.setText(message); 
+            ClassBox box = new ClassBox(className, (200 * index) + index*2, 0);
+            boxes.put(className, box);
+            mainPanel.add(box.panel);
+            
+            updater()
+            index++;
+            
         });
         //Create Method Button
         createMethodMenuItem.addActionListener(e -> {
-            String message = guiCtr.createMethodCtr();
-            listSelector();
+            String[] values = guiCtr.createMethodCtr();
+            String message = values[1];
+            String className = values[0];
             statusMsg.setText(message);
+            boxes.get(className).updateMethods();
+
+            updater()
         });
         //Create Field Button
         createFieldMenuItem.addActionListener(e -> {
@@ -270,54 +289,60 @@ public class GUI {
         //List Classes
         listClasses.addActionListener(e -> {
             listOption = 2;
-            listClassesView();
+            //listClassesView();
             statusMsg.setText("Printed Diagram");
         });
         //List Relationships
         listRelationships.addActionListener(e -> {
             listOption = 3;
-            listRelationshipsView(); 
+            //listRelationshipsView(); 
             statusMsg.setText("Printed Diagram");
         });
 
     }
 
-    public void listSelector(){
-        if(listOption == 2){
-            listClassesView();
-        }
-        else if(listOption == 3){
-            listRelationshipsView();
-        }
-        else {
-            statusMsg.setText("ERROR: LISTING SELECTION INVALID");
-        }
+    public void updater(){
+        mainPanel.repaint();
+        mainPanel.validate();
+        mainFrame.repaint();
     }
 
-    public void listClassesView(){
-        listingArea.setText("UML Diagram\n");
-        guiCtr.listClassesCtr();
+    public void listSelector(){
+        // if(listOption == 2){
+        //     listClassesView();
+        // }
+        // else if(listOption == 3){
+        //     listRelationshipsView();
+        // }
+        // else {
+        //     statusMsg.setText("ERROR: LISTING SELECTION INVALID");
+        // }
     }
+
+    // public void listClassesView(){
+    //     listingArea.setText("UML Diagram\n");
+    //     guiCtr.listClassesCtr();
+    // }
 
     
-    public void listRelationshipsView(){
-        listingArea.setText("UML Diagram\n");
-        guiCtr.listRelationshipsCtr();
-    }
+    // public void listRelationshipsView(){
+    //     listingArea.setText("UML Diagram\n");
+    //     guiCtr.listRelationshipsCtr();
+    // }
 
-    //Gets Stream from Command Line
-    private class GuiOutputStream extends OutputStream {
-        JTextArea textArea;
+    // //Gets Stream from Command Line
+    // private class GuiOutputStream extends OutputStream {
+    //     JTextArea textArea;
 
-        public GuiOutputStream(JTextArea textArea) {
-            this.textArea = textArea;
-        }
+    //     public GuiOutputStream(JTextArea textArea) {
+    //         this.textArea = textArea;
+    //     }
 
-        @Override
-        public void write(int data) throws IOException {
-            textArea.append(new String(new byte[] { (byte) data }));
-        }
-    }
+    //     @Override
+    //     public void write(int data) throws IOException {
+    //         textArea.append(new String(new byte[] { (byte) data }));
+    //     }
+    // }
 
 }
 

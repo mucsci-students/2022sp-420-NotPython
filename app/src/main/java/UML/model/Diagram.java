@@ -858,4 +858,31 @@ public class Diagram{
         this.relationships = new ArrayList <Relationship> (old.relationships);
         return "Redo successful";
     }
+
+    public String fieldsToString(String className){
+        String text = "";
+        Class c = getClass(className);
+        
+        for (Field f: c.fields)
+        {
+            text += f.type + " " + f.name + "\n";
+        }
+        return text;
+    }
+
+    public String methodsToString(String className){
+        String text = "";
+        Class c = getClass(className);
+        for (Method m: c.methods)
+        {
+            text += m.type + " " + m.name;
+            text += "(";
+            for (Parameter p: m.parameters){
+                text += p.type + " " + p.name;
+            }
+            text += ") \n";
+
+        }
+        return text;
+    }
 }
