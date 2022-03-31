@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="UML.LoadTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2022-03-31T05:01:19" hostname="LAPTOP-FBDF2GPQ" time="0.013">
+  <properties/>
+  <testcase name="testLoadFields" classname="UML.LoadTest" time="0.007"/>
+  <testcase name="testLoadRelationships" classname="UML.LoadTest" time="0.001"/>
+  <testcase name="testLoadClasses" classname="UML.LoadTest" time="0.001"/>
+  <testcase name="testLoadMethods" classname="UML.LoadTest" time="0.001"/>
+  <testcase name="testLoadEverything" classname="UML.LoadTest" time="0.002"/>
+  <testcase name="testLoadParameters" classname="UML.LoadTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

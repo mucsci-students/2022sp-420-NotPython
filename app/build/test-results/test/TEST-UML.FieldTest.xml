@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="UML.FieldTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2022-03-31T05:01:19" hostname="LAPTOP-FBDF2GPQ" time="0.001">
+  <properties/>
+  <testcase name="FieldConstructorTest" classname="UML.FieldTest" time="0.0"/>
+  <testcase name="DiagramDeleteFieldTest" classname="UML.FieldTest" time="0.0"/>
+  <testcase name="DiagramAddFieldTest" classname="UML.FieldTest" time="0.0"/>
+  <testcase name="FieldObjectRenameTest" classname="UML.FieldTest" time="0.0"/>
+  <testcase name="DiagramRenameFieldTest" classname="UML.FieldTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

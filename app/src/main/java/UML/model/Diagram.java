@@ -865,7 +865,7 @@ public class Diagram{
         
         for (Field f: c.fields)
         {
-            text += f.type + " " + f.name + "\n";
+            text += " " + f.type + " " + f.name + "\n";
         }
         return text;
     }
@@ -875,10 +875,13 @@ public class Diagram{
         Class c = getClass(className);
         for (Method m: c.methods)
         {
-            text += m.type + " " + m.name;
-            text += "(";
+            text += " " + m.type + " " + m.name;
+            text += " (";
             for (Parameter p: m.parameters){
                 text += p.type + " " + p.name;
+                if(m.parameters.indexOf(p) != (m.parameters.size() - 1)){
+                    text += ", ";
+                }
             }
             text += ") \n";
 

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="UML.ParamMethodTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2022-03-31T05:01:19" hostname="LAPTOP-FBDF2GPQ" time="0.002">
+  <properties/>
+  <testcase name="changeParametersTest" classname="UML.ParamMethodTest" time="0.001"/>
+  <testcase name="TestDiagramDeleteMethod" classname="UML.ParamMethodTest" time="0.0"/>
+  <testcase name="testDiagramAddMethodWithParams" classname="UML.ParamMethodTest" time="0.0"/>
+  <testcase name="testMethodConstructor" classname="UML.ParamMethodTest" time="0.0"/>
+  <testcase name="TestDiagramRenameMethod" classname="UML.ParamMethodTest" time="0.0"/>
+  <testcase name="deleteParameterTest" classname="UML.ParamMethodTest" time="0.0"/>
+  <testcase name="deleteParametersTest" classname="UML.ParamMethodTest" time="0.0"/>
+  <testcase name="TestDiagramAddMethodNoParams" classname="UML.ParamMethodTest" time="0.0"/>
+  <testcase name="changeParameterTest" classname="UML.ParamMethodTest" time="0.0"/>
+  <testcase name="testParameterConstructor" classname="UML.ParamMethodTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

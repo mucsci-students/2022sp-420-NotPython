@@ -184,11 +184,11 @@ public class GUI {
             String message = values[1];
 
             statusMsg.setText(message); 
-            ClassBox box = new ClassBox(className, (200 * index) + index*2, 0);
+            ClassBox box = new ClassBox(className, (200 * index) + index*2, 0, guiCtr);
             boxes.put(className, box);
             mainPanel.add(box.panel);
             
-            updater()
+            updater();
             index++;
             
         });
@@ -200,13 +200,17 @@ public class GUI {
             statusMsg.setText(message);
             boxes.get(className).updateMethods();
 
-            updater()
+            updater();
         });
         //Create Field Button
         createFieldMenuItem.addActionListener(e -> {
-            String message = guiCtr.createFieldCtr();
-            listSelector();
+            String[] values = guiCtr.createFieldCtr();
+            String message = values[1];
+            String className = values[0];
             statusMsg.setText(message);
+            boxes.get(className).updateFields();
+
+            updater();
         });
         //Create Relationship Button
         createRelationshipMenuItem.addActionListener(e -> {

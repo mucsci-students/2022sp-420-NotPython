@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.util.*;
 
 import UML.model.*;
+import UML.model.Class;
 import UML.view.GUIPopup;
 
 public class GUIController {
@@ -119,43 +120,49 @@ public class GUIController {
     }
 
     //GUI Create Field Controller
-    public String createFieldCtr(){
+    public String[] createFieldCtr(){
         String[] input = new String[3];
+        String[] values = new String [2];
 
         //Get Data
         int size = dg.classList.size();
 
         if (size == 0)
         {
-            return "ERROR: no classes exist";
+            values[1] = "ERROR: no classes exist";
+            return values;
         }
 
         String[] classes = new String[size];
         classes = dg.convertClassListArray();
         input = guiPop.createFieldPop(classes, input); 
         String className = input[0];
-
+        values[0] = className;
         if (className.equals(""))
         {
-            return "ERROR: class name not selected";
+            values[1] = "ERROR: class name not selected";
+            return values;
         }
 
         String field = input[1];
 
         if (field.equals(""))
         {
-            return "ERROR: field name not entered";
+            values[1] = "ERROR: field name not entered";
+            return values;
         }
 
         String type = input[2];
 
         if (type.equals(""))
         {
-            return "ERROR: field type not entered";
+            values[1] = "ERROR: field type not entered";
+            return values;
         }
 
         String message = dg.createField(className, field, type);
-        return message;
+        values[1] = message;
+        return values;
     }
 
     //GUI Create Relationship Controller
@@ -645,6 +652,42 @@ public class GUIController {
         return message;
     }
 
+    //Method to know what is the length of the longest sentence in the class(ClassName, Field, Method)
+	public String maximumWord(String className) {
+		int maxLength = 0;
+        String maxWord = "";
+		Class classSample = dg.getClass(className);
+
+		if(classSample.name.length()>maxLength) {
+			maxLength = classSample.name.length();
+            maxWord = classSample.name;
+		}
+		
+		for(Field fld: classSample.fields) {
+			if((fld.name.length() + fld.type.length() + 1)>maxLength) {
+				maxLength = fld.name.length() + fld.type.length() + 2;
+                maxWord = fld.name + fld.type + "---";
+			}
+		}
+
+		int methodlength = 0;
+        String maxMethodWord = "";
+		for(Method m: classSample.methods) {
+			methodlength = m.name.length() + m.type.length() + 3;
+            maxMethodWord = m.name + m.type + "---";
+			for(Parameter p: m.parameters)
+			{
+				methodlength += p.name.length() + p.type.length() + 5;
+                maxMethodWord += p.name + p.type + "----";
+			}
+			if(methodlength > maxLength) {
+				maxLength = methodlength;
+                maxWord = maxMethodWord;
+			}
+		}
+		return maxWord;
+	}
+
     public String updateFieldsCtr(String className){
         return dg.fieldsToString(className);
     }
@@ -652,6 +695,8 @@ public class GUIController {
     public String updateMethodsCtr(String className){
         return dg.methodsToString(className);
     }
+
+
 
     //GUI List Classes Controller
     public void listClassesCtr(){
