@@ -11,8 +11,6 @@ import jline.TerminalFactory;
 import jline.console.ConsoleReader;
 import jline.console.completer.*;
 
-import java.nio.file.Paths;
-
 public class CLI {
     
     public void runCLI ()
@@ -42,23 +40,53 @@ public class CLI {
         }
     }
 
-    public void runCLITAB ()
+    public void runCLITabCompletion ()
     {
         try {
-            StringsCompleter keywordsTier1Completer = new StringsCompleter("help", "create", "rename", "delete", "change", "save", "load", "list", "exit");
-            ArgumentCompleter completer1 = new ArgumentCompleter(
-                keywordsTier1Completer,
-                new StringsCompleter("class"),
+
+            StringsCompleter completer1 = new StringsCompleter("help", "exit");
+
+            ArgumentCompleter completer2 = new ArgumentCompleter(
+                new StringsCompleter("create"),
+                new StringsCompleter("class", "field", "method", "relationship"),
+                NullCompleter.INSTANCE
+            );
+
+            ArgumentCompleter completer3 = new ArgumentCompleter(
                 new StringsCompleter("rename"),
-                new FileNameCompleter());
+                new StringsCompleter("class", "field", "method"),
+                NullCompleter.INSTANCE
+            );
+
+            ArgumentCompleter completer4 = new ArgumentCompleter(
+                new StringsCompleter("delete"),
+                new StringsCompleter("class", "field", "method", "relationship", "parameter", "parameters"),
+                NullCompleter.INSTANCE
+            );
+
+            ArgumentCompleter completer5 = new ArgumentCompleter(
+                new StringsCompleter("change"),
+                new StringsCompleter("parameter", "parameters"),
+                NullCompleter.INSTANCE
+            );
+
+            ArgumentCompleter completer6 = new ArgumentCompleter(
+                new StringsCompleter("list"),
+                new StringsCompleter("class", "classes", "relationships"),
+                NullCompleter.INSTANCE
+            );
+
+            ArgumentCompleter completer7 = new ArgumentCompleter(
+                new StringsCompleter("save", "load"),
+                new FileNameCompleter(),
+                NullCompleter.INSTANCE
+            );
             
-            FileNameCompleter completer2 = new FileNameCompleter();
-            Completer completer = new AggregateCompleter(completer1, completer2);
+            Completer completer = new AggregateCompleter(completer1, completer2, completer3, completer4, completer5, completer6, completer7);
 
             ConsoleReader console = new ConsoleReader();
-            console.setPrompt(">> ");
+            console.setPrompt("> ");
             console.addCompleter(completer);
-            String line = null;
             String input;
             String [] tokens = new String [100];
             CLIController controller = new CLIController();
@@ -72,7 +100,6 @@ public class CLI {
                 }
 
                 controller.processCommand(tokens);
-                //console.println(line);
             }
         } catch(IOException e) {
             e.printStackTrace();
