@@ -642,26 +642,27 @@ public class Diagram{
     {
         Load load = new Load();
 
-        Map <ArrayList<Class>, ArrayList<Relationship>> map = new HashMap<ArrayList<Class>, ArrayList<Relationship>>();
         //makes sure end of file name has .json or .yaml
         if (!fileName.toLowerCase().contains(".json"))
         {
             return "ERROR: Unsupported file type: please choose .json";
         }
         
-        //read files into data structure
-        map = load.loadFile(fileName);
-        for (Map.Entry<ArrayList<Class>, ArrayList<Relationship>> iter : map.entrySet())
-        {
-            classList = iter.getKey();
-            relationships = iter.getValue();
-            return "Successfully loaded from " + fileName;
-        }
-        
         //clear undo history when diagram is loaded
         undoRedo = new UndoRedo();
 
-        return "";
+        //read files into data structure
+        try{
+            Map <String, Object> map = load.loadFile(fileName);
+            classList = (ArrayList<Class>) map.get("classList");
+            relationships = (ArrayList<Relationship>) map.get("relationships");
+            locations = (HashMap <String, String>) map.get("locations");
+            return "Successfully loaded from " + fileName;
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return "Failed to load";
+        }
     }
 
     //List class
@@ -710,6 +711,10 @@ public class Diagram{
             }
         }
         return null;
+    }
+
+    public HashMap <String, String> getLocations(){
+        return locations;
     }
 
     //get a relationship for with name <name>

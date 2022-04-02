@@ -3,6 +3,7 @@ Install Gradle 7.2 if you don't have it<br>
 Make sure to have the most recent version of Java installed<br>
 json: 20211205<br>
 junit: 4.13.2<br>
+jline: 2.6<br>
 
 ## Step 1:
 Clone the repository to a folder you choose

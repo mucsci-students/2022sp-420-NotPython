@@ -48,9 +48,12 @@ public class GUIController {
         }
 
         message = dg.loadDiagram(fileName);
-        
-
         return message;
+    }
+
+    public HashMap <String, String> getLocationsCtr()
+    {
+        return dg.getLocations();
     }
 
     //GUI Create Class GUI Controller
