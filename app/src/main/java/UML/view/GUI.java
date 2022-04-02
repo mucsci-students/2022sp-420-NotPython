@@ -6,41 +6,53 @@ import UML.controller.Listing;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
+import java.util.HashMap;
 
 public class GUI {
 
     GUIController guiCtr = new GUIController();
     Listing lister = new Listing();
 
+    HashMap <String, ClassBox> boxes = new HashMap <String, ClassBox>();
+    HashMap <String, ArrowDraw> arrows = new HashMap <String, ArrowDraw>();
+
     JFrame mainFrame;
     JPanel mainPanel;
+    JPanel innerPanel;
     JPanel statusBarPanel;
     JLabel statusMsg;
     JMenuBar mainBar;
     JButton saveButton;
     JButton loadButton;
-    JTextArea listingArea;
 
     int listOption = 2;
     String listClassName;
+    int index = 0;
 
     public void GUI_view() { 
         mainFrame = new JFrame ("UML Editor");
-        mainPanel = new JPanel();
-        mainPanel.setBackground(Color.gray);
         mainFrame.getContentPane().setLayout(new BorderLayout());
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setSize(800, 650);
+        mainFrame.setSize(1000, 850);
         //mainFrame.setLayout(new GridLayout(2, 1));
         mainFrame.setLocationRelativeTo(null); 
+
+        mainPanel = new JPanel();
+        innerPanel = new JPanel();
+        JScrollPane jsp = new JScrollPane(mainPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        //mainPanel.add(jsp);
+        mainPanel.setPreferredSize(new Dimension (4000, 3000));
+        mainPanel.setBackground(Color.gray);
+        mainPanel.setLayout(null);        
 
         //Initialize the Main Bar
         mainBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
+        JMenu utilMenu = new JMenu("Utility");
         JMenu createMenu = new JMenu("Create");
         JMenu deleteMenu = new JMenu("Delete");
         JMenu editMenu = new JMenu("Modify");
-        JMenu listMenu = new JMenu("List");
+        //JMenu listMenu = new JMenu("List");
 
         //Status Bar
         statusBarPanel = new JPanel();
@@ -53,17 +65,20 @@ public class GUI {
         mainFrame.add("South", statusBarPanel);
 
         //File Menu Options
-        JMenuItem redoMenuItem = new JMenuItem("Redo");
-        JMenuItem undoMenuItem = new JMenuItem("Undo");
+        
         JMenuItem saveMenuItem = new JMenuItem("Save");
         JMenuItem loadMenuItem = new JMenuItem("Load");
         JMenuItem exitMenuItem = new JMenuItem("Exit");
-        fileMenu.add(redoMenuItem);
-        fileMenu.add(undoMenuItem);
         fileMenu.add(saveMenuItem);
         fileMenu.add(loadMenuItem);
         fileMenu.add(exitMenuItem);
-        
+
+        //Utility Menu Options
+        JMenuItem redoMenuItem = new JMenuItem("Redo");
+        JMenuItem undoMenuItem = new JMenuItem("Undo");
+        utilMenu.add(redoMenuItem);
+        utilMenu.add(undoMenuItem);
+
         //Create Menu Options
         JMenuItem createClassMenuItem = new JMenuItem("Class");
         JMenuItem createMethodMenuItem = new JMenuItem("Method");
@@ -107,62 +122,68 @@ public class GUI {
         editMenu.add(editMethodMenu);
         editMenu.add(editFieldMenu);
 
-        //List Menu Options
-        JMenuItem listClass = new JMenuItem("Class");
-        JMenuItem listClasses = new JMenuItem("Classes");
-        JMenuItem listRelationships = new JMenuItem("Relationships");
-        listMenu.add(listClasses);
-        listMenu.add(listRelationships);
+        // //List Menu Options
+        // JMenuItem listClass = new JMenuItem("Class");
+        // JMenuItem listClasses = new JMenuItem("Classes");
+        // JMenuItem listRelationships = new JMenuItem("Relationships");
+        // listMenu.add(listClasses);
+        // listMenu.add(listRelationships);
+
+
 
         mainBar.add(Box.createHorizontalGlue());
-        mainBar.add(fileMenu);
-        mainBar.add(createMenu);
-        mainBar.add(deleteMenu);
+        mainBar.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);       
         mainBar.add(editMenu);
-        mainBar.add(listMenu);
-        mainBar.add(Box.createRigidArea(new Dimension(550,35)));
+        mainBar.add(deleteMenu);
+        mainBar.add(createMenu);
+        mainBar.add(utilMenu);
+        mainBar.add(fileMenu);
+
+        //mainBar.add(listMenu);
+        //mainBar.add(Box.createRigidArea(new Dimension(550,35)));
 
         //UML Display Area
-        listingArea = new JTextArea("UML Diagram\n", 38, 111);
-        listingArea.setEditable(false);
-        Font font = new Font("Courier New", Font.BOLD, 12);
-        listingArea.setFont(font);
-
+        // listingArea = new JTextArea("UML Diagram\n", 38, 111);
+        // listingArea.setEditable(false);
+        // Font font = new Font("Courier New", Font.BOLD, 12);
+        // listingArea.setFont(font);
+        //
         // Retreiving CLI Output 
-        PrintStream stdout = System.out;
-        stdout.println("Starting gui for console output"); 
-        GuiOutputStream rawout = new GuiOutputStream(listingArea);
-        System.setOut(new PrintStream(rawout, true));
+        // PrintStream stdout = System.out;
+        // stdout.println("Starting gui for console output"); 
+        // GuiOutputStream rawout = new GuiOutputStream(listingArea);
+        // System.setOut(new PrintStream(rawout, true));
 
-        mainPanel.add(mainBar);
-        mainPanel.add(new JScrollPane(listingArea));
-        mainFrame.add(mainPanel);
+        mainFrame.add("North", mainBar);
+        //mainPanel.add(new JScrollPane(listingArea));
+        mainFrame.add(jsp);
+        //mainFrame.add(mainPanel);
         mainFrame.setVisible(true);
         
         //FILE LISTENER
         //Redo button listener
         redoMenuItem.addActionListener(e -> {
             String message = guiCtr.guiRedoCtr(); 
-            listSelector();
+            //listSelector();
             statusMsg.setText(message);
         });
 
         //Undo button listener
         undoMenuItem.addActionListener(e -> {
             String message = guiCtr.guiUndoCtr(); 
-            listSelector();
+            //listSelector();
             statusMsg.setText(message);
         });
         //Save button listener
         saveMenuItem.addActionListener(e -> {
             String message = guiCtr.guiSaveCtr(); 
-            listSelector();
+            //listSelector();
             statusMsg.setText(message);
         });
         //Load button listener
         loadMenuItem.addActionListener(e -> {
             String message = guiCtr.guiLoadCtr();
-            listSelector();
+            //listSelector();
             statusMsg.setText(message);
         });
         //Exit button listener
@@ -173,151 +194,269 @@ public class GUI {
         //CREATE LISTENER
         //Create Class Button
         createClassMenuItem.addActionListener(e -> {
-            String message = guiCtr.guiCreateClassCtr();
-            listSelector();
-            statusMsg.setText(message); 
+            String[] values = guiCtr.guiCreateClassCtr();
+            String className = values[0];
+            String message = values[1];
+
+            statusMsg.setText(message);
+            if(!message.contains("ERROR")){
+                //getCoordinates();
+                ClassBox box = new ClassBox(className, (200 * index) + 5, 5, guiCtr, this);
+                boxes.put(className, box);
+                updater();
+                index++;
+            } 
         });
         //Create Method Button
         createMethodMenuItem.addActionListener(e -> {
-            String message = guiCtr.createMethodCtr();
-            listSelector();
+            String[] values = guiCtr.createMethodCtr();
+            String message = values[1];
+            String className = values[0];
             statusMsg.setText(message);
+            if(!message.contains("ERROR")){
+                boxes.get(className).updateMethods();
+                updater();
+            }
         });
         //Create Field Button
         createFieldMenuItem.addActionListener(e -> {
-            String message = guiCtr.createFieldCtr();
-            listSelector();
+            String[] values = guiCtr.createFieldCtr();
+            String message = values[1];
+            String className = values[0];
             statusMsg.setText(message);
+            if(!message.contains("ERROR")){
+                boxes.get(className).updateFields();
+                updater();
+            }
         });
         //Create Relationship Button
         createRelationshipMenuItem.addActionListener(e -> {
-            String message = guiCtr.createRelationshipCtr(); 
-            listSelector();
+            String[] values = guiCtr.createRelationshipCtr();
+            String message = values[1];
+            String type = values[0];
+            String src = values[2];
+            String dest = values[3];
             statusMsg.setText(message);
+            if(!message.contains("ERROR")){
+                Graphics g = mainPanel.getGraphics();
+                ArrowDraw arrow = new ArrowDraw(boxes.get(src).panel, boxes.get(dest).panel, type, g);
+                arrow.setVisible(true);
+                arrow.setOpaque(false);
+                arrow.setLocation(0, 0);
+                arrow.setSize(4000, 3000);
+                arrows.put(src+dest, arrow);
+                mainPanel.add(arrow);
+                mainPanel.repaint();
+                updater();
+            }
         });
 
         //DELETE LISTENER
         //Delete Class Button
         deleteClassMenuItem.addActionListener(e -> {
-            String message = guiCtr.deleteClassCtr(); 
-            listSelector();
+            String[] values = guiCtr.deleteClassCtr();
+            String message = values[1];
+            String className = values[0];
             statusMsg.setText(message);
+            if(!message.contains("ERROR")){
+                boxes.remove(className);
+                updater();
+            }
         });
-        //Delete Class Button
+        //Delete Method Button
         deleteMethodMenuItem.addActionListener(e -> {
-            String message = guiCtr.deleteMethodCtr(); 
-            listSelector();
+            String[] values = guiCtr.deleteMethodCtr();
+            String message = values[1];
+            String className = values[0];
             statusMsg.setText(message);
+            if(!message.contains("ERROR")){
+                boxes.get(className).updateMethods();
+                updater();
+            }
         });
-        //Delete Class Button
+        //Delete Field Button
         deleteFieldMenuItem.addActionListener(e -> {
-            String message = guiCtr.deleteFieldCtr(); 
-            listSelector();
+            String[] values = guiCtr.deleteFieldCtr();
+            String message = values[1];
+            String className = values[0];
             statusMsg.setText(message);
+            if(!message.contains("ERROR")){
+                boxes.get(className).updateFields();
+                updater();
+            }
         });
-        //Delete Class Button
+        //Delete Relationship Button
         deleteRelationshipMenuItem.addActionListener(e -> {
             String message = guiCtr.deleteRelationshipCtr(); 
-            listSelector();
+            //listSelector();
             statusMsg.setText(message);
+            
         });
         //Delete Single Parameter Button
         deleteSingleParamMenuItem.addActionListener(e -> {
-            String message = guiCtr.deleteSingleParamCtr(); 
-            listSelector();
+            String[] values = guiCtr.deleteSingleParamCtr();
+            String message = values[1];
+            String className = values[0];
             statusMsg.setText(message);
+            if(!message.contains("ERROR")){
+                boxes.get(className).updateMethods();
+                updater();
+            }
         });
         //Delete Parameters Button
         deleteParamsMenuItem.addActionListener(e -> {
-            String message = guiCtr.deleteParamsCtr(); 
-            listSelector();
+            String[] values = guiCtr.deleteParamsCtr();
+            String message = values[1];
+            String className = values[0];
             statusMsg.setText(message);
+            if(!message.contains("ERROR")){
+                boxes.get(className).updateMethods();
+                updater();
+            }
         });
         
         //MODIFY LISTENER
         //Modify Class Name Button
         editClassnameItem.addActionListener(e -> {
-            String message = guiCtr.renameClassCtr(); 
-            listSelector();
+            String[] values = guiCtr.renameClassCtr();
+            String message = values[1];
+            String className = values[0];
+            String newName = values[2];
+            //System.out.println(className + " : " + newName);
             statusMsg.setText(message);
+            if(!message.contains("ERROR")){
+            ClassBox temp = boxes.get(className);
+                temp.rename(newName);
+                boxes.remove(className);
+                boxes.put(newName, temp);
+                updater();
+            }
         });
         //Modify Method Name Button
         editMethodnameItem.addActionListener(e -> {
-            String message = guiCtr.renameMethodCtr(); 
-            listSelector();
+            String[] values = guiCtr.renameMethodCtr();
+            String message = values[1];
+            String className = values[0];
             statusMsg.setText(message);
+            if(!message.contains("ERROR")){
+                boxes.get(className).updateMethods();
+                updater();
+            }
         });
         //Modify Method Single Param
         editMethodSingleParam.addActionListener(e -> {
-            String message = guiCtr.editMethodSingleParam(); 
-            listSelector();
+            String[] values = guiCtr.editMethodSingleParam();
+            String message = values[1];
+            String className = values[0];
             statusMsg.setText(message);
+            if(!message.contains("ERROR")){
+                boxes.get(className).updateMethods();
+                updater();
+            }
         });
         //Modify Method Params
         editMethodParamItem.addActionListener(e -> {
-            String message = guiCtr.editMethodParamsCtr(); 
-            listSelector();
+            String[] values = guiCtr.editMethodParamsCtr();
+            String message = values[1];
+            String className = values[0];
             statusMsg.setText(message);
+            if(!message.contains("ERROR")){
+                boxes.get(className).updateMethods();
+                updater();
+            }
         });
         //Modify Field Name
         editFieldnameItem.addActionListener(e -> {
-            String message = guiCtr.renameFieldCtr(); 
-            listSelector();
+            String[] values = guiCtr.renameFieldCtr();
+            String message = values[1];
+            String className = values[0];
             statusMsg.setText(message);
+            if(!message.contains("ERROR")){
+                boxes.get(className).updateFields();
+                updater();
+            }
         });
             
-        //LIST LISTENER
-        //List Classes
-        listClasses.addActionListener(e -> {
-            listOption = 2;
-            listClassesView();
-            statusMsg.setText("Printed Diagram");
-        });
-        //List Relationships
-        listRelationships.addActionListener(e -> {
-            listOption = 3;
-            listRelationshipsView(); 
-            statusMsg.setText("Printed Diagram");
-        });
+        // //LIST LISTENER
+        // //List Classes
+        // listClasses.addActionListener(e -> {
+        //     listOption = 2;
+        //     //listClassesView();
+        //     statusMsg.setText("Printed Diagram");
+        // });
+        // //List Relationships
+        // listRelationships.addActionListener(e -> {
+        //     listOption = 3;
+        //     //listRelationshipsView(); 
+        //     statusMsg.setText("Printed Diagram");
+        // });
 
     }
 
-    public void listSelector(){
-        if(listOption == 2){
-            listClassesView();
+    public void updater(){
+        mainPanel.removeAll();
+        for (HashMap.Entry<String, ClassBox> entry : boxes.entrySet()) {
+            String key = entry.getKey();
+            ClassBox box = entry.getValue();
+            mainPanel.add(box.panel);
         }
-        else if(listOption == 3){
-            listRelationshipsView();
-        }
-        else {
-            statusMsg.setText("ERROR: LISTING SELECTION INVALID");
+        
+        
+       
+        mainPanel.repaint();
+        arrowUpdater();
+        //mainPanel.validate();
+        
+    }
+
+    public void arrowUpdater(){
+        for (HashMap.Entry<String, ArrowDraw> entry : arrows.entrySet()) {
+            String key = entry.getKey();
+            ArrowDraw arrow = entry.getValue();
+            Graphics g = mainPanel.getGraphics();
+            arrow.arrowRedraw(g);
+            arrow.repaint();
+            mainPanel.add(arrow);
+            
         }
     }
 
-    public void listClassesView(){
-        listingArea.setText("UML Diagram\n");
-        guiCtr.listClassesCtr();
-    }
+    // public void listSelector(){
+    //     // if(listOption == 2){
+    //     //     listClassesView();
+    //     // }
+    //     // else if(listOption == 3){
+    //     //     listRelationshipsView();
+    //     // }
+    //     // else {
+    //     //     statusMsg.setText("ERROR: LISTING SELECTION INVALID");
+    //     // }
+    // }
+
+    // public void listClassesView(){
+    //     listingArea.setText("UML Diagram\n");
+    //     guiCtr.listClassesCtr();
+    // }
 
     
-    public void listRelationshipsView(){
-        listingArea.setText("UML Diagram\n");
-        guiCtr.listRelationshipsCtr();
-    }
+    // public void listRelationshipsView(){
+    //     listingArea.setText("UML Diagram\n");
+    //     guiCtr.listRelationshipsCtr();
+    // }
 
-    //Gets Stream from Command Line
-    private class GuiOutputStream extends OutputStream {
-        JTextArea textArea;
+    // //Gets Stream from Command Line
+    // private class GuiOutputStream extends OutputStream {
+    //     JTextArea textArea;
 
-        public GuiOutputStream(JTextArea textArea) {
-            this.textArea = textArea;
-        }
+    //     public GuiOutputStream(JTextArea textArea) {
+    //         this.textArea = textArea;
+    //     }
 
-        @Override
-        public void write(int data) throws IOException {
-            textArea.append(new String(new byte[] { (byte) data }));
-        }
-    }
+    //     @Override
+    //     public void write(int data) throws IOException {
+    //         textArea.append(new String(new byte[] { (byte) data }));
+    //     }
+    // }
 
 }
 
