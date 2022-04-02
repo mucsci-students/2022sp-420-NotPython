@@ -244,8 +244,8 @@ public class GUI {
         //Load button listener
         loadMenuItem.addActionListener(e -> {
             String message = guiCtr.guiLoadCtr();
-            //listSelector();
             undoRedo = new GUIUndoRedo();
+            loadIntoGUI();
             statusMsg.setText(message);
         });
         //Exit button listener
@@ -474,6 +474,34 @@ public class GUI {
             mainPanel.add(arrow);
             
         }
+    }
+
+    public void loadIntoGUI(){
+        String[] classListArray = guiCtr.getClassListArray();
+        //load classes into GUI
+        for(int i = 0; i < classListArray.length; i++){
+            String className = classListArray[i];
+
+            //FIX LOCATION LOADING
+
+            ClassBox box = new ClassBox(className, (200 * i) + 8, 8, guiCtr, this);
+            boxes.put(className, box);
+        }
+
+        //Load relationships
+        ArrayList <Relationship> rels = guiCtr.passRelationships();
+        Graphics g = mainPanel.getGraphics();
+        //initialize relationship arrows
+        for (Relationship r : rels)
+        {
+            ArrowDraw arrow = new ArrowDraw(boxes.get(r.src).panel, boxes.get(r.dest).panel, r.type, g);
+            arrow.setVisible(true);
+            arrow.setOpaque(false);
+            arrow.setLocation(0, 0);
+            arrow.setSize(4000, 3000);
+            arrows.put(r.src+r.dest, arrow);
+        }
+        updater();
     }
 
     //clone design pattern
