@@ -23,7 +23,7 @@ public class GUIController {
     }
 
     //Save File GUI
-    public String guiSaveCtr(){
+    public String guiSaveCtr(HashMap <String, String> locations){
         String message;
         String fileName = guiPop.guiSavePop();
 
@@ -32,6 +32,7 @@ public class GUIController {
             return "ERROR: file name not entered";
         }
 
+        dg.copyGUILocations(locations);
         message = dg.saveDiagram(fileName);
         return message;
     }

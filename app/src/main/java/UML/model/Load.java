@@ -53,7 +53,7 @@ public class Load {
             JSONArray methodArray, paramArray, fieldArray; 
             
             //create json objects to hold classes, relationships, fields, methods, and parameters
-            JSONObject classObject, relObject, fieldObject, methodObject, paramObject;
+            JSONObject classObject, relObject, fieldObject, methodObject, paramObject; //locObject;
 
             //string variables for declarations
             String className, name, type;
@@ -98,6 +98,8 @@ public class Load {
                     params.clear();
                 }
                 
+                //locObject = classObject.getJSONObject("location");
+
                 //add the class
                 classList.add(c);
             }

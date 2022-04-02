@@ -15,14 +15,14 @@ public class Save {
 
   // pass both class and atrribute objects, then iterate through attributes, make
   // relationships whole other section
-  public void saveFile(String fileName, ArrayList<Class> classes, ArrayList<Relationship> relations) {
+  public void saveFile(String fileName, ArrayList<Class> classes, ArrayList<Relationship> relations, HashMap <String, String> locs) {
 
     try {
 
       FileWriter writer = new FileWriter(fileName);
 
       if (fileName.contains(".json")) {
-        writer.write(diagramJSON(classes, relations));
+        writer.write(diagramJSON(classes, relations, locs));
       }
 
       writer.close();
@@ -33,12 +33,14 @@ public class Save {
   }
 
   //creates JSON diagram representation
-  private String diagramJSON(ArrayList<Class> classes, ArrayList<Relationship> relations)
+  private String diagramJSON(ArrayList<Class> classes, ArrayList<Relationship> relations, HashMap <String, String> locs)
   {
     String diagramString = "{\n\t\"classes\": [";
     for (Class c: classes)
     {
-      diagramString += classJSON(c);
+      String loc = locs.get(c.name);
+      String [] coords = loc.split(" ");
+      diagramString += classJSON(c, coords[0], coords[1]);
 
       if (classes.indexOf(c) < classes.size()-1)
       {
@@ -70,7 +72,7 @@ public class Save {
   }
 
   //creates json class representation
-  private String classJSON(Class c)
+  private String classJSON(Class c, String x, String y)
   {
     String classString = "\n\t{\n\t\t";
     classString += "\"name\": \"" + c.name + "\",\n\t\t";
@@ -103,10 +105,17 @@ public class Save {
         classString += "\n\t\t";
       }
     }
-    classString += "]";
-    
+    classString += "],";
+    classString += locationJSON(x, y); 
     classString += "\n\t}";
     return classString;
+  }
+
+  private String locationJSON(String x, String y){
+    String result = "\n\t\t\"location\":{";
+    result += "\"x\":" + x + ",\"y\":" + y;
+    result += "}";
+    return result;
   }
 
   //creates json field representation

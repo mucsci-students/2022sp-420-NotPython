@@ -237,8 +237,13 @@ public class GUI {
         });
         //Save button listener
         saveMenuItem.addActionListener(e -> {
-            String message = guiCtr.guiSaveCtr(); 
-            //listSelector();
+            HashMap <String, String> locations = new HashMap <String, String> ();
+            for (HashMap.Entry<String, ClassBox> entry : boxes.entrySet()){
+                String key = entry.getKey();
+                ClassBox temp = entry.getValue();
+                locations.put(key, temp.x_pos + " " + temp.y_pos);
+            }
+            String message = guiCtr.guiSaveCtr(locations);
             statusMsg.setText(message);
         });
         //Load button listener

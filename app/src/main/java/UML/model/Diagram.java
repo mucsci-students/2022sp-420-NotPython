@@ -17,6 +17,9 @@ public class Diagram{
     //ArrayList for relationships goes here
     public ArrayList <Relationship> relationships;
 
+    //HashMap for maintaining class locations
+    HashMap <String, String> locations;
+
     //for undoing and redoing
     UndoRedo undoRedo = new UndoRedo();
 
@@ -25,6 +28,7 @@ public class Diagram{
     {
         classList = new ArrayList <Class> ();
         relationships = new ArrayList <Relationship> ();
+        locations = new HashMap <String, String> ();
     }
 
     public Diagram (ArrayList <Class> classes, ArrayList <Relationship> relList)
@@ -64,6 +68,7 @@ public class Diagram{
         //take snapshot then add the new class to the classList
         snapshot();
         classList.add(new Class(name));
+        locations.put(name, "-1 -1");
         return "Class \"" + name + "\" Added";
     }
 
@@ -611,6 +616,11 @@ public class Diagram{
         }
     }
 
+    public void copyGUILocations(HashMap <String, String> locs)
+    {
+        locations = locs;
+    }
+
     //saves program to .json or .yaml file
     public String saveDiagram(String fileName)
     {
@@ -621,7 +631,8 @@ public class Diagram{
         {
             return "ERROR: Unsupported file type: please choose .json";
         }
-        save.saveFile(fileName, classList, relationships);
+
+        save.saveFile(fileName, classList, relationships, locations);
         return "Successfully saved to " + fileName;
 
     }
