@@ -7,7 +7,6 @@ import java.awt.*;
 import java.awt.Font;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class ClassBox {
@@ -21,7 +20,6 @@ public class ClassBox {
     int x_pos;
     int y_pos;
     int panLength;
-    int panHeight;
     int methodHeight;
     int fieldHeight;
 
@@ -47,20 +45,23 @@ public class ClassBox {
 
     public JPanel init(String className){
         panel.setBackground(Color.WHITE);
-        panel.setSize(150, 150);
-        panel.setLayout(new GridLayout(3, 1));
+        panel.setSize(100, 100);
+        BoxLayout boxLayout = new BoxLayout(panel, BoxLayout.Y_AXIS);
+        panel.setLayout(boxLayout);
         panel.setLocation(x_pos, y_pos);
-
         name = className;
         nameLbl = new JLabel(className);
-        nameLbl.setHorizontalAlignment(JLabel.CENTER);
+        nameLbl.setAlignmentX(Component.CENTER_ALIGNMENT);
     
+        Dimension minSize = new Dimension(10, 20);
+        Dimension prefSize = new Dimension(20, 20);
+        Dimension maxSize = new Dimension(60, 100);
         fieldArea.setEditable(false);
         fieldArea.setFont(font);
-        // fieldArea.setWrapStyleWord(true);
-        // fieldArea.setRows(9);
         methodArea.setEditable(false);
         methodArea.setFont(font);
+        fieldArea.add(new Box.Filler(minSize, prefSize, maxSize));
+        methodArea.add(new Box.Filler(minSize, prefSize, maxSize));
 
         panel.add(nameLbl);
         panel.add(fieldArea);
@@ -101,8 +102,6 @@ public class ClassBox {
     public void rename(String newName){
         this.name = newName;
         nameLbl.setText(newName);
-        // panel.repaint();
-        // panel.validate();
     }
 
     public void updateFields(){
@@ -110,15 +109,7 @@ public class ClassBox {
         getDisplayLength();
         int lines = fieldArea.getLineCount();
         fieldHeight = getDisplayHeight() * lines;
-        //int height = fieldHeight + methodHeight;
-        //System.out.println(height);
-        if (panHeight < 150){
-            panHeight = 150;
-        }
-        if (panLength < 150){
-            panLength = 150;
-        }
-        panel.setSize(panLength, panHeight);
+        panel.setSize(panLength, 15 + fieldHeight + methodHeight);
     }
 
     public void updateMethods(){
@@ -126,14 +117,7 @@ public class ClassBox {
         getDisplayLength();
         int lines = methodArea.getLineCount();
         methodHeight = getDisplayHeight() * lines;
-        //int height = fieldHeight + methodHeight;
-        if (panHeight < 150){
-            panHeight = 150;
-        }
-        if (panLength < 150){
-            panLength = 150;
-        }
-        panel.setSize(panLength, panHeight);
+        panel.setSize(panLength, 15 + fieldHeight + methodHeight);
     }
   
     public ClassBox clone()
@@ -145,7 +129,7 @@ public class ClassBox {
         AffineTransform affinetransform = new AffineTransform();     
         FontRenderContext frc = new FontRenderContext(affinetransform,true,true);     
         int textwidth = (int)(font.getStringBounds(guiCtr.maximumWord(name), frc).getWidth());
-        panLength = textwidth;
+        panLength = textwidth + 17;
     }
 
     private int getDisplayHeight(){
