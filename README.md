@@ -34,3 +34,6 @@ Type "gradle test"
 
 ## * For design patterns used, reference 
 design_patterns.md
+
+## * Model Test Coverage
+81%
