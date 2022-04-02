@@ -243,6 +243,8 @@ public class GUI {
         });
         //Load button listener
         loadMenuItem.addActionListener(e -> {
+            this.boxes = new HashMap <String, ClassBox> ();
+            this.arrows = new HashMap <String, ArrowDraw> ();
             String message = guiCtr.guiLoadCtr();
             undoRedo = new GUIUndoRedo();
             loadIntoGUI();
