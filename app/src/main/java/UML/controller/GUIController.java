@@ -513,6 +513,7 @@ public class GUIController {
         }
 
         String message = dg.changeParameter(className, methodName, oldParam, newParam, newType);
+        values[1] = message;
         return values;
     }
 
@@ -570,6 +571,7 @@ public class GUIController {
         }
 
         String message = dg.changeParameters(className, methodName, inputLst);
+        values[1] = message;
         return values;
     }
 
@@ -617,6 +619,7 @@ public class GUIController {
         }
 
         String message = dg.renameField(className, oldName, newName);
+        values[1] = message;
         return values;
     }
 
@@ -673,7 +676,7 @@ public class GUIController {
         }
 
         String message = dg.deleteParameter(className, methodName, param);
-
+        values[1] = message;
         return values;
     }
 
@@ -760,6 +763,16 @@ public class GUIController {
 		return maxWord;
 	}
 
+    public void snapshotDiagram()
+    {
+        dg.snapshot();
+    }
+
+    public ArrayList <Relationship> passRelationships()
+    {
+        return dg.getRelationships();
+    }
+
     public String updateFieldsCtr(String className){
         return dg.fieldsToString(className);
     }
@@ -768,4 +781,13 @@ public class GUIController {
         return dg.methodsToString(className);
     }
 
+    //GUI List Classes Controller
+    public void listClassesCtr(){
+        dg.listClasses();
+    }
+
+    //GUI List Relationships Controller
+    public void listRelationshipsCtr(){
+        dg.listRelationships();
+    }
 }

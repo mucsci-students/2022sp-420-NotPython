@@ -647,6 +647,9 @@ public class Diagram{
             return "Successfully loaded from " + fileName;
         }
         
+        //clear undo history when diagram is loaded
+        undoRedo = new UndoRedo();
+
         return "";
     }
 
@@ -823,7 +826,7 @@ public class Diagram{
     }
 
     //takes a snapshot of the current state of the diagram
-    private void snapshot()
+    public void snapshot()
     {
         undoRedo.snapshotDiagram(clone());
     }
@@ -868,6 +871,18 @@ public class Diagram{
             text += " " + f.type + " " + f.name + "\n";
         }
         return text;
+    }
+
+    public ArrayList <Relationship> getRelationships()
+    {
+        ArrayList <Relationship> result = new ArrayList <Relationship> ();
+
+        for (Relationship r: relationships)
+        {
+            result.add(new Relationship(r.type, r.src, r.dest));
+        }
+
+        return result;
     }
 
     public String methodsToString(String className){
