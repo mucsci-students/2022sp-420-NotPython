@@ -48,6 +48,8 @@ public class GUIController {
         }
 
         message = dg.loadDiagram(fileName);
+        
+
         return message;
     }
 
@@ -782,13 +784,9 @@ public class GUIController {
         return dg.methodsToString(className);
     }
 
-    //GUI List Classes Controller
-    public void listClassesCtr(){
-        dg.listClasses();
+    //Helper function to get Classes ArrayList to Array
+    public String[] getClassListArray(){
+        return dg.convertClassListArray();
     }
 
-    //GUI List Relationships Controller
-    public void listRelationshipsCtr(){
-        dg.listRelationships();
-    }
 }

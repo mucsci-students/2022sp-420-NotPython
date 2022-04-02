@@ -42,8 +42,6 @@ public class ArrowDraw extends JPanel{
     }
 
     public void drawType(Graphics2D g2){
-        
-        float slope = (destLoc.y - srcLoc.y) / (destLoc.x - srcLoc.x);
         Polygon shape = new Polygon();
         g2.setStroke(solidLine);
 
