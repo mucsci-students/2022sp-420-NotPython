@@ -901,7 +901,7 @@ public class Diagram{
         Class c = getClass(className);
         for (Method m: c.methods)
         {
-            text += " " + m.type + " " + m.name;
+            text += "  " + m.type + " " + m.name;
             text += " (";
             for (Parameter p: m.parameters){
                 text += p.type + " " + p.name;
@@ -909,7 +909,7 @@ public class Diagram{
                     text += ", ";
                 }
             }
-            text += ") \n";
+            text += ")  \n";
 
         }
         return text;
