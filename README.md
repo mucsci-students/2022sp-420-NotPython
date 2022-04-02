@@ -27,3 +27,9 @@ Then type ".\app\build\install\app\bin\app.bat" <br>
 
 ## * Running the command runs the GUI by default
 To run on the CLI, type " --cli " at the end of the command
+
+## * To run Gradle Tests
+Type "gradle test"
+
+## * For design patterns used, reference 
+design_patterns.md
