@@ -191,9 +191,12 @@ public class GUI {
             String message = guiCtr.guiRedoCtr(); 
             if (undoRedo.canRedo())
             {
+                GUI old = undoRedo.redo(clone());
+
                 this.boxes = new HashMap <String, ClassBox> ();
                 this.arrows = new HashMap <String, ArrowDraw> ();
-                GUI old = undoRedo.redo(clone());
+                
+                //System.out.println("I hate this");
 
                 for (HashMap.Entry<String, ClassBox> entry : old.boxes.entrySet()) {
                     String key = entry.getKey();
@@ -225,9 +228,9 @@ public class GUI {
             String message = guiCtr.guiUndoCtr();
             if (undoRedo.canUndo())
             {
+                GUI old = undoRedo.undo(clone());
                 this.boxes = new HashMap <String, ClassBox> ();
                 this.arrows = new HashMap <String, ArrowDraw> ();
-                GUI old = undoRedo.undo(clone());
         
                 for (HashMap.Entry<String, ClassBox> entry : old.boxes.entrySet()) {
                     String key = entry.getKey();
