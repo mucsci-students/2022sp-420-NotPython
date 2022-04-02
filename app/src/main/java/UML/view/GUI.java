@@ -147,15 +147,7 @@ public class GUI {
         editMenu.add(editMethodMenu);
         editMenu.add(editFieldMenu);
 
-        // //List Menu Options
-        // JMenuItem listClass = new JMenuItem("Class");
-        // JMenuItem listClasses = new JMenuItem("Classes");
-        // JMenuItem listRelationships = new JMenuItem("Relationships");
-        // listMenu.add(listClasses);
-        // listMenu.add(listRelationships);
-
-
-
+      
         mainBar.add(Box.createHorizontalGlue());
         mainBar.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);       
         mainBar.add(editMenu);
@@ -163,21 +155,6 @@ public class GUI {
         mainBar.add(createMenu);
         mainBar.add(utilMenu);
         mainBar.add(fileMenu);
-
-        //mainBar.add(listMenu);
-        //mainBar.add(Box.createRigidArea(new Dimension(550,35)));
-
-        //UML Display Area
-        // listingArea = new JTextArea("UML Diagram\n", 38, 111);
-        // listingArea.setEditable(false);
-        // Font font = new Font("Courier New", Font.BOLD, 12);
-        // listingArea.setFont(font);
-        //
-        // Retreiving CLI Output 
-        // PrintStream stdout = System.out;
-        // stdout.println("Starting gui for console output"); 
-        // GuiOutputStream rawout = new GuiOutputStream(listingArea);
-        // System.setOut(new PrintStream(rawout, true));
 
         mainFrame.add("North", mainBar);
         //mainPanel.add(new JScrollPane(listingArea));
@@ -196,8 +173,7 @@ public class GUI {
                 this.boxes = new HashMap <String, ClassBox> ();
                 this.arrows = new HashMap <String, ArrowDraw> ();
                 
-                //System.out.println("I hate this");
-
+                //initialize the class boxes
                 for (HashMap.Entry<String, ClassBox> entry : old.boxes.entrySet()) {
                     String key = entry.getKey();
                     ClassBox temp = entry.getValue();
@@ -209,6 +185,7 @@ public class GUI {
 
                 Graphics g = mainPanel.getGraphics();
 
+                //initialize relationship arrows
                 for (Relationship r : rels)
                 {
                     ArrowDraw arrow = new ArrowDraw(boxes.get(r.src).panel, boxes.get(r.dest).panel, r.type, g);
@@ -231,7 +208,8 @@ public class GUI {
                 GUI old = undoRedo.undo(clone());
                 this.boxes = new HashMap <String, ClassBox> ();
                 this.arrows = new HashMap <String, ArrowDraw> ();
-        
+                
+                //initialize class boxes
                 for (HashMap.Entry<String, ClassBox> entry : old.boxes.entrySet()) {
                     String key = entry.getKey();
                     ClassBox temp = entry.getValue();
@@ -242,7 +220,8 @@ public class GUI {
                 ArrayList <Relationship> rels = guiCtr.passRelationships();
 
                 Graphics g = mainPanel.getGraphics();
-
+                
+                //initialize relationship arrows
                 for (Relationship r : rels)
                 {
                     ArrowDraw arrow = new ArrowDraw(boxes.get(r.src).panel, boxes.get(r.dest).panel, r.type, g);
@@ -253,7 +232,6 @@ public class GUI {
                     arrows.put(r.src+r.dest, arrow);
                 }
             }
-            //listSelector();
             statusMsg.setText(message);
             updater();
         });
@@ -284,7 +262,6 @@ public class GUI {
 
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
-                //getCoordinates();
                 snapshot();
                 ClassBox box = new ClassBox(className, (200 * index) + 5, 5, guiCtr, this);
                 boxes.put(className, box);
@@ -300,7 +277,6 @@ public class GUI {
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
                 snapshot();
-                //boxes.get(className).updateMethods();
                 updater();
             }
         });
@@ -312,7 +288,6 @@ public class GUI {
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
                 snapshot();
-                //boxes.get(className).updateFields();
                 updater();
             }
         });
@@ -360,7 +335,6 @@ public class GUI {
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
                 snapshot();
-                //boxes.get(className).updateMethods();
                 updater();
             }
         });
@@ -372,7 +346,6 @@ public class GUI {
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
                 snapshot();
-                //boxes.get(className).updateFields();
                 updater();
             }
         });
@@ -397,7 +370,6 @@ public class GUI {
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
                 snapshot();
-                //boxes.get(className).updateMethods();
                 updater();
             }
         });
@@ -409,7 +381,6 @@ public class GUI {
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
                 snapshot();
-                //boxes.get(className).updateMethods();
                 updater();
             }
         });
@@ -421,7 +392,6 @@ public class GUI {
             String message = values[1];
             String className = values[0];
             String newName = values[2];
-            //System.out.println(className + " : " + newName);
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
                 snapshot();
@@ -440,7 +410,6 @@ public class GUI {
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
                 snapshot();
-                //boxes.get(className).updateMethods();
                 updater();
             }
         });
@@ -452,7 +421,6 @@ public class GUI {
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
                 snapshot();
-                //boxes.get(className).updateMethods();
                 updater();
             }
         });
@@ -464,7 +432,6 @@ public class GUI {
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
                 snapshot();
-                //boxes.get(className).updateMethods();
                 updater();
             }
         });
@@ -476,25 +443,9 @@ public class GUI {
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
                 snapshot();
-                //boxes.get(className).updateFields();
                 updater();
             }
         });
-            
-        // //LIST LISTENER
-        // //List Classes
-        // listClasses.addActionListener(e -> {
-        //     listOption = 2;
-        //     //listClassesView();
-        //     statusMsg.setText("Printed Diagram");
-        // });
-        // //List Relationships
-        // listRelationships.addActionListener(e -> {
-        //     listOption = 3;
-        //     //listRelationshipsView(); 
-        //     statusMsg.setText("Printed Diagram");
-        // });
-
     }
 
     public void updater(){
@@ -536,43 +487,5 @@ public class GUI {
         undoRedo.snapshotGUI(clone());
     }
 
-    // public void listSelector(){
-    //     // if(listOption == 2){
-    //     //     listClassesView();
-    //     // }
-    //     // else if(listOption == 3){
-    //     //     listRelationshipsView();
-    //     // }
-    //     // else {
-    //     //     statusMsg.setText("ERROR: LISTING SELECTION INVALID");
-    //     // }
-    // }
-
-    // public void listClassesView(){
-    //     listingArea.setText("UML Diagram\n");
-    //     guiCtr.listClassesCtr();
-    // }
-
-    
-    // public void listRelationshipsView(){
-    //     listingArea.setText("UML Diagram\n");
-    //     guiCtr.listRelationshipsCtr();
-    // }
-
-    // //Gets Stream from Command Line
-    // private class GuiOutputStream extends OutputStream {
-    //     JTextArea textArea;
-
-    //     public GuiOutputStream(JTextArea textArea) {
-    //         this.textArea = textArea;
-    //     }
-
-    //     @Override
-    //     public void write(int data) throws IOException {
-    //         textArea.append(new String(new byte[] { (byte) data }));
-    //     }
-    // }
-
 }
-
 

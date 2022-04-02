@@ -790,8 +790,4 @@ public class GUIController {
     public void listRelationshipsCtr(){
         dg.listRelationships();
     }
-
-
-    
-
 }

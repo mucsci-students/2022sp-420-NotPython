@@ -37,7 +37,7 @@ public class ClassBox {
         y_pos = y;
         init(className);
     }
-
+  
     public ClassBox(ClassBox other)
     {
         this.name = other.name;
@@ -72,8 +72,8 @@ public class ClassBox {
 			public void mousePressed(MouseEvent e) {
 				this.listen_x = e.getX();
 				this.listen_y = e.getY();
-                gui.snapshot();
-                guiCtr.snapshotDiagram();
+        gui.snapshot();
+        guiCtr.snapshotDiagram();
 			}
 			public void mouseDragged(MouseEvent e) {
                 panel.setLocation(panel.getX() + (e.getX() - this.listen_x), panel.getY() + (e.getY() - this.listen_y));	
@@ -90,9 +90,6 @@ public class ClassBox {
                 gui.mainFrame.repaint();
                 gui.arrowUpdater();
 			}
-           /* public void mouseReleased(MouseEvent e){
-
-            }*/
 		};
 
         panel.addMouseListener(l);
@@ -138,7 +135,7 @@ public class ClassBox {
         }
         panel.setSize(panLength, panHeight);
     }
-
+  
     public ClassBox clone()
     {
         return new ClassBox(this);
@@ -159,4 +156,3 @@ public class ClassBox {
     }
 
 }
-

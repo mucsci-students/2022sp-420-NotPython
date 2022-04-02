@@ -12,10 +12,8 @@ public class ArrowDraw extends JPanel{
     BasicStroke dashedLine = new BasicStroke(thickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 10, new float[]{9}, 0);
     JPanel srcPan;
     JPanel destPan;
-
     String type;
     String side;
-
     Point srcLoc;
     Point destLoc;
     int pointDist;
@@ -25,8 +23,6 @@ public class ArrowDraw extends JPanel{
         srcPan = srcInput;
         destPan = destInput;
         type = typeInput;
-
-
         srcLoc = new Point();
         destLoc = new Point();
         paintComponent(g);
@@ -36,59 +32,95 @@ public class ArrowDraw extends JPanel{
         paintComponent(g);
     }
 
-    public void drawType(){
+    public void setLineType(Graphics2D g2){
+        if(type.equals("Realization")){
+            g2.setStroke(dashedLine);
+        }
+        else{
+            g2.setStroke(solidLine);
+        }
+    }
+
+    public void drawType(Graphics2D g2){
         
         float slope = (destLoc.y - srcLoc.y) / (destLoc.x - srcLoc.x);
         Polygon shape = new Polygon();
+        g2.setStroke(solidLine);
+
         //make triangle
         if(type.equals("Inheritance") || type.equals("Realization")){
             if(side.equals("top")){
-                
+                shape.addPoint(destLoc.x, destLoc.y);
+                shape.addPoint(destLoc.x - 15, destLoc.y - 15);
+                shape.addPoint(destLoc.x + 15, destLoc.y - 15);
+                g2.draw(shape);
+                setLineType(g2);
+                g2.draw(new Line2D.Float(srcLoc.x, srcLoc.y, destLoc.x, destLoc.y - 15));
             }
             else if(side.equals("right")){
-
+                shape.addPoint(destLoc.x, destLoc.y);
+                shape.addPoint(destLoc.x + 15, destLoc.y - 15);
+                shape.addPoint(destLoc.x + 15, destLoc.y + 15);
+                g2.draw(shape);
+                setLineType(g2);
+                g2.draw(new Line2D.Float(srcLoc.x, srcLoc.y, destLoc.x + 15, destLoc.y));
             }
             else if(side.equals("bottom")){
-
+                shape.addPoint(destLoc.x, destLoc.y);
+                shape.addPoint(destLoc.x + 15, destLoc.y + 15);
+                shape.addPoint(destLoc.x - 15, destLoc.y + 15);
+                g2.draw(shape);
+                setLineType(g2);
+                g2.draw(new Line2D.Float(srcLoc.x, srcLoc.y, destLoc.x, destLoc.y + 15));
             }
             else if(side.equals("left")){
-
+                shape.addPoint(destLoc.x, destLoc.y);
+                shape.addPoint(destLoc.x - 15, destLoc.y + 15);
+                shape.addPoint(destLoc.x - 15, destLoc.y - 15);
+                g2.draw(shape);
+                setLineType(g2);
+                g2.draw(new Line2D.Float(srcLoc.x, srcLoc.y, destLoc.x - 15, destLoc.y));
             }
         }
         //make diamond
         else {
             if(side.equals("top")){
-
+                shape.addPoint(destLoc.x, destLoc.y);
+                shape.addPoint(destLoc.x - 15, destLoc.y - 15);
+                shape.addPoint(destLoc.x, destLoc.y - 30);
+                shape.addPoint(destLoc.x + 15, destLoc.y - 15);
+                g2.draw(new Line2D.Float(srcLoc.x, srcLoc.y, destLoc.x, destLoc.y - 30));
             }
             else if(side.equals("right")){
-
+                shape.addPoint(destLoc.x, destLoc.y);
+                shape.addPoint(destLoc.x + 15, destLoc.y - 15);
+                shape.addPoint(destLoc.x + 30, destLoc.y);
+                shape.addPoint(destLoc.x + 15, destLoc.y + 15);
+                g2.draw(new Line2D.Float(srcLoc.x, srcLoc.y, destLoc.x + 30, destLoc.y));
             }
             else if(side.equals("bottom")){
-
+                shape.addPoint(destLoc.x, destLoc.y);
+                shape.addPoint(destLoc.x + 15, destLoc.y + 15);
+                shape.addPoint(destLoc.x, destLoc.y + 30);
+                shape.addPoint(destLoc.x - 15, destLoc.y + 15);
+                g2.draw(new Line2D.Float(srcLoc.x, srcLoc.y, destLoc.x, destLoc.y + 30));
             }
             else if(side.equals("left")){
-                
+                shape.addPoint(destLoc.x, destLoc.y);
+                shape.addPoint(destLoc.x - 15, destLoc.y + 15);
+                shape.addPoint(destLoc.x - 30, destLoc.y);
+                shape.addPoint(destLoc.x - 15, destLoc.y - 15);
+                g2.draw(new Line2D.Float(srcLoc.x, srcLoc.y, destLoc.x - 30, destLoc.y));
             }
+            g2.draw(shape);
         }
+        
+        //Set shape fill
+        if(type.equals("Inheritance") || type.equals("Composition")){
+            g2.fillPolygon(shape);
+        }
+        
     }
-
-    // //String[] types = {"Aggregation", "Composition", "Inheritance", "Realization"};
-    // public void makeLine(Graphics g){
-    //     //super.paintComponent(g);
-    //     Graphics2D g2 = (Graphics2D) g;
-    //     //checkSides();
-
-    //     if(type.equals("Realization")){
-    //         g2.setStroke(dashedLine);
-    //     }
-    //     else{
-    //         g2.setStroke(solidLine);
-    //     }
-
-    //     g2.draw(new Line2D.Float(srcLoc.x, srcLoc.y, destLoc.x, destLoc.y));
-    //     System.out.println("THIS SHOULD PRINT A LINE");
-    // }
-
         
     public void checkSides(Graphics g){
         //get point of where the arrow would point from 
@@ -114,6 +146,7 @@ public class ArrowDraw extends JPanel{
         //Calculate which side is shortest
         int curDist = 0;
         int pointDist = 9999999;
+
         //srcTop to destLeft
         curDist = checkOneSide(srcTop, destLeft);
         if(pointDist > curDist){
@@ -221,7 +254,6 @@ public class ArrowDraw extends JPanel{
             pointDist = curDist;
             side = "bottom";
         }
-        //paintComponent(g);
     }
 
     public int checkOneSide(Point src, Point dest){
@@ -232,21 +264,10 @@ public class ArrowDraw extends JPanel{
 
     @Override
     public void paintComponent(Graphics g) {
-
         super.paintComponent(g);
         checkSides(g);
-        //makeLine(g);
         Graphics2D g2 = (Graphics2D) g;
-        //checkSides();
-
-        if(type.equals("Realization")){
-            g2.setStroke(dashedLine);
-        }
-        else{
-            g2.setStroke(solidLine);
-        }
-
-        g2.draw(new Line2D.Float(srcLoc.x, srcLoc.y, destLoc.x, destLoc.y));
+        drawType(g2);
     }
 
 }
