@@ -485,13 +485,21 @@ public class GUI {
 
     public void loadIntoGUI(){
         String[] classListArray = guiCtr.getClassListArray();
+        HashMap <String, String> locs = guiCtr.getLocationsCtr();
+        ClassBox box;
         //load classes into GUI
         for(int i = 0; i < classListArray.length; i++){
             String className = classListArray[i];
 
             //FIX LOCATION LOADING
-
-            ClassBox box = new ClassBox(className, (200 * i) + 8, 8, guiCtr, this);
+            String classLoc = locs.get(className);
+            if (classLoc.equals("-1 -1")){
+                box = new ClassBox(className, (200 * i) + 8, 8, guiCtr, this);
+            }
+            else{
+                String [] location = classLoc.split(" ");
+                box = new ClassBox(className, Integer.parseInt(location[0]), Integer.parseInt(location[1]), guiCtr, this);
+            }
             boxes.put(className, box);
         }
 
