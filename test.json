@@ -1,0 +1,51 @@
+{
+	"classes": [
+	{
+		"name": "Tire",
+		"fields": [
+			{ "name": "diameter", "type": "float" },
+			{ "name": "psi", "type": "float" },
+			{ "name": "brand", "type": "string" }
+		],
+		"methods": [
+			{
+				"name": "setPSI",
+				"return_type": "void",
+				"params": [
+					{ "name": "new_psi", "type": "string" }
+				]
+			}
+		],
+		"location":{"x":0,"y":0}
+	},
+	{
+		"name": "Car",
+		"fields": [
+			{ "name": "make", "type": "string" },
+			{ "name": "model", "type": "string" },
+			{ "name": "year", "type": "int" }
+		],
+		"methods": [
+			{
+				"name": "drive",
+				"return_type": "void",
+				"params": []
+			}
+		],
+		"location":{"x":543,"y":112}
+	},
+	{
+		"name": "connor",
+		"fields": [],
+		"methods": [],
+		"location":{"x":-1,"y":-1}
+	}
+	],
+	"relationships": [
+		{
+			"source": "Tire",
+			"destination": "Car",
+			"type": "composition"
+		}
+	]
+}
