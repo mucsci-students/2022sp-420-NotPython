@@ -38,6 +38,13 @@ public class ClassBox {
         init(className);
     }
 
+    public ClassBox(ClassBox other)
+    {
+        this.name = other.name;
+        this.x_pos = other.x_pos;
+        this.y_pos = other.y_pos;
+    }
+
     public JPanel init(String className){
         panel.setBackground(Color.WHITE);
         panel.setSize(150, 150);
@@ -65,6 +72,8 @@ public class ClassBox {
 			public void mousePressed(MouseEvent e) {
 				this.listen_x = e.getX();
 				this.listen_y = e.getY();
+                gui.snapshot();
+                guiCtr.snapshotDiagram();
 			}
 			public void mouseDragged(MouseEvent e) {
                 panel.setLocation(panel.getX() + (e.getX() - this.listen_x), panel.getY() + (e.getY() - this.listen_y));	
@@ -81,6 +90,9 @@ public class ClassBox {
                 gui.mainFrame.repaint();
                 gui.arrowUpdater();
 			}
+           /* public void mouseReleased(MouseEvent e){
+
+            }*/
 		};
 
         panel.addMouseListener(l);
@@ -125,6 +137,11 @@ public class ClassBox {
             panLength = 150;
         }
         panel.setSize(panLength, panHeight);
+    }
+
+    public ClassBox clone()
+    {
+        return new ClassBox(this);
     }
 
     private void getDisplayLength(){

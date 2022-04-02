@@ -313,35 +313,40 @@ public class GUIController {
     }
 
     //Delete Relationship GUI Controller
-    public String deleteRelationshipCtr(){
+    public String[] deleteRelationshipCtr(){
         String message, src, dest;
         String[] input = new String[2];
+        String[] values = new String[3];
         int size = dg.classList.size();
 
         if (size == 0)
         {
-            return "ERROR: no classes exist";
+            values[0] = "ERROR: no classes exist";
+            return values;
         }
 
         String[] classes = new String[size];
         classes = dg.convertClassListArray();
         input = guiPop.deleteRelationshipPop(classes, input);
         src = input[0];
-
+        values[1] = src;
         if (src.equals(""))
         {
-            return "ERROR: source class not entered";
+            values[0] = "ERROR: source class not entered";
+            return values;
         }
 
         dest = input[1];
-
+        values[2] = dest;
         if (dest.equals(""))
         {
-            return "ERROR: destination class not entered";
+            values[0] = "ERROR: destination class not entered";
+            return values;
         }
 
         message = dg.deleteRelationship(src, dest);
-        return message;
+        values[0] = message;
+        return values;
     }
 
     //Rename Class GUI Controller
@@ -508,6 +513,7 @@ public class GUIController {
         }
 
         String message = dg.changeParameter(className, methodName, oldParam, newParam, newType);
+        values[1] = message;
         return values;
     }
 
@@ -565,6 +571,7 @@ public class GUIController {
         }
 
         String message = dg.changeParameters(className, methodName, inputLst);
+        values[1] = message;
         return values;
     }
 
@@ -612,6 +619,7 @@ public class GUIController {
         }
 
         String message = dg.renameField(className, oldName, newName);
+        values[1] = message;
         return values;
     }
 
@@ -668,7 +676,7 @@ public class GUIController {
         }
 
         String message = dg.deleteParameter(className, methodName, param);
-
+        values[1] = message;
         return values;
     }
 
@@ -754,6 +762,16 @@ public class GUIController {
 		}
 		return maxWord;
 	}
+
+    public void snapshotDiagram()
+    {
+        dg.snapshot();
+    }
+
+    public ArrayList <Relationship> passRelationships()
+    {
+        return dg.getRelationships();
+    }
 
     public String updateFieldsCtr(String className){
         return dg.fieldsToString(className);

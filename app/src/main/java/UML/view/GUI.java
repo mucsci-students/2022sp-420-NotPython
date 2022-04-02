@@ -2,19 +2,24 @@ package UML.view;
 
 import UML.controller.GUIController;
 import UML.controller.Listing;
+import UML.model.Relationship;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Iterator;
 
 public class GUI {
 
     GUIController guiCtr = new GUIController();
     Listing lister = new Listing();
+    GUIUndoRedo undoRedo = new GUIUndoRedo();
 
-    HashMap <String, ClassBox> boxes = new HashMap <String, ClassBox>();
-    HashMap <String, ArrowDraw> arrows = new HashMap <String, ArrowDraw>();
+    HashMap <String, ClassBox> boxes;
+    HashMap <String, ArrowDraw> arrows;
 
     JFrame mainFrame;
     JPanel mainPanel;
@@ -28,6 +33,26 @@ public class GUI {
     int listOption = 2;
     String listClassName;
     int index = 0;
+
+    public GUI()
+    {
+        boxes = new HashMap <String, ClassBox>();
+        arrows = new HashMap <String, ArrowDraw>();
+    }
+
+    public GUI(GUI other)
+    {
+        this.boxes = new HashMap <String, ClassBox>();
+
+        Iterator boxIter = other.boxes.entrySet().iterator();
+
+        while(boxIter.hasNext())
+        {
+            Map.Entry element = (Map.Entry) boxIter.next();
+            ClassBox temp = (ClassBox) element.getValue();
+            this.boxes.put((String) element.getKey(), temp.clone());
+        }
+    }
 
     public void GUI_view() { 
         mainFrame = new JFrame ("UML Editor");
@@ -164,15 +189,70 @@ public class GUI {
         //Redo button listener
         redoMenuItem.addActionListener(e -> {
             String message = guiCtr.guiRedoCtr(); 
-            //listSelector();
+            if (undoRedo.canRedo())
+            {
+                this.boxes = new HashMap <String, ClassBox> ();
+                this.arrows = new HashMap <String, ArrowDraw> ();
+                GUI old = undoRedo.redo(clone());
+
+                for (HashMap.Entry<String, ClassBox> entry : old.boxes.entrySet()) {
+                    String key = entry.getKey();
+                    ClassBox temp = entry.getValue();
+                    ClassBox box = new ClassBox(temp.name, temp.x_pos, temp.y_pos, guiCtr, this);
+                    this.boxes.put(box.name, box);
+                }
+
+                ArrayList <Relationship> rels = guiCtr.passRelationships();
+
+                Graphics g = mainPanel.getGraphics();
+
+                for (Relationship r : rels)
+                {
+                    ArrowDraw arrow = new ArrowDraw(boxes.get(r.src).panel, boxes.get(r.dest).panel, r.type, g);
+                    arrow.setVisible(true);
+                    arrow.setOpaque(false);
+                    arrow.setLocation(0, 0);
+                    arrow.setSize(4000, 3000);
+                    arrows.put(r.src+r.dest, arrow);
+                }
+            }
             statusMsg.setText(message);
+            updater();
         });
 
         //Undo button listener
         undoMenuItem.addActionListener(e -> {
-            String message = guiCtr.guiUndoCtr(); 
+            String message = guiCtr.guiUndoCtr();
+            if (undoRedo.canUndo())
+            {
+                this.boxes = new HashMap <String, ClassBox> ();
+                this.arrows = new HashMap <String, ArrowDraw> ();
+                GUI old = undoRedo.undo(clone());
+        
+                for (HashMap.Entry<String, ClassBox> entry : old.boxes.entrySet()) {
+                    String key = entry.getKey();
+                    ClassBox temp = entry.getValue();
+                    ClassBox box = new ClassBox(temp.name, temp.x_pos, temp.y_pos, guiCtr, this);
+                    this.boxes.put(box.name, box);
+                }
+
+                ArrayList <Relationship> rels = guiCtr.passRelationships();
+
+                Graphics g = mainPanel.getGraphics();
+
+                for (Relationship r : rels)
+                {
+                    ArrowDraw arrow = new ArrowDraw(boxes.get(r.src).panel, boxes.get(r.dest).panel, r.type, g);
+                    arrow.setVisible(true);
+                    arrow.setOpaque(false);
+                    arrow.setLocation(0, 0);
+                    arrow.setSize(4000, 3000);
+                    arrows.put(r.src+r.dest, arrow);
+                }
+            }
             //listSelector();
             statusMsg.setText(message);
+            updater();
         });
         //Save button listener
         saveMenuItem.addActionListener(e -> {
@@ -184,6 +264,7 @@ public class GUI {
         loadMenuItem.addActionListener(e -> {
             String message = guiCtr.guiLoadCtr();
             //listSelector();
+            undoRedo = new GUIUndoRedo();
             statusMsg.setText(message);
         });
         //Exit button listener
@@ -201,6 +282,7 @@ public class GUI {
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
                 //getCoordinates();
+                snapshot();
                 ClassBox box = new ClassBox(className, (200 * index) + 5, 5, guiCtr, this);
                 boxes.put(className, box);
                 updater();
@@ -214,7 +296,8 @@ public class GUI {
             String className = values[0];
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
-                boxes.get(className).updateMethods();
+                snapshot();
+                //boxes.get(className).updateMethods();
                 updater();
             }
         });
@@ -225,7 +308,8 @@ public class GUI {
             String className = values[0];
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
-                boxes.get(className).updateFields();
+                snapshot();
+                //boxes.get(className).updateFields();
                 updater();
             }
         });
@@ -238,6 +322,7 @@ public class GUI {
             String dest = values[3];
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
+                snapshot();
                 Graphics g = mainPanel.getGraphics();
                 ArrowDraw arrow = new ArrowDraw(boxes.get(src).panel, boxes.get(dest).panel, type, g);
                 arrow.setVisible(true);
@@ -259,6 +344,7 @@ public class GUI {
             String className = values[0];
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
+                snapshot();
                 boxes.remove(className);
                 updater();
             }
@@ -270,7 +356,8 @@ public class GUI {
             String className = values[0];
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
-                boxes.get(className).updateMethods();
+                snapshot();
+                //boxes.get(className).updateMethods();
                 updater();
             }
         });
@@ -281,16 +368,23 @@ public class GUI {
             String className = values[0];
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
-                boxes.get(className).updateFields();
+                snapshot();
+                //boxes.get(className).updateFields();
                 updater();
             }
         });
         //Delete Relationship Button
         deleteRelationshipMenuItem.addActionListener(e -> {
-            String message = guiCtr.deleteRelationshipCtr(); 
-            //listSelector();
+            String[] values = guiCtr.deleteRelationshipCtr();
+            String message = values[0];
+            String src = values[1];
+            String dest = values[2];
             statusMsg.setText(message);
-            
+            if(!message.contains("ERROR")){
+                snapshot();
+                arrows.remove(src+dest);
+                updater();
+            }
         });
         //Delete Single Parameter Button
         deleteSingleParamMenuItem.addActionListener(e -> {
@@ -299,7 +393,8 @@ public class GUI {
             String className = values[0];
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
-                boxes.get(className).updateMethods();
+                snapshot();
+                //boxes.get(className).updateMethods();
                 updater();
             }
         });
@@ -310,7 +405,8 @@ public class GUI {
             String className = values[0];
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
-                boxes.get(className).updateMethods();
+                snapshot();
+                //boxes.get(className).updateMethods();
                 updater();
             }
         });
@@ -325,7 +421,8 @@ public class GUI {
             //System.out.println(className + " : " + newName);
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
-            ClassBox temp = boxes.get(className);
+                snapshot();
+                ClassBox temp = boxes.get(className);
                 temp.rename(newName);
                 boxes.remove(className);
                 boxes.put(newName, temp);
@@ -339,7 +436,8 @@ public class GUI {
             String className = values[0];
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
-                boxes.get(className).updateMethods();
+                snapshot();
+                //boxes.get(className).updateMethods();
                 updater();
             }
         });
@@ -350,7 +448,8 @@ public class GUI {
             String className = values[0];
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
-                boxes.get(className).updateMethods();
+                snapshot();
+                //boxes.get(className).updateMethods();
                 updater();
             }
         });
@@ -361,7 +460,8 @@ public class GUI {
             String className = values[0];
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
-                boxes.get(className).updateMethods();
+                snapshot();
+                //boxes.get(className).updateMethods();
                 updater();
             }
         });
@@ -372,7 +472,8 @@ public class GUI {
             String className = values[0];
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
-                boxes.get(className).updateFields();
+                snapshot();
+                //boxes.get(className).updateFields();
                 updater();
             }
         });
@@ -398,11 +499,11 @@ public class GUI {
         for (HashMap.Entry<String, ClassBox> entry : boxes.entrySet()) {
             String key = entry.getKey();
             ClassBox box = entry.getValue();
+            box.updateFields();
+            box.updateMethods();
             mainPanel.add(box.panel);
         }
         
-        
-       
         mainPanel.repaint();
         arrowUpdater();
         //mainPanel.validate();
@@ -419,6 +520,17 @@ public class GUI {
             mainPanel.add(arrow);
             
         }
+    }
+
+    //clone design pattern
+    public GUI clone()
+    {
+        return new GUI(this);
+    }
+
+    public void snapshot()
+    {
+        undoRedo.snapshotGUI(clone());
     }
 
     // public void listSelector(){

@@ -33,7 +33,6 @@ public class ArrowDraw extends JPanel{
     }
 
     public void arrowRedraw(Graphics g){
-        
         paintComponent(g);
     }
 
