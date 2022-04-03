@@ -252,6 +252,6 @@ public class DiagramTest {
         dg.createMethod("name", "type", "methodName", fakeParms);
 
         String toString = dg.methodsToString("name");
-        assertTrue(toString, toString.equals("  type methodName () \n"));
+        assertTrue("v" + toString + "v", toString.equals("  type methodName ()  \n"));
     }
 }
