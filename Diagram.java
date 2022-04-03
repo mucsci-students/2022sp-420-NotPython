@@ -796,9 +796,9 @@ public class Diagram {
     public String methodsToString(String className) {
         String text = "";
         Class c = getClass(className);
-        for (Method m: c.methods)
-        {
+        for (Method m : c.methods) {
             text += "  " + m.type + " " + m.name;
+
             text += " (";
             for (Parameter p : m.parameters) {
                 text += p.type + " " + p.name;
