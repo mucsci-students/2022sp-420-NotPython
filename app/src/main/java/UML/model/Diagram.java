@@ -95,9 +95,12 @@ public class Diagram {
         }
 
         // take snapshot then change class name and set object again in classlist
+        // and change key in location
         snapshot();
         int index = classList.indexOf(tempClass);
+        String locString = locations.remove(tempClass.name);
         tempClass.rename(newName);
+        locations.put(newName, locString);
         classList.set(index, tempClass);
         return "Class \"" + oldName + "\" was renamed to \"" + newName + "\"";
     }
@@ -127,6 +130,7 @@ public class Diagram {
 
         // delete class
         classList.remove(tempClass);
+        locations.remove(tempClass.name);
         return "Class with name \"" + tempClass.name + "\" and its relationships deleted";
     }
 
@@ -796,8 +800,7 @@ public class Diagram {
     public String methodsToString(String className) {
         String text = "";
         Class c = getClass(className);
-        for (Method m: c.methods)
-        {
+        for (Method m : c.methods) {
             text += "  " + m.type + " " + m.name;
             text += " (";
             for (Parameter p : m.parameters) {
