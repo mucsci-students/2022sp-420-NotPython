@@ -16,7 +16,7 @@ public class App
         }
         else if (args.length == 1 && args[0].equals("--cli"))
         {
-            cmdInterface.runCLI();
+            cmdInterface.runCLITabCompletion();
         }
         else
         {

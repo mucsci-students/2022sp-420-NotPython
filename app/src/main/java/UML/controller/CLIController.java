@@ -6,10 +6,10 @@ import java.util.ArrayList;
 
 //this is the driver class
 public class CLIController {
+    Diagram dg = new Diagram();
 
     public void processCommand(String[] tokens) {
 
-        Diagram dg = new Diagram();
         // All create commands go here with an if statement for class, relationship, and
         // attribute as second token
         if (tokens[0].equalsIgnoreCase("Create")) {
@@ -178,11 +178,27 @@ public class CLIController {
             System.out.println(dg.loadDiagram(tokens[1]));
             return;
         }
+
+        //undo previous command
+        if (lengthChecker (tokens, 1) && tokens[0].equalsIgnoreCase("undo"))
+        {
+            System.out.println(dg.undo());
+            return;
+        }
+
+        if (lengthChecker (tokens, 1) && tokens[0].equalsIgnoreCase("redo"))
+        {
+            System.out.println(dg.redo());
+            return;
+        }
+
         // help user
         if (lengthChecker(tokens, 1) && tokens[0].equalsIgnoreCase("Help")) {
             System.out.printf("%-70s\n\t%-50s\n", "COMMANDS", "USAGE");
 
             System.out.printf("%-70s\n\t%-50s\n", "help", "shows this help message");
+            System.out.printf("%-70s\n\t%-50s\n", "undo", "undoes the previous command");
+            System.out.printf("%-70s\n\t%-50s\n", "redo", "redoes the previously undone command");
             System.out.printf("%-70s\n\t%-50s\n", "create class <class_name>", "creates a class with the given name");
             System.out.printf("%-70s\n\t%-50s\n", "rename class <old_name> <new_name>", "renames the class");
             System.out.printf("%-70s\n\t%-50s\n", "delete class <class_name>", "deletes the class");

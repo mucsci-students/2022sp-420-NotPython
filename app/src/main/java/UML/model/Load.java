@@ -15,9 +15,9 @@ public class Load {
     public Load () {}
 
     //loads json
-    public Map<ArrayList<Class>, ArrayList<Relationship>> loadFile(String name)
+    public Map<String, Object> loadFile(String name)
     {
-        Map <ArrayList<Class>, ArrayList<Relationship>> map = new HashMap<ArrayList<Class>, ArrayList<Relationship>>();
+        Map <String, Object> map = new HashMap<String, Object>();
         try
         {
             if (name.contains(".json"))
@@ -34,12 +34,13 @@ public class Load {
     }
 
     //loads json file
-    private static Map<ArrayList<Class>, ArrayList<Relationship>> loadJson (String file)
+    private static Map<String, Object> loadJson (String file)
     {
         //create Arraylists and maps for returning
         ArrayList <Relationship> relationshipList = new ArrayList<Relationship>();
         ArrayList <Class> classList = new ArrayList<Class>();
-        Map <ArrayList<Class>, ArrayList<Relationship>> map = new HashMap<ArrayList<Class>, ArrayList<Relationship>>();
+        HashMap <String, String> locations = new HashMap <String, String> ();
+        Map <String, Object> map = new HashMap<String, Object>();
 
         String text;
         try
@@ -53,10 +54,11 @@ public class Load {
             JSONArray methodArray, paramArray, fieldArray; 
             
             //create json objects to hold classes, relationships, fields, methods, and parameters
-            JSONObject classObject, relObject, fieldObject, methodObject, paramObject;
+            JSONObject classObject, relObject, fieldObject, methodObject, paramObject, locObject;
 
             //string variables for declarations
             String className, name, type;
+            int x, y;
             ArrayList <String> params = new ArrayList<String>();
             Class c;
             
@@ -98,8 +100,13 @@ public class Load {
                     params.clear();
                 }
                 
+                locObject = classObject.getJSONObject("location");
+                x = locObject.getInt("x");
+                y = locObject.getInt("y");
                 //add the class
                 classList.add(c);
+                //add the location at the same index for the class
+                locations.put(c.name, x + " " + y);
             }
 		    
             //get the relationships from the file
@@ -120,7 +127,9 @@ public class Load {
             e.printStackTrace();
         }
         
-        map.put(classList, relationshipList);
+        map.put("classList", classList);
+        map.put("relationships", relationshipList);
+        map.put("locations", locations);
         return map;
     }
 

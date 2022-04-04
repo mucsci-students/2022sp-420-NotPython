@@ -118,6 +118,9 @@ public class GUIPopup {
         if((text1.getText().isEmpty() || text2.getText().isEmpty()) && moreBox.isSelected()){
             JOptionPane.showMessageDialog(framePop, "ERROR: Previous entries were invalid and not recorded ");
         }
+        else if((text1.getText().isEmpty() && text2.getText().isEmpty()) && !moreBox.isSelected()){
+            return array;
+        }
         else{
             array.add(input2);
             array.add(input1);

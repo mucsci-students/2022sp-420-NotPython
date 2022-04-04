@@ -10,6 +10,7 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
     id 'java'
+    id 'jacoco'
 }
 
 repositories {
@@ -25,10 +26,16 @@ dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:30.1.1-jre'
     implementation 'org.json:json:20211205'
+
+    // https://mvnrepository.com/artifact/jline/jline
+    implementation 'jline:jline:2.6'
+
 }
 
 apply plugin: 'application'
+//apply plugin: 'jacoco'
 //apply plugin: 'java'
+
 jar {
     archiveBaseName = 'UML'
     manifest {
@@ -40,10 +47,34 @@ jar {
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-application{
+
+application {
     mainClass = 'UML.App'
 }
 
 run {
     standardInput = System.in
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = true
+//       xml.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+        csv.required = false
+        html.required = true
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.8
+            }
+        }
+    }
+}
+
+test {
+    finalizedBy jacocoTestReport // report is always generated after tests run
 }

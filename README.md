@@ -3,6 +3,7 @@ Install Gradle 7.2 if you don't have it<br>
 Make sure to have the most recent version of Java installed<br>
 json: 20211205<br>
 junit: 4.13.2<br>
+jline: 2.6<br>
 
 ## Step 1:
 Clone the repository to a folder you choose
@@ -27,3 +28,12 @@ Then type ".\app\build\install\app\bin\app.bat" <br>
 
 ## * Running the command runs the GUI by default
 To run on the CLI, type " --cli " at the end of the command
+
+## * To run Gradle Tests
+Type "gradle test"
+
+## * For design patterns used, reference 
+design_patterns.md
+
+## * Model Test Coverage
+81%
