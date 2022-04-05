@@ -33,3 +33,7 @@ jobs:
         uses: gradle/gradle-build-action@937999e9cc2425eddc7fd62d1053baf041147db7
         with:
          arguments: build
+      - name: Check Code Coverage
+        uses: codecov/codecov-action@v2.1.0
+        with:
+          token: d3774fe8-c84c-49cb-b4f1-e2c448797e3a
