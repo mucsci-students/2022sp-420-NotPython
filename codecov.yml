@@ -9,9 +9,9 @@ coverage:
 ignore:
   - ".github/workflows"  # ignore folders and all its contents
   - "app/src/test/java/UML"
-  - "app/src/main/java/view"
-  - "app/src/main/java/controller"
-  - "app/src/main/java/App.java"
+  - "app/src/main/java/UML/view"
+  - "app/src/main/java/UML/controller"
+  - "app/src/main/java/UML/App.java"
   
 parsers:
   gcov:
