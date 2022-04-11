@@ -270,7 +270,7 @@ public class GUI {
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
                 snapshot();
-                ClassBox box = new ClassBox(className, (200 * index) + 5, 5, guiCtr, this);
+                ClassBox box = new ClassBox(className, (200 * index) + 5, 5 + index, guiCtr, this);
                 boxes.put(className, box);
                 updater();
                 index++;
