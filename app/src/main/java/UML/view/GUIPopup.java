@@ -434,9 +434,10 @@ public class GUIPopup {
         return getClassName;
     }
     
-    public void postBox(JFrame x, int x, int y){
+    public void postBox(JFrame f, JPanel x, int x, int y){
           Random rand = new Random();
-          
+          x.setLayout(new GridBagLayout());
+          f.add(x);
 
     }
 
