@@ -21,9 +21,6 @@ public class Diagram {
     // HashMap for maintaining class locations
     public HashMap<String, String> locations;
 
-    // for undoing and redoing
-    public UndoRedo undoRedo = new UndoRedo();
-
     // Default constructor
     public Diagram() {
         classList = new ArrayList<Class>();
@@ -573,7 +570,8 @@ public class Diagram {
         }
 
         // clear undo history when diagram is loaded
-        undoRedo = new UndoRedo();
+        UndoRedo undoRedo = UndoRedo.getInstance();
+        
 
         // read files into data structure
         try {
@@ -743,13 +741,16 @@ public class Diagram {
         return new Diagram(this.classList, this.relationships, this.locations);
     }
 
-    // takes a snapshot of the current state of the diagram
+    //get instance then take a snapshot of the current state of the diagram
     public void snapshot() {
+        UndoRedo undoRedo = UndoRedo.getInstance();
         undoRedo.snapshotDiagram(clone());
     }
 
     // undo command
     public String undo() {
+        UndoRedo undoRedo = UndoRedo.getInstance();
+
         // check if we can undo first
         if (!undoRedo.canUndo()) {
             return "ERROR: No undoable operations have been completed";
@@ -765,6 +766,10 @@ public class Diagram {
 
     // redo command
     public String redo() {
+        //get instance
+        UndoRedo undoRedo = UndoRedo.getInstance();
+
+        //check if we can redo
         if (!undoRedo.canRedo()) {
             return "ERROR: No command has been undone";
         }
