@@ -433,5 +433,11 @@ public class GUIPopup {
         String getClassName = JOptionPane.showInputDialog(createClassPop, "Enter Class Name");
         return getClassName;
     }
+    
+    public void postBox(JFrame x, int x, int y){
+          Random rand = new Random();
+          
+
+    }
 
 }
