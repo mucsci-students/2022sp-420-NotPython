@@ -438,7 +438,8 @@ public class GUIPopup {
           Random rand = new Random();
           x.setLayout(new GridBagLayout());
           f.add(x);
-
-    }
+          GridBagConstraints gbc = new GridBagConstraints();
+     
+     }
 
 }
