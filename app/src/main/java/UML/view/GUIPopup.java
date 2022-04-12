@@ -5,6 +5,7 @@ import UML.controller.GUIController;
 import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.*;
+import java.util.Random;
 
 public class GUIPopup {
 
