@@ -21,6 +21,9 @@ public class Diagram {
     // HashMap for maintaining class locations
     public HashMap<String, String> locations;
 
+    // make undoRedo a global for testing
+    public UndoRedo undoRedo = null;
+
     // Default constructor
     public Diagram() {
         classList = new ArrayList<Class>();
@@ -563,6 +566,7 @@ public class Diagram {
     // loads diagram from .json or .yaml file
     public String loadDiagram(String fileName) {
         Load load = new Load();
+        UndoRedo undoRedo = UndoRedo.getInstance();
 
         // makes sure end of file name has .json or .yaml
         if (!fileName.toLowerCase().contains(".json")) {
@@ -570,8 +574,7 @@ public class Diagram {
         }
 
         // clear undo history when diagram is loaded
-        UndoRedo undoRedo = UndoRedo.getInstance();
-        
+        undoRedo.reset();
 
         // read files into data structure
         try {
@@ -579,9 +582,11 @@ public class Diagram {
             classList = (ArrayList<Class>) map.get("classList");
             relationships = (ArrayList<Relationship>) map.get("relationships");
             locations = (HashMap<String, String>) map.get("locations");
+            undoRedo = null;
             return "Successfully loaded from " + fileName;
         } catch (Exception e) {
             e.printStackTrace();
+            undoRedo = null;
             return "Failed to load";
         }
     }
@@ -741,15 +746,16 @@ public class Diagram {
         return new Diagram(this.classList, this.relationships, this.locations);
     }
 
-    //get instance then take a snapshot of the current state of the diagram
+    // get instance then take a snapshot of the current state of the diagram
     public void snapshot() {
-        UndoRedo undoRedo = UndoRedo.getInstance();
+        undoRedo = UndoRedo.getInstance();
         undoRedo.snapshotDiagram(clone());
+        undoRedo = null;
     }
 
     // undo command
     public String undo() {
-        UndoRedo undoRedo = UndoRedo.getInstance();
+        undoRedo = UndoRedo.getInstance();
 
         // check if we can undo first
         if (!undoRedo.canUndo()) {
@@ -761,15 +767,16 @@ public class Diagram {
         this.classList = new ArrayList<Class>(old.classList);
         this.relationships = new ArrayList<Relationship>(old.relationships);
         this.locations = old.locations;
+        undoRedo = null;
         return "Undo successful";
     }
 
     // redo command
     public String redo() {
-        //get instance
-        UndoRedo undoRedo = UndoRedo.getInstance();
+        // get instance
+        undoRedo = UndoRedo.getInstance();
 
-        //check if we can redo
+        // check if we can redo
         if (!undoRedo.canRedo()) {
             return "ERROR: No command has been undone";
         }
@@ -779,6 +786,7 @@ public class Diagram {
         this.classList = new ArrayList<Class>(old.classList);
         this.relationships = new ArrayList<Relationship>(old.relationships);
         this.locations = old.locations;
+        undoRedo = null;
         return "Redo successful";
     }
 
