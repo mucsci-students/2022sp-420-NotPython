@@ -5,6 +5,8 @@ import UML.controller.Listing;
 import UML.model.Relationship;
 
 import javax.swing.*;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -60,10 +62,9 @@ public class GUI {
 
         mainPanel = new JPanel();
         innerPanel = new JPanel();
-        JScrollPane jsp = new JScrollPane(mainPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        // mainPanel.add(jsp);
-        mainPanel.setPreferredSize(new Dimension(4000, 3000));
+        JScrollPane jsp = new JScrollPane(mainPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        //mainPanel.add(jsp);
+        mainPanel.setPreferredSize(new Dimension (2000, 1500));
         mainPanel.setBackground(Color.gray);
         mainPanel.setLayout(null);
 
@@ -91,7 +92,9 @@ public class GUI {
         JMenuItem saveMenuItem = new JMenuItem("Save");
         JMenuItem loadMenuItem = new JMenuItem("Load");
         JMenuItem exitMenuItem = new JMenuItem("Exit");
+        JMenuItem saveDiagramImage = new JMenuItem("Save Image");
         fileMenu.add(saveMenuItem);
+        fileMenu.add(saveDiagramImage);
         fileMenu.add(loadMenuItem);
         fileMenu.add(exitMenuItem);
 
@@ -239,7 +242,22 @@ public class GUI {
             String message = guiCtr.guiSaveCtr(locations);
             statusMsg.setText(message);
         });
-        // Load button listener
+
+        //Save Image button listener
+        saveDiagramImage.addActionListener(e -> {
+            String fileName = guiCtr.guiSaveImageCtr();
+            BufferedImage img = new BufferedImage(mainPanel.getWidth(), mainPanel.getHeight(), BufferedImage.TYPE_INT_RGB);
+            mainPanel.print(img.getGraphics()); // or: panel.printAll(...);
+            try {
+                ImageIO.write(img, "png", new File(fileName + ".png"));
+            }
+            catch (IOException ee) {
+                // TODO Auto-generated catch block
+                ee.printStackTrace();
+            }
+            statusMsg.setText("Image Successfully Saved As: " + fileName);
+        });
+        //Load button listener
         loadMenuItem.addActionListener(e -> {
             this.boxes = new HashMap<String, ClassBox>();
             this.arrows = new HashMap<String, ArrowDraw>();

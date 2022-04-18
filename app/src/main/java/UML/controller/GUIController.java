@@ -36,6 +36,22 @@ public class GUIController {
         message = dg.saveDiagram(fileName);
         return message;
     }
+
+    //Save Diagram as Image GUI
+    public String guiSaveImageCtr(){
+        String message;
+        String fileName = guiPop.guiSavePop();
+
+        if (fileName.equals(""))
+        {
+            return "image";
+        }
+        else if(fileName.contains(".")){
+            fileName = fileName.substring(0, fileName.indexOf("."));
+        }
+
+        return fileName;
+    }
     
     //Load File GUI
     public String guiLoadCtr(){
