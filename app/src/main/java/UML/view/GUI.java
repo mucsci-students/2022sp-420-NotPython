@@ -5,12 +5,15 @@ import UML.controller.Listing;
 import UML.model.Relationship;
 
 import javax.swing.*;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Iterator;
+import java.util.Random;
 
 public class GUI {
 
@@ -33,6 +36,7 @@ public class GUI {
     int listOption = 2;
     String listClassName;
     int index = 0;
+    Random rand = new Random();
 
     public GUI()
     {
@@ -66,7 +70,7 @@ public class GUI {
         innerPanel = new JPanel();
         JScrollPane jsp = new JScrollPane(mainPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         //mainPanel.add(jsp);
-        mainPanel.setPreferredSize(new Dimension (4000, 3000));
+        mainPanel.setPreferredSize(new Dimension (2000, 1500));
         mainPanel.setBackground(Color.gray);
         mainPanel.setLayout(null);        
 
@@ -94,7 +98,9 @@ public class GUI {
         JMenuItem saveMenuItem = new JMenuItem("Save");
         JMenuItem loadMenuItem = new JMenuItem("Load");
         JMenuItem exitMenuItem = new JMenuItem("Exit");
+        JMenuItem saveDiagramImage = new JMenuItem("Save Image");
         fileMenu.add(saveMenuItem);
+        fileMenu.add(saveDiagramImage);
         fileMenu.add(loadMenuItem);
         fileMenu.add(exitMenuItem);
 
@@ -246,6 +252,20 @@ public class GUI {
             String message = guiCtr.guiSaveCtr(locations);
             statusMsg.setText(message);
         });
+        //Save Image button listener
+        saveDiagramImage.addActionListener(e -> {
+            String fileName = guiCtr.guiSaveImageCtr();
+            BufferedImage img = new BufferedImage(mainPanel.getWidth(), mainPanel.getHeight(), BufferedImage.TYPE_INT_RGB);
+            mainPanel.print(img.getGraphics()); // or: panel.printAll(...);
+            try {
+                ImageIO.write(img, "png", new File(fileName + ".png"));
+            }
+            catch (IOException ee) {
+                // TODO Auto-generated catch block
+                ee.printStackTrace();
+            }
+            statusMsg.setText("Image Successfully Saved As: " + fileName);
+        });
         //Load button listener
         loadMenuItem.addActionListener(e -> {
             this.boxes = new HashMap <String, ClassBox> ();
@@ -270,7 +290,7 @@ public class GUI {
             statusMsg.setText(message);
             if(!message.contains("ERROR")){
                 snapshot();
-                ClassBox box = new ClassBox(className, (200 * index) + 5, 5 + index, guiCtr, this);
+                ClassBox box = new ClassBox(className, rand.nextInt(mainPanel.getWidth()), rand.nextInt(mainPanel.getHeight()), guiCtr, this);
                 boxes.put(className, box);
                 updater();
                 index++;
@@ -494,7 +514,7 @@ public class GUI {
             //FIX LOCATION LOADING
             String classLoc = locs.get(className);
             if (classLoc.equals("-1 -1")){
-                box = new ClassBox(className, (200 * i) + 8, 8, guiCtr, this);
+                box = new ClassBox(className, rand.nextInt(mainPanel.getWidth()), rand.nextInt(mainPanel.getHeight()), guiCtr, this);
             }
             else{
                 String [] location = classLoc.split(" ");
