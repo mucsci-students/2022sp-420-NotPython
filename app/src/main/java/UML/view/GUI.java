@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Iterator;
+import java.util.Random;
 
 public class GUI {
 
@@ -34,6 +35,7 @@ public class GUI {
     int listOption = 2;
     String listClassName;
     int index = 0;
+    Random rand = new Random();
 
     public GUI() {
         boxes = new HashMap<String, ClassBox>();
@@ -282,7 +284,7 @@ public class GUI {
             statusMsg.setText(message);
             if (!message.contains("ERROR")) {
                 snapshot();
-                ClassBox box = new ClassBox(className, (200 * index) + 5, 5 + index, guiCtr, this);
+                ClassBox box = new ClassBox(className, rand.nextInt(mainPanel.getWidth()), rand.nextInt(mainPanel.getHeight()), guiCtr, this);
                 boxes.put(className, box);
                 updater();
                 index++;
@@ -505,12 +507,12 @@ public class GUI {
 
             // FIX LOCATION LOADING
             String classLoc = locs.get(className);
-            if (classLoc.equals("-1 -1")) {
-                box = new ClassBox(className, (200 * i) + 8, 8, guiCtr, this);
-            } else {
-                String[] location = classLoc.split(" ");
-                box = new ClassBox(className, Integer.parseInt(location[0]), Integer.parseInt(location[1]), guiCtr,
-                        this);
+            if (classLoc.equals("-1 -1")){
+                box = new ClassBox(className, rand.nextInt(mainPanel.getWidth()), rand.nextInt(mainPanel.getHeight()), guiCtr, this);
+            }
+            else{
+                String [] location = classLoc.split(" ");
+                box = new ClassBox(className, Integer.parseInt(location[0]), Integer.parseInt(location[1]), guiCtr, this);
             }
             boxes.put(className, box);
         }
