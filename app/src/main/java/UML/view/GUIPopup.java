@@ -5,7 +5,6 @@ import UML.controller.GUIController;
 import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.*;
-import java.util.Random;
 
 public class GUIPopup {
 
@@ -433,13 +432,5 @@ public class GUIPopup {
         String getClassName = JOptionPane.showInputDialog(createClassPop, "Enter Class Name");
         return getClassName;
     }
-    
-    public void postBox(JFrame f, JPanel x, int x, int y){
-          Random rand = new Random();
-          x.setLayout(new GridBagLayout());
-          f.add(x);
-          GridBagConstraints gbc = new GridBagConstraints();
-     
-     }
 
 }
