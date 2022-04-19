@@ -1,8 +1,10 @@
 package UML.controller;
 
 import UML.model.Diagram;
+import UML.model.Keywords;
 import java.io.File;
 import java.util.ArrayList;
+
 
 import jline.TerminalFactory;
 import jline.console.ConsoleReader;
@@ -12,9 +14,11 @@ import jline.console.completer.*;
 public class CLIController {
     Diagram dg = new Diagram();
     ConsoleReader console = null;
+    Keywords keywords = null;
 
     public CLIController(ConsoleReader console){
         this.console = console;
+        this.keywords = new Keywords();
     }
 
 
@@ -28,14 +32,11 @@ public class CLIController {
             if (lengthChecker(tokens, 3) && tokens[1].equalsIgnoreCase("Class") ) {
                 System.out.println(dg.createClass(tokens[2]));
 
-                ArgumentCompleter completerAux = new ArgumentCompleter(
-                    new StringsCompleter(tokens[2])
+                keywords.addClass("adios");
+                keywords.addClass("hola");
 
-                );
-                Completer[] completers = console.getCompleters().toArray(new Completer[0]);
-                console.removeCompleter(completers[0]);
-                Completer completerBi = new AggregateCompleter(completers[0], completerAux);
-                console.addCompleter(completerBi);
+
+                this.updateCompleters();
 
                 return;
             }
@@ -289,5 +290,15 @@ public class CLIController {
             return false;
         }
         return true;
+    }
+
+    private void updateCompleters(){
+        Completer[] completers = console.getCompleters().toArray(new Completer[0]);
+
+        console.removeCompleter(completers[0]);
+
+        Completer finalCompleter = keywords.getNewCompleters(completers);
+
+        console.addCompleter(finalCompleter);
     }
 }
