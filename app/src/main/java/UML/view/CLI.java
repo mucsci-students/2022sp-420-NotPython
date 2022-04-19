@@ -13,7 +13,7 @@ import jline.console.completer.*;
 
 public class CLI {
     
-    public void runCLI ()
+    /*public void runCLI ()
     {
         //create scanner and read next line
         Scanner scanner = new Scanner(System.in);
@@ -38,7 +38,7 @@ public class CLI {
 
             controller.processCommand(tokens);
         }
-    }
+    }*/
 
     public void runCLITabCompletion ()
     {
@@ -89,7 +89,7 @@ public class CLI {
             console.addCompleter(completer);
             String input;
             String [] tokens = new String [100];
-            CLIController controller = new CLIController();
+            CLIController controller = new CLIController(console);
             while ((input = console.readLine()) != null) {
                 input = input.strip();
                 tokens = input.split("\\s+");

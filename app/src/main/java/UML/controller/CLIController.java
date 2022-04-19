@@ -4,9 +4,19 @@ import UML.model.Diagram;
 import java.io.File;
 import java.util.ArrayList;
 
+import jline.TerminalFactory;
+import jline.console.ConsoleReader;
+import jline.console.completer.*;
+
 //this is the driver class
 public class CLIController {
     Diagram dg = new Diagram();
+    ConsoleReader console = null;
+
+    public CLIController(ConsoleReader console){
+        this.console = console;
+    }
+
 
     public void processCommand(String[] tokens) {
 
@@ -17,6 +27,16 @@ public class CLIController {
             // Command: create class <class_name>
             if (lengthChecker(tokens, 3) && tokens[1].equalsIgnoreCase("Class") ) {
                 System.out.println(dg.createClass(tokens[2]));
+
+                ArgumentCompleter completerAux = new ArgumentCompleter(
+                    new StringsCompleter(tokens[2])
+
+                );
+                Completer[] completers = console.getCompleters().toArray(new Completer[0]);
+                console.removeCompleter(completers[0]);
+                Completer completerBi = new AggregateCompleter(completers[0], completerAux);
+                console.addCompleter(completerBi);
+
                 return;
             }
 
