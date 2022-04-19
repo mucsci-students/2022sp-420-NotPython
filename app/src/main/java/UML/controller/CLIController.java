@@ -19,6 +19,8 @@ public class CLIController {
     public CLIController(ConsoleReader console){
         this.console = console;
         this.keywords = new Keywords();
+
+        console.addCompleter(keywords.getCompleter());
     }
 
 
@@ -32,10 +34,7 @@ public class CLIController {
             if (lengthChecker(tokens, 3) && tokens[1].equalsIgnoreCase("Class") ) {
                 System.out.println(dg.createClass(tokens[2]));
 
-                keywords.addClass("adios");
-                keywords.addClass("hola");
-
-
+                keywords.addClass(tokens[2]);
                 this.updateCompleters();
 
                 return;
@@ -75,6 +74,10 @@ public class CLIController {
             // Command: delete class <class_name>
             if (lengthChecker(tokens, 3) && tokens[1].equalsIgnoreCase("Class")) {
                 System.out.println(dg.deleteClass(tokens[2]));
+
+                keywords.deleteClass(tokens[2]);
+                this.updateCompleters();
+
                 return;
             }
 
@@ -119,6 +122,11 @@ public class CLIController {
             // Command: Rename Class <old_name> <new_name>
             if (lengthChecker(tokens, 4) && tokens[1].equalsIgnoreCase("Class")) {
                 System.out.println(dg.renameClass(tokens[2], tokens[3]));
+
+                keywords.deleteClass(tokens[2]);
+                keywords.addClass(tokens[3]);
+                this.updateCompleters();
+
                 return;
             }
 
@@ -297,7 +305,7 @@ public class CLIController {
 
         console.removeCompleter(completers[0]);
 
-        Completer finalCompleter = keywords.getNewCompleters(completers);
+        Completer finalCompleter = keywords.getCompleter();
 
         console.addCompleter(finalCompleter);
     }

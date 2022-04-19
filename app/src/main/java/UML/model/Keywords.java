@@ -40,11 +40,72 @@ public class Keywords {
         types.add(type);
     }
 
-    public Completer getNewCompleters(Completer[] completers){
-        StringsCompleter classNamesCompleter = new StringsCompleter(classNames);
+    public void deleteClass(String className){
+        for(int i = 0; i < classNames.size(); i++){
+            if(classNames.get(i).equals(className)){
+                classNames.remove(i);
+            }
+        }
+    }
 
-        Completer finalCompleter = new AggregateCompleter(completers[0], classNamesCompleter);
+    public Completer getCompleter(){
+        StringsCompleter completer1 = new StringsCompleter("help", "exit", "undo", "redo");
+
+        ArgumentCompleter completer2 = new ArgumentCompleter(
+            new StringsCompleter("create"),
+            new StringsCompleter("class", "field", "method"),
+            NullCompleter.INSTANCE
+        );
+
+        ArgumentCompleter completer3 = new ArgumentCompleter(
+            new StringsCompleter("rename"),
+            new StringsCompleter("class", "field", "method"),
+            new StringsCompleter(classNames),
+            NullCompleter.INSTANCE
+        );
+
+        ArgumentCompleter completer4 = new ArgumentCompleter(
+            new StringsCompleter("delete"),
+            new StringsCompleter("class"),
+            new StringsCompleter(classNames),
+            NullCompleter.INSTANCE
+        );
+
+        ArgumentCompleter completer5 = new ArgumentCompleter(
+            new StringsCompleter("change"),
+            new StringsCompleter("parameter", "parameters"),
+            NullCompleter.INSTANCE
+        );
+
+        ArgumentCompleter completer6 = new ArgumentCompleter(
+            new StringsCompleter("list"),
+            new StringsCompleter("class", "classes", "relationships"),
+            NullCompleter.INSTANCE
+        );
+
+        ArgumentCompleter completer7 = new ArgumentCompleter(
+            new StringsCompleter("save", "load"),
+            new FileNameCompleter(),
+            NullCompleter.INSTANCE
+        );
+
+        ArgumentCompleter completer8 = new ArgumentCompleter(
+            new StringsCompleter("create"),
+            new StringsCompleter("relationship"),
+            new StringsCompleter("aggregation", "composition", "inheritance", "realization"),
+            new StringsCompleter(classNames),
+            new StringsCompleter(classNames),
+            NullCompleter.INSTANCE
+        );
+
+        ArgumentCompleter completer9 = new ArgumentCompleter(
+            new StringsCompleter("delete"),
+            new StringsCompleter("field", "method", "relationship", "parameter", "parameters"),
+            NullCompleter.INSTANCE
+        );
         
-        return finalCompleter;
+        Completer completer = new AggregateCompleter(completer1, completer2, completer3, completer4, completer5, completer6, completer7, completer8, completer9);
+
+        return completer;
     }
 }
