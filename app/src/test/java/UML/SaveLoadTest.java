@@ -21,11 +21,14 @@ import java.io.FileNotFoundException;
 public class SaveLoadTest
 {
     @Test
-    public void testLoadIncorrectFileFormat() throws IOException{
+    public void testLoadIncorrectFileFormat() throws Exception{
         Load load = new Load();
         Diagram dc = new Diagram();
         Map <String, Object> map = load.loadFile("test.yaml");
         assertTrue("Loaded something?", map.size() == 0);
+
+        String retStr = dc.loadDiagram("test.yaml");
+        assertTrue("Tried to load wrong format from diagram", retStr.equals("ERROR: Unsupported file type: please choose .json"));
     }
 
     @Test(expected = IOException.class)
@@ -35,7 +38,14 @@ public class SaveLoadTest
     }
 
     @Test
-    public void testLoadClasses()
+    public void TestSaveIncorrectFileFormat() throws IOException{
+        Diagram dg = new Diagram();
+        String retStr = dg.saveDiagram("test.yaml");
+        assertTrue("Can save to wrong file format", retStr.equals("ERROR: Unsupported file type: please choose .json"));
+    }
+
+    @Test
+    public void testLoadClasses () throws Exception
     {
         Diagram dc = new Diagram();
         dc.createClass("cool");
@@ -59,7 +69,7 @@ public class SaveLoadTest
     }
 
     @Test
-    public void testLoadFields()
+    public void testLoadFields() throws Exception
     {
         Diagram dc = new Diagram();
         dc.createClass("cool");
@@ -84,7 +94,7 @@ public class SaveLoadTest
     }
 
     @Test
-    public void testLoadMethods()
+    public void testLoadMethods() throws Exception
     {
         ArrayList <String> parms = new ArrayList<String>();
         Diagram dg = new Diagram();
@@ -110,7 +120,7 @@ public class SaveLoadTest
     }
 
     @Test
-    public void testLoadRelationships()
+    public void testLoadRelationships() throws Exception
     {
         Diagram dc = new Diagram();
         dc.createClass("src");
@@ -140,7 +150,7 @@ public class SaveLoadTest
     }
 
     @Test
-    public void testLoadParameters()
+    public void testLoadParameters() throws Exception
     {
         ArrayList <String> parms = new ArrayList<String>();
         parms.add("name1");
@@ -178,7 +188,7 @@ public class SaveLoadTest
     }
 
     @Test
-    public void testLoadEverything()
+    public void testLoadEverything() throws Exception
     {
         Diagram dc = new Diagram();
 

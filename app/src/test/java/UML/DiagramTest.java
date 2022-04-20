@@ -249,9 +249,13 @@ public class DiagramTest {
         Diagram dg = new Diagram();
         dg.createClass("name");
         ArrayList<String> fakeParms = new ArrayList<String>();
+        fakeParms.add("parmName");
+        fakeParms.add("parmType");
+        fakeParms.add("dumb");
+        fakeParms.add("int");
         dg.createMethod("name", "type", "methodName", fakeParms);
 
         String toString = dg.methodsToString("name");
-        assertTrue("v" + toString + "v", toString.equals("  type methodName ()  \n"));
+        assertTrue("v" + toString + "v", toString.equals("  type methodName (parmType parmName, int dumb)  \n"));
     }
 }

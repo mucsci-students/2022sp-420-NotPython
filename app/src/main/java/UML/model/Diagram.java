@@ -352,18 +352,6 @@ public class Diagram {
             return "ERROR: Relationship from " + src + " to " + dest + " of type " + type + " already exists";
         }
 
-        // check for correct relationship type
-        if (!(type.equalsIgnoreCase("aggregation") || type.equalsIgnoreCase("composition") ||
-                type.equalsIgnoreCase("inheritance") || type.equalsIgnoreCase("realization"))) {
-            return "ERROR: Incorrect type: \"" + type
-                    + "\" valid types are Aggregation, Composition, Inheritance and Realization";
-        }
-
-        // check to see if relationship exists already
-        if (getRelationship(src, dest) != null || getRelationship(dest, src) != null) {
-            return "ERROR: Relationship from " + src + " to " + dest + " of type " + type + " already exists";
-        }
-
         // snapshot then add the new relationship to the relationship list
         snapshot();
         relationships.add(new Relationship(type, src, dest));
@@ -549,27 +537,22 @@ public class Diagram {
         locations = locs;
     }
 
-    // saves program to .json or .yaml file
-    public String saveDiagram(String fileName) {
+    // saves program to .json
+    public String saveDiagram(String fileName) throws IOException {
         Save save = new Save();
 
-        // makes sure end of file name has .json or .yaml
-        if (!(fileName.toLowerCase().contains(".json"))) // || fileName.toLowerCase().contains(".yaml")))
+        // makes sure end of file name has .json
+        if (!(fileName.toLowerCase().contains(".json")))
         {
             return "ERROR: Unsupported file type: please choose .json";
         }
-        try{
-            save.saveFile(fileName, classList, relationships, locations);
-        }
-        catch(IOException e){
-            e.printStackTrace();
-        }
+        save.saveFile(fileName, classList, relationships, locations);
         return "Successfully saved to " + fileName;
 
     }
 
     // loads diagram from .json or .yaml file
-    public String loadDiagram(String fileName) {
+    public String loadDiagram(String fileName) throws Exception{
         Load load = new Load();
         UndoRedo undoRedo = UndoRedo.getInstance();
 
@@ -582,18 +565,12 @@ public class Diagram {
         undoRedo.reset();
 
         // read files into data structure
-        try {
-            Map<String, Object> map = load.loadFile(fileName);
-            classList = (ArrayList<Class>) map.get("classList");
-            relationships = (ArrayList<Relationship>) map.get("relationships");
-            locations = (HashMap<String, String>) map.get("locations");
-            undoRedo = null;
-            return "Successfully loaded from " + fileName;
-        } catch (Exception e) {
-            e.printStackTrace();
-            undoRedo = null;
-            return "Failed to load";
-        }
+        Map<String, Object> map = load.loadFile(fileName);
+        classList = (ArrayList<Class>) map.get("classList");
+        relationships = (ArrayList<Relationship>) map.get("relationships");
+        locations = (HashMap<String, String>) map.get("locations");
+        undoRedo = null;
+        return "Successfully loaded from " + fileName;
     }
 
     // List class

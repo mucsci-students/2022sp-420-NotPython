@@ -1,12 +1,33 @@
 package UML.controller;
 
+import UML.view.GUI;
 import UML.model.Diagram;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.nio.file.Files;
+
+import jline.console.ConsoleReader;
+import jline.console.completer.*;
 
 //this is the driver class
 public class CLIController {
     Diagram dg = new Diagram();
+    ConsoleReader console = null;
+    ArrayList<String> classNames = null;
+    ArrayList<String> methodNames = null;
+    ArrayList<String> fieldNames = null;
+
+    public CLIController(ConsoleReader console){
+        this.console = console;
+        classNames = new ArrayList<>();
+        methodNames = new ArrayList<>();
+        fieldNames = new ArrayList<>();
+        console.addCompleter(getCompleter());
+    }
+
 
     public void processCommand(String[] tokens) {
 
@@ -17,6 +38,10 @@ public class CLIController {
             // Command: create class <class_name>
             if (lengthChecker(tokens, 3) && tokens[1].equalsIgnoreCase("Class") ) {
                 System.out.println(dg.createClass(tokens[2]));
+
+                addClass(tokens[2]);
+                this.updateCompleters();
+
                 return;
             }
 
@@ -24,6 +49,10 @@ public class CLIController {
             // Command: create field <class_name> <field_name> <field_type> 
             if (lengthChecker(tokens, 5) && tokens[1].equalsIgnoreCase("Field")) {
                 System.out.println(dg.createField(tokens[2], tokens[3], tokens[4]));
+
+                addField(tokens[3]);
+                this.updateCompleters();
+
                 return;
             }
 
@@ -43,6 +72,10 @@ public class CLIController {
                     params.add(tokens[i]);
                 }
                 System.out.println(dg.createMethod(tokens[2], tokens[4], tokens[3], params));
+
+                addMethod(tokens[3]);
+                this.updateCompleters();
+
                 return;
             }
         }
@@ -54,6 +87,10 @@ public class CLIController {
             // Command: delete class <class_name>
             if (lengthChecker(tokens, 3) && tokens[1].equalsIgnoreCase("Class")) {
                 System.out.println(dg.deleteClass(tokens[2]));
+
+                deleteClass(tokens[2]);
+                this.updateCompleters();
+
                 return;
             }
 
@@ -61,6 +98,10 @@ public class CLIController {
             // Command: delete field <class_name> <field_name>
             if (lengthChecker(tokens, 4) && tokens[1].equalsIgnoreCase("Field")) {
                 System.out.println(dg.deleteField(tokens[2], tokens[3]));
+
+                deleteField(tokens[3]);
+                this.updateCompleters();
+
                 return;
             }
 
@@ -68,6 +109,10 @@ public class CLIController {
             // Command: delete method <class_name> <method_name>
             if (lengthChecker(tokens, 4) && tokens[1].equalsIgnoreCase("Method")) {
                 System.out.println(dg.deleteMethod(tokens[2], tokens[3]));
+
+                deleteMethod(tokens[3]);
+                this.updateCompleters();
+                
                 return;
             }
 
@@ -98,6 +143,11 @@ public class CLIController {
             // Command: Rename Class <old_name> <new_name>
             if (lengthChecker(tokens, 4) && tokens[1].equalsIgnoreCase("Class")) {
                 System.out.println(dg.renameClass(tokens[2], tokens[3]));
+
+                deleteClass(tokens[2]);
+                addClass(tokens[3]);
+                this.updateCompleters();
+
                 return;
             }
 
@@ -105,6 +155,11 @@ public class CLIController {
             // Command: Rename field <class_name> <old_name> <new_name>
             if (lengthChecker(tokens, 5) && tokens[1].equalsIgnoreCase("field")) {
                 System.out.println(dg.renameField(tokens[2], tokens[3], tokens[4]));
+
+                deleteField(tokens[3]);
+                addField(tokens[4]);
+                this.updateCompleters();
+
                 return;
             }
 
@@ -118,6 +173,12 @@ public class CLIController {
                     parameter.add(tokens[i + 1]);
                 }   
                 System.out.println(dg.renameMethod(tokens[2], tokens[3], tokens[4]));
+
+                
+                deleteMethod(tokens[3]);
+                addMethod(tokens[4]);
+                this.updateCompleters();
+
                 return;
             }
         }
@@ -168,14 +229,49 @@ public class CLIController {
         // save file
         // command: save <file_name>
         if (tokens[0].equalsIgnoreCase("Save") && lengthChecker(tokens, 2)) {
-            System.out.println(dg.saveDiagram(tokens[1]));
+            try{
+                System.out.println(dg.saveDiagram(tokens[1]));
+            }
+            catch (Exception e){
+                System.out.println("Save Failed");
+            }
+            
             return;
         }
 
         // load file
         // command: load <file_name>
         if (tokens[0].equalsIgnoreCase("load") && lengthChecker(tokens, 2)) {
-            System.out.println(dg.loadDiagram(tokens[1]));
+            try{
+                System.out.println(dg.loadDiagram(tokens[1]));
+            }
+            catch(Exception e){
+                System.out.println("Loading Failed");
+                e.printStackTrace();
+            }
+            
+            return;
+        }
+
+        // export image
+        // command: export <file_name>
+        if (tokens[0].equalsIgnoreCase("export") && lengthChecker(tokens, 2)) {
+            GUI gui = new GUI();
+            //Creates a temp file to transfer to GUI 
+            try{
+                dg.saveDiagram("diagramExporter.json");
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+            gui.printCLI(tokens[1]);
+            //Delete the temp file
+            try {
+                Files.delete(Paths.get("diagramExporter.json"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Image Successfully Exported");
             return;
         }
 
@@ -228,6 +324,7 @@ public class CLIController {
 
             System.out.printf("%-70s\n\t%-50s\n", "save <file_name>", "saves a file to a JSON format");
             System.out.printf("%-70s\n\t%-50s\n", "load <file_name>", "loads a file from a JSON format");
+            System.out.printf("%-70s\n\t%-50s\n", "export <file_name>", "saves the diagram as a PNG image");
 
             System.out.printf("%-70s\n\t%-50s\n", "list class <class_name>",
                     "lists the contents of a class given its name");
@@ -269,5 +366,163 @@ public class CLIController {
             return false;
         }
         return true;
+    }
+
+    public void addClass(String className){
+        classNames.add(className);
+    }
+
+    public void addMethod(String methodName){
+        methodNames.add(methodName);
+    }
+
+    public void addField(String fieldName){
+        fieldNames.add(fieldName);
+    }
+
+    public void deleteClass(String className){
+        for(int i = 0; i < classNames.size(); i++){
+            if(classNames.get(i).equals(className)){
+                classNames.remove(i);
+            }
+        }
+    }
+
+    public void deleteMethod(String methodName){
+        for(int i = 0; i < methodNames.size(); i++){
+            if(methodNames.get(i).equals(methodName)){
+                methodNames.remove(i);
+            }
+        }
+    }
+
+    public void deleteField(String fieldName){
+        for(int i = 0; i < fieldNames.size(); i++){
+            if(fieldNames.get(i).equals(fieldName)){
+                fieldNames.remove(i);
+            }
+        }
+    }
+
+    private void updateCompleters(){
+        Completer[] completers = console.getCompleters().toArray(new Completer[0]);
+
+        console.removeCompleter(completers[0]);
+
+        Completer finalCompleter = getCompleter();
+
+        console.addCompleter(finalCompleter);
+    }
+
+    public Completer getCompleter(){
+
+        Completer completer1 = new AggregateCompleter(
+            new StringsCompleter("help", "exit", "undo", "redo", "export"),
+            new ArgumentCompleter(
+                new StringsCompleter("save", "load"),
+                new FileNameCompleter(),
+                NullCompleter.INSTANCE
+            )
+        );
+
+        Completer completer2 = new AggregateCompleter(
+            new ArgumentCompleter(
+                new StringsCompleter("create"),
+                new StringsCompleter("class"),
+                NullCompleter.INSTANCE
+            ),
+            new ArgumentCompleter(
+                new StringsCompleter("create"),
+                new StringsCompleter("field"),
+                new StringsCompleter(classNames),
+                NullCompleter.INSTANCE
+            ),
+            new ArgumentCompleter(
+                new StringsCompleter("create"),
+                new StringsCompleter("method"),
+                new StringsCompleter(classNames),
+                NullCompleter.INSTANCE
+            ),
+            new ArgumentCompleter(
+                new StringsCompleter("create"),
+                new StringsCompleter("relationship"),
+                new StringsCompleter("aggregation", "composition", "inheritance", "realization"),
+                new StringsCompleter(classNames),
+                new StringsCompleter(classNames),
+                NullCompleter.INSTANCE
+            )
+        );
+
+        Completer completer3 = new AggregateCompleter(
+            new ArgumentCompleter(
+                new StringsCompleter("rename"),
+                new StringsCompleter("class"),
+                new StringsCompleter(classNames),
+                NullCompleter.INSTANCE
+            ),
+            new ArgumentCompleter(
+                new StringsCompleter("rename"),
+                new StringsCompleter("field"),
+                new StringsCompleter(classNames),
+                new StringsCompleter(fieldNames),
+                NullCompleter.INSTANCE
+            ),
+            new ArgumentCompleter(
+                new StringsCompleter("rename"),
+                new StringsCompleter("method"),
+                new StringsCompleter(classNames),
+                new StringsCompleter(methodNames),
+                NullCompleter.INSTANCE
+            )
+        );
+
+        Completer completer4 = new ArgumentCompleter(
+            new StringsCompleter("change"),
+            new StringsCompleter("parameter", "parameters"),
+            new StringsCompleter(classNames),
+            new StringsCompleter(methodNames),
+            NullCompleter.INSTANCE
+        );
+
+        Completer completer5 = new ArgumentCompleter(
+            new StringsCompleter("list"),
+            new StringsCompleter("class", "classes", "relationships"),
+            new StringsCompleter(classNames),
+            NullCompleter.INSTANCE
+        );
+
+        Completer completer6 = new AggregateCompleter(
+                new ArgumentCompleter(
+                    new StringsCompleter("delete"),
+                    new StringsCompleter("class"),
+                    new StringsCompleter(classNames),
+                    NullCompleter.INSTANCE
+                ),
+                new ArgumentCompleter(
+                    new StringsCompleter("delete"),
+                    new StringsCompleter("relationship"),
+                    new StringsCompleter(classNames),
+                    new StringsCompleter(classNames),
+                    NullCompleter.INSTANCE
+                ),
+                new ArgumentCompleter(
+                    new StringsCompleter("delete"),
+                    new StringsCompleter("field"),
+                    new StringsCompleter(classNames),
+                    new StringsCompleter(fieldNames),
+                    NullCompleter.INSTANCE
+                ),
+                new ArgumentCompleter(
+                    new StringsCompleter("delete"),
+                    new StringsCompleter("method", "parameter", "parameters"),
+                    new StringsCompleter(classNames),
+                    new StringsCompleter(methodNames),
+                    NullCompleter.INSTANCE
+                )
+        );
+        
+        Completer completer = new AggregateCompleter(completer1, completer2, completer3, completer4, completer5, completer6);
+
+        return completer;
     }
 }

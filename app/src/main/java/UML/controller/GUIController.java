@@ -33,7 +33,13 @@ public class GUIController {
         }
 
         dg.copyGUILocations(locations);
-        message = dg.saveDiagram(fileName);
+        try{
+            message = dg.saveDiagram(fileName);
+        }
+        catch(Exception e){
+            message = "Save Failed";
+        }
+        
         return message;
     }
 
@@ -62,9 +68,25 @@ public class GUIController {
         {
             return "ERROR: file name not entered";
         }
-
-        message = dg.loadDiagram(fileName);
+        try{
+            message = dg.loadDiagram(fileName);
+        }
+        catch(Exception e){
+            message = "Load Failed";
+        }
+        
         return message;
+    }
+
+    //Load the CLI Diagram into the GUI Diagram
+    public void cliImageExport(){
+        try{
+            dg.loadDiagram("diagramExporter.json");
+        }
+        catch(Exception e){
+            String ex = "";
+        }
+        
     }
 
     public HashMap <String, String> getLocationsCtr()
