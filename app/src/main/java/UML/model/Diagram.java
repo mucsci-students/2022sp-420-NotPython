@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
+import java.io.IOException;
 
 public class Diagram {
 
@@ -557,8 +558,12 @@ public class Diagram {
         {
             return "ERROR: Unsupported file type: please choose .json";
         }
-
-        save.saveFile(fileName, classList, relationships, locations);
+        try{
+            save.saveFile(fileName, classList, relationships, locations);
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
         return "Successfully saved to " + fileName;
 
     }
