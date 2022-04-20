@@ -38,7 +38,15 @@ public class FieldTest {
         Class c = dg.getClass("dummy");
         assertTrue("Field not created", dg.getField(c, "speed") != null);
 
-        dg.deleteClass("dummy");
+        String retStr = dg.createField("dummy", "field:name", "int");
+        assertTrue("Error was not thrown for bad field name", retStr.equals("ERROR: : is an invalid character"));
+
+        retStr = dg.createField("dummy", "speed", "int");
+        assertTrue("Error was not thrown for field that already exists", 
+            retStr.equals("ERROR: Field with name \"speed\" for \"dummy\" already exists"));
+        
+        retStr = dg.createField("dummy1", "speed", "int");
+        assertTrue("Class shouldn't exist", retStr.equals("ERROR: Class with name \"dummy1\" does not exist"));
     }
 
     @Test
@@ -53,7 +61,9 @@ public class FieldTest {
         dg.renameField("dummy", "speed", "number");
 
         assertTrue("Field not renamed", dg.getField(c, "number") != null);
-        dg.deleteClass("dummy");
+        
+        String retStr = dg.renameField("dummy1", "speed", "number");
+        assertTrue("Field cannot be renamed for class that does not exist", retStr.equals("ERROR: Class \"dummy1\" does not exist"));
     }
 
     @Test
