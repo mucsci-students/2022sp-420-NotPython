@@ -5,8 +5,6 @@ import UML.model.Diagram;
 import java.io.File;
 import java.util.ArrayList;
 
-
-import jline.TerminalFactory;
 import jline.console.ConsoleReader;
 import jline.console.completer.*;
 
