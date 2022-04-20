@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class GUI {
 
@@ -29,8 +30,6 @@ public class GUI {
     JPanel statusBarPanel;
     JLabel statusMsg;
     JMenuBar mainBar;
-    JButton saveButton;
-    JButton loadButton;
 
     int listOption = 2;
     String listClassName;
@@ -248,15 +247,7 @@ public class GUI {
         //Save Image button listener
         saveDiagramImage.addActionListener(e -> {
             String fileName = guiCtr.guiSaveImageCtr();
-            BufferedImage img = new BufferedImage(mainPanel.getWidth(), mainPanel.getHeight(), BufferedImage.TYPE_INT_RGB);
-            mainPanel.print(img.getGraphics()); // or: panel.printAll(...);
-            try {
-                ImageIO.write(img, "png", new File(fileName + ".png"));
-            }
-            catch (IOException ee) {
-                // TODO Auto-generated catch block
-                ee.printStackTrace();
-            }
+            saveImage(fileName);
             statusMsg.setText("Image Successfully Saved As: " + fileName);
         });
         //Load button listener
@@ -540,6 +531,28 @@ public class GUI {
     public void snapshot() {
         GUIUndoRedo undoRedo = GUIUndoRedo.getInstance();
         undoRedo.snapshotGUI(clone());
+    }
+
+    public void saveImage(String fileName){
+        BufferedImage img = new BufferedImage(mainPanel.getWidth(), mainPanel.getHeight(), BufferedImage.TYPE_INT_RGB);
+        mainPanel.print(img.getGraphics()); // or: panel.printAll(...);
+        try {
+            ImageIO.write(img, "png", new File(fileName + ".png"));
+        }
+        catch (IOException ee) {
+            // TODO Auto-generated catch block
+            ee.printStackTrace();
+        }
+    }
+
+    //Runs the GUI to create a diagram from the CLI
+    public void printCLI(String imageFileName){
+        GUI_view();
+        guiCtr.cliImageExport();
+        loadIntoGUI();
+        mainPanel.revalidate();
+        saveImage(imageFileName);
+        mainFrame.dispose();
     }
 
 }

@@ -1,9 +1,13 @@
 package UML.controller;
 
+import UML.view.GUI;
 import UML.model.Diagram;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.nio.file.Files;
 
 import jline.console.ConsoleReader;
 import jline.console.completer.*;
@@ -236,6 +240,23 @@ public class CLIController {
             return;
         }
 
+        // export image
+        // command: export <file_name>
+        if (tokens[0].equalsIgnoreCase("export") && lengthChecker(tokens, 2)) {
+            GUI gui = new GUI();
+            //Creates a temp file to transfer to GUI 
+            dg.saveDiagram("diagramExporter.json");
+            gui.printCLI(tokens[1]);
+            //Delete the temp file
+            try {
+                Files.delete(Paths.get("diagramExporter.json"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Image Successfully Exported");
+            return;
+        }
+
         //undo previous command
         if (lengthChecker (tokens, 1) && tokens[0].equalsIgnoreCase("undo"))
         {
@@ -285,6 +306,7 @@ public class CLIController {
 
             System.out.printf("%-70s\n\t%-50s\n", "save <file_name>", "saves a file to a JSON format");
             System.out.printf("%-70s\n\t%-50s\n", "load <file_name>", "loads a file from a JSON format");
+            System.out.printf("%-70s\n\t%-50s\n", "export <file_name>", "saves the diagram as a PNG image");
 
             System.out.printf("%-70s\n\t%-50s\n", "list class <class_name>",
                     "lists the contents of a class given its name");
@@ -377,7 +399,7 @@ public class CLIController {
     public Completer getCompleter(){
 
         Completer completer1 = new AggregateCompleter(
-            new StringsCompleter("help", "exit", "undo", "redo"),
+            new StringsCompleter("help", "exit", "undo", "redo", "export"),
             new ArgumentCompleter(
                 new StringsCompleter("save", "load"),
                 new FileNameCompleter(),

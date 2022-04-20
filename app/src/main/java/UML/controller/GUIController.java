@@ -67,6 +67,11 @@ public class GUIController {
         return message;
     }
 
+    //Load Thr CLI Diagram into the GUI Diagram
+    public void cliImageExport(){
+        String message = dg.loadDiagram("diagramExporter.json");
+    }
+
     public HashMap <String, String> getLocationsCtr()
     {
         return dg.getLocations();
