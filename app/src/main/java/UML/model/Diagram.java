@@ -548,11 +548,11 @@ public class Diagram {
         locations = locs;
     }
 
-    // saves program to .json or .yaml file
+    // saves program to .json file
     public String saveDiagram(String fileName) {
         Save save = new Save();
 
-        // makes sure end of file name has .json or .yaml
+        // makes sure end of file name has .json
         if (!(fileName.toLowerCase().contains(".json"))) // || fileName.toLowerCase().contains(".yaml")))
         {
             return "ERROR: Unsupported file type: please choose .json";
