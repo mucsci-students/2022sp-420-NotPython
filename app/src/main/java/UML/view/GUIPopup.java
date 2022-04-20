@@ -29,16 +29,16 @@ public class GUIPopup {
         JPanel panel = new JPanel(new GridLayout(2, 1));
 
         //Creating Input Field 1
-        JLabel methodNameLabel = new JLabel("Enter Method Name:");
-        panel.add(methodNameLabel);
-        JTextField methodName = new JTextField(5);
-        panel.add(methodName);
-
-        //Creating Input Field 2
         JLabel methodTypeLabel = new JLabel("Enter Method Type: ");
         panel.add(methodTypeLabel);
         JTextField methodType = new JTextField(5);
         panel.add(methodType);
+
+        //Creating Input Field 2
+        JLabel methodNameLabel = new JLabel("Enter Method Name:");
+        panel.add(methodNameLabel);
+        JTextField methodName = new JTextField(5);
+        panel.add(methodName);
 
         getMethodPop.add(panel);
         JOptionPane.showMessageDialog(getMethodPop, panel);
@@ -145,16 +145,16 @@ public class GUIPopup {
         panel.add(classNames);
 
         //Creating Input Field 2
-        JLabel fieldNameLabel = new JLabel("Enter Field Name:");
-        panel.add(fieldNameLabel);
-        JTextField fieldName = new JTextField(5);
-        panel.add(fieldName);
-
-        //Creating Input Field 3
         JLabel fieldTypeLabel = new JLabel("Enter Field Type: ");
         panel.add(fieldTypeLabel);
         JTextField fieldType = new JTextField(5);
         panel.add(fieldType);
+        
+        //Creating Input Field 3
+        JLabel fieldNameLabel = new JLabel("Enter Field Name:");
+        panel.add(fieldNameLabel);
+        JTextField fieldName = new JTextField(5);
+        panel.add(fieldName);
 
         //Creating the frame and getting the data
         framePop.add(panel);
@@ -352,16 +352,16 @@ public class GUIPopup {
         panel.add(names);
 
         //Creating Input Field 2
-        JLabel label2 = new JLabel("Enter New Name:");
-        panel.add(label2);
-        JTextField name2 = new JTextField(5);
-        panel.add(name2);
-
-        //Creating Input Field 3
         JLabel label3 = new JLabel("Enter New Type: ");
         panel.add(label3);
         JTextField type = new JTextField(5);
         panel.add(type);
+
+        //Creating Input Field 3
+        JLabel label2 = new JLabel("Enter New Name:");
+        panel.add(label2);
+        JTextField name2 = new JTextField(5);
+        panel.add(name2);
 
         //Creating the frame and getting the data
         framePop.add(panel);
