@@ -26,11 +26,11 @@ public class ListingTest {
         Diagram dg = new Diagram();
         dg.createClass("dummy");
         dg.listClass("dummy");
-        String [] lines = capturer.toString().split("\n\r|\n|\r");
+        String [] lines = capturer.toString().split("(\n\r|\n|\r)+");
         assertTrue("\"" + lines[0] + "\"", lines[0].equals(" _______________"));
-        assertTrue("\"" + lines[1] + "\"", lines[2].equals("|   <> dummy    |"));
-        assertTrue("\"" + lines[2] + "\"", lines[4].equals("|===============|"));
-        assertTrue("\"" + lines[3] + "\"", lines[6].equals("|_______________|"));
+        assertTrue("\"" + lines[1] + "\"", lines[1].equals("|   <> dummy    |"));
+        assertTrue("\"" + lines[2] + "\"", lines[2].equals("|===============|"));
+        assertTrue("\"" + lines[3] + "\"", lines[3].equals("|_______________|"));
         capturer.reset();
     }
 
@@ -40,15 +40,15 @@ public class ListingTest {
         dg.createClass("dummy");
         dg.createClass("nClass");
         dg.listClasses();
-        String [] lines = capturer.toString().split("\n\r|\n|\r");
+        String [] lines = capturer.toString().split("(\n\r|\n|\r)+");
         assertTrue("\"" + lines[0] + "\"", lines[0].equals(" _______________"));
-        assertTrue("\"" + lines[1] + "\"", lines[2].equals("|   <> dummy    |"));
-        assertTrue("\"" + lines[2] + "\"", lines[4].equals("|===============|"));
-        assertTrue("\"" + lines[3] + "\"", lines[6].equals("|_______________|"));
-        assertTrue("\"" + lines[4] + "\"", lines[8].equals(" ________________"));
-        assertTrue("\"" + lines[5] + "\"", lines[10].equals("|   <> nClass    |"));
-        assertTrue("\"" + lines[6] + "\"", lines[12].equals("|================|"));
-        assertTrue("\"" + lines[7] + "\"", lines[14].equals("|________________|"));
+        assertTrue("\"" + lines[1] + "\"", lines[1].equals("|   <> dummy    |"));
+        assertTrue("\"" + lines[2] + "\"", lines[2].equals("|===============|"));
+        assertTrue("\"" + lines[3] + "\"", lines[3].equals("|_______________|"));
+        assertTrue("\"" + lines[4] + "\"", lines[4].equals(" ________________"));
+        assertTrue("\"" + lines[5] + "\"", lines[5].equals("|   <> nClass    |"));
+        assertTrue("\"" + lines[6] + "\"", lines[6].equals("|================|"));
+        assertTrue("\"" + lines[7] + "\"", lines[7].equals("|________________|"));
         capturer.reset();
     }
 
@@ -59,10 +59,10 @@ public class ListingTest {
         dg.createClass("dest");
         dg.createRelationship("Aggregation", "src", "dest");
         dg.listRelationships();
-        String [] lines = capturer.toString().split("\n\r|\n|\r");
+        String [] lines = capturer.toString().split("(\n\r|\n|\r)+");
         assertTrue("\"" + lines[0] + "\"", lines[0].equals(" _____________                                        ______________"));
-        assertTrue("\"" + lines[1] + "\"", lines[2].equals("|   <> src    |     --------Aggregation-------->     |   <> dest    |"));
-        assertTrue("\"" + lines[2] + "\"", lines[4].equals("|_____________|                                      |______________|"));
+        assertTrue("\"" + lines[1] + "\"", lines[1].equals("|   <> src    |     --------Aggregation-------->     |   <> dest    |"));
+        assertTrue("\"" + lines[2] + "\"", lines[2].equals("|_____________|                                      |______________|"));
         capturer.reset();
     }
 
