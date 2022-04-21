@@ -395,6 +395,9 @@ public class Diagram {
                     if (!error.equals("")) {
                         return error + " in new parameter name";
                     }
+                    if (getParameter(tempMethod, new_parameter) != null){
+                        return "ERROR: Parameter with name: \"" + new_parameter + "\" already exists";
+                    }
                     // Check if new parameter type is valid
                     error = validation_check(new_parameter_type);
                     if (!error.equals("")) {
@@ -439,7 +442,7 @@ public class Diagram {
                     error = validation_check(param[i + 1]);
 
                     if (!paramNames.add(param[i])) {
-                        return "ERROR: Duplicate parameter name \"" + parameter.get(i) + "\" in parameter list";
+                        return "ERROR: Duplicate parameter name \"" + param[i] + "\" in parameter list";
                     }
 
                     if (!error.equals("")) {
@@ -484,19 +487,21 @@ public class Diagram {
                 // Check if parameter exists
                 Parameter tempParameter = getParameter(tempMethod, parameter);
                 if (tempParameter != null) {
-                    for (Parameter p : tempMethod.parameters) {
-                        if (!p.name.equals(parameter)) {
-                            parameters.add(p.name);
-                            parameters.add(p.type);
-                        }
-                    }
+                    snapshot();
+                    tempMethod.parameters.remove(tempParameter);
+                    // for (Parameter p : tempMethod.parameters) {
+                    //     if (!p.name.equals(parameter)) {
+                    //         parameters.add(p.name);
+                    //         parameters.add(p.type);
+                    //     }
+                    // }
 
                     // snapshot then create new list of parameters
-                    snapshot();
-                    tempMethod.parameters.clear();
-                    for (int i = 0; i < parameters.size() - 1; i += 2) {
-                        tempMethod.parameters.add(new Parameter(parameters.get(i), parameters.get(i + 1)));
-                    }
+                    
+                    // tempMethod.parameters.clear();
+                    // for (int i = 0; i < parameters.size() - 1; i += 2) {
+                    //     tempMethod.parameters.add(new Parameter(parameters.get(i), parameters.get(i + 1)));
+                    // }
 
                     return "Parameter \"" + parameter + "\" removed from method \"" + method_name + "\"";
                 } else {

@@ -268,5 +268,254 @@ public class ParamMethodTest {
         dg.deleteClass("dummy");
     }
 
+    @Test
+    public void deleteParametersClassNotExistsTest()
+    {
+        Diagram dg = new Diagram();
+        String returned = dg.deleteParameters("notExistsClass", "name");
+        assertTrue("className does not exist", returned.equals("ERROR: Class with name \"notExistsClass\" does not exist"));
+    }
+
+    @Test
+    public void deleteParametersMethodNotExistsTest()
+    {
+        Diagram dg = new Diagram();
+        dg.createClass("class");
+        String returned = dg.deleteParameters("class", "notExistsMethod");
+        assertTrue("methodName does not exist", returned.equals("ERROR: Method with name \"notExistsMethod\" does not exist"));
+        dg.deleteClass("class");
+    }
+
+    @Test
+    public void deleteParameterClassNotExistsTest()
+    {
+        ArrayList <String> parms = new ArrayList<String>();
+        Diagram dg = new Diagram();
+        dg.deleteParameter("notExistsClass", "name", "param");
+        assertTrue("className does not exist", dg.getClass("notExistsClass") == null);
+    }
+
+    @Test
+    public void deleteParameterMethodNotExistsTest()
+    {
+        ArrayList <String> parms = new ArrayList<String>();
+        Diagram dg = new Diagram();
+        dg.createClass("class");
+        dg.deleteParameter("class", "notExistsMethod", "param");
+        assertTrue("methodName does not exist", dg.getMethod("class", "notExistsMethod") == null);
+        dg.deleteClass("class");
+    }
+
+    @Test
+    public void deleteParameterParamNotExistsTest()
+    {
+        ArrayList <String> parms = new ArrayList<String>();
+        Diagram dg = new Diagram();
+        dg.createClass("dummy");
+        dg.createMethod("dummy", "int", "name", parms);
+        Method m = dg.getMethod("dummy", "name");
+        assertTrue("Method with no parameters created", m != null);
+        dg.deleteParameter("dummy", "name", "parmName");
+        assertTrue("parameter doesnt exist", dg.getParameter(m, "parmName") == null);
+        dg.deleteClass("dummy");
+    }
+
+    @Test
+    public void changeParametersError1Test()
+    {
+        ArrayList <String> parms = new ArrayList<String>();
+        String [] newParms = new String[6];
+        newParms[4] = "name1?";
+        newParms[5] = "type1";
+        Diagram dg = new Diagram();
+        dg.createClass("dummy");
+        parms.add("parmName");
+        parms.add("parmType");
+        dg.createMethod("dummy", "int", "name", parms);
+        Method m = dg.getMethod("dummy", "name");
+        assertTrue("Method with no parameters not created", m != null);
+        assertTrue("Parameter not created in method", dg.getParameter(m, "parmName") != null);
+        String returned = dg.changeParameters("dummy", "name", newParms);
+        assertTrue("name not valid", returned.equals("ERROR: ? is an invalid character in method parameter name"));
+        dg.deleteClass("dummy");
+    }
+
+    @Test
+    public void changeParametersError2Test()
+    {
+        ArrayList <String> parms = new ArrayList<String>();
+        String [] newParms = new String[6];
+        newParms[4] = "name1";
+        newParms[5] = "type1?";
+        Diagram dg = new Diagram();
+        dg.createClass("dummy");
+        parms.add("parmName");
+        parms.add("parmType");
+        dg.createMethod("dummy", "int", "name", parms);
+        Method m = dg.getMethod("dummy", "name");
+        assertTrue("Method with no parameters not created", m != null);
+        assertTrue("Parameter not created in method", dg.getParameter(m, "parmName") != null);
+        String returned = dg.changeParameters("dummy", "name", newParms);
+        assertTrue("type not valid", returned.equals("ERROR: ? is an invalid character in method parameter type"));
+        dg.deleteClass("dummy");
+    }
+
+    @Test
+    public void changeParametersError3Test()
+    {
+        ArrayList <String> parms = new ArrayList<String>();
+        String [] newParms = new String[8];
+        newParms[4] = "name1";
+        newParms[5] = "type1";
+        newParms[6] = "name1";
+        newParms[7] = "type2";
+        Diagram dg = new Diagram();
+        dg.createClass("dummy");
+        parms.add("parmName");
+        parms.add("parmType");
+        dg.createMethod("dummy", "int", "name", parms);
+        Method m = dg.getMethod("dummy", "name");
+        assertTrue("Method with no parameters not created", m != null);
+        assertTrue("Parameter not created in method", dg.getParameter(m, "parmName") != null);
+        String returned = dg.changeParameters("dummy", "name", newParms);
+        assertTrue("duplicate parameter name", returned.equals("ERROR: Duplicate parameter name \"name1\" in parameter list"));
+        dg.deleteClass("dummy");
+    }
+
+    @Test
+    public void changeParametersError4Test()
+    {
+        ArrayList <String> parms = new ArrayList<String>();
+        String [] newParms = new String[7];
+        newParms[4] = "name1";
+        newParms[5] = "type1";
+        newParms[6] = "name2";
+        Diagram dg = new Diagram();
+        dg.createClass("dummy");
+        parms.add("parmName");
+        parms.add("parmType");
+        dg.createMethod("dummy", "int", "name", parms);
+        Method m = dg.getMethod("dummy", "name");
+        assertTrue("Method with no parameters not created", m != null);
+        assertTrue("Parameter not created in method", dg.getParameter(m, "parmName") != null);
+        String returned = dg.changeParameters("dummy", "name", newParms);
+        assertTrue("incorrect parameter list length", returned.equals("ERROR: Parameter list length is incorrect"));
+        dg.deleteClass("dummy");
+    }
+
+    @Test
+    public void changeParametersError5Test()
+    {
+        ArrayList <String> parms = new ArrayList<String>();
+        String [] newParms = new String[7];
+        newParms[4] = "name1";
+        newParms[5] = "type1";
+        newParms[6] = "name2";
+        Diagram dg = new Diagram();
+        dg.createClass("dummy");
+        String returned = dg.changeParameters("dummy", "name", newParms);
+        assertTrue("method does not exist", returned.equals("ERROR: Method with name \"name\" does not exist"));
+        dg.deleteClass("dummy");
+    }
+
+    @Test
+    public void changeParametersError6Test()
+    {
+        ArrayList <String> parms = new ArrayList<String>();
+        String [] newParms = new String[7];
+        newParms[4] = "name1";
+        newParms[5] = "type1";
+        newParms[6] = "name2";
+        Diagram dg = new Diagram();
+        String returned = dg.changeParameters("dummy", "name", newParms);
+        assertTrue("class does not exist", returned.equals("ERROR: Class with name \"dummy\" does not exist"));
+    }
+
+    @Test
+    public void changeParameterError1Test()
+    {
+        ArrayList <String> parms = new ArrayList<String>();
+        Diagram dg = new Diagram();
+        dg.createClass("dummy");
+        parms.add("parmName");
+        parms.add("parmType");
+        dg.createMethod("dummy", "int", "name", parms);
+        Method m = dg.getMethod("dummy", "name");
+        String returned = dg.changeParameter("dummy", "name", "parmName", "newParmName?", "String");
+        assertTrue("name not valid", returned.equals("ERROR: ? is an invalid character in new parameter name"));
+        dg.deleteClass("dummy");
+    }
+
+    @Test
+    public void changeParameterError2Test()
+    {
+        ArrayList <String> parms = new ArrayList<String>();
+        Diagram dg = new Diagram();
+        dg.createClass("dummy");
+        parms.add("parmName");
+        parms.add("parmType");
+        dg.createMethod("dummy", "int", "name", parms);
+        Method m = dg.getMethod("dummy", "name");
+        String returned = dg.changeParameter("dummy", "name", "parmName", "newParmName", "String?");
+        assertTrue("type not valid", returned.equals("ERROR: ? is an invalid character in new parameter type"));
+        dg.deleteClass("dummy");
+    }
+
+    @Test
+    public void changeParameterError3Test()
+    {
+        ArrayList <String> parms = new ArrayList<String>();
+        Diagram dg = new Diagram();
+        dg.createClass("dummy");
+        parms.add("parmName");
+        parms.add("parmType");
+        parms.add("newParmName");
+        parms.add("parmType2");
+        dg.createMethod("dummy", "int", "name", parms);
+        Method m = dg.getMethod("dummy", "name");
+        assertTrue("Method with no parameters not created", m != null);
+        assertTrue("Parameter not created in method", dg.getParameter(m, "parmName") != null);
+        String returned = dg.changeParameter("dummy", "name", "parmName", "newParmName", "String");
+        //assertTrue(returned, false);
+        assertTrue("duplicate parameter name", returned.equals("ERROR: Parameter with name: \"newParmName\" already exists"));
+        dg.deleteClass("dummy");
+    }
+
+    @Test
+    public void changeParameterError4Test()
+    {
+        ArrayList <String> parms = new ArrayList<String>();
+        Diagram dg = new Diagram();
+        dg.createClass("dummy");
+        parms.add("parmName");
+        parms.add("parmType");
+        dg.createMethod("dummy", "int", "name", parms);
+        Method m = dg.getMethod("dummy", "name");
+        assertTrue("Method with no parameters not created", m != null);
+        assertTrue("Parameter not created in method", dg.getParameter(m, "parmName") != null);
+        String returned = dg.changeParameter("dummy", "name", "parmName2", "newParmName", "String");
+        assertTrue("old parameter does not exist", returned.equals("ERROR: Parameter with name \"parmName2\" does not exist"));
+        dg.deleteClass("dummy");
+    }
+
+    @Test
+    public void changeParameterError5Test()
+    {
+        
+        Diagram dg = new Diagram();
+        dg.createClass("dummy");
+        String returned = dg.changeParameter("dummy", "name", "parmName", "newParmName", "String");
+        assertTrue("method does not exist", returned.equals("ERROR: Method with name \"name\" does not exist"));
+        dg.deleteClass("dummy");
+    }
+
+    @Test
+    public void changeParameterError6Test()
+    {
+        
+        Diagram dg = new Diagram();
+        String returned = dg.changeParameter("dummy", "name", "parmName", "newParmName", "String");
+        assertTrue("class does not exist", returned.equals("ERROR: Class with name \"dummy\" does not exist"));
+    }
     
 }
