@@ -275,6 +275,23 @@ public class CLIController {
             return;
         }
 
+        // export image
+        // command: export <file_name>
+        if (tokens[0].equalsIgnoreCase("export") && lengthChecker(tokens, 2)) {
+            GUI gui = new GUI();
+            //Creates a temp file to transfer to GUI 
+            dg.saveDiagram("diagramExporter.json");
+            gui.printCLI(tokens[1]);
+            //Delete the temp file
+            try {
+                Files.delete(Paths.get("diagramExporter.json"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Image Successfully Exported");
+            return;
+        }
+
         //undo previous command
         if (lengthChecker (tokens, 1) && tokens[0].equalsIgnoreCase("undo"))
         {

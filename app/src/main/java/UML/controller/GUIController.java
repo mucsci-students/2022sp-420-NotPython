@@ -86,7 +86,6 @@ public class GUIController {
         catch(Exception e){
             String ex = "";
         }
-        
     }
 
     public HashMap <String, String> getLocationsCtr()
