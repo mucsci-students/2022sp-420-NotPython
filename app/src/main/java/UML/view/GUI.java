@@ -554,5 +554,4 @@ public class GUI {
         saveImage(imageFileName);
         mainFrame.dispose();
     }
-
 }

@@ -15,21 +15,15 @@ public class Save {
 
   // pass both class and atrribute objects, then iterate through attributes, make
   // relationships whole other section
-  public void saveFile(String fileName, ArrayList<Class> classes, ArrayList<Relationship> relations, HashMap <String, String> locs) {
+  public void saveFile(String fileName, ArrayList<Class> classes, ArrayList<Relationship> relations, HashMap <String, String> locs) throws IOException{
 
-    try {
+    FileWriter writer = new FileWriter(fileName);
 
-      FileWriter writer = new FileWriter(fileName);
-
-      if (fileName.contains(".json")) {
-        writer.write(diagramJSON(classes, relations, locs));
-      }
-
-      writer.close();
-    } catch (IOException e) {
-      System.out.println("An error occurred.");
-      e.printStackTrace();
+    if (fileName.contains(".json")) {
+      writer.write(diagramJSON(classes, relations, locs));
     }
+
+    writer.close();
   }
 
   //creates JSON diagram representation

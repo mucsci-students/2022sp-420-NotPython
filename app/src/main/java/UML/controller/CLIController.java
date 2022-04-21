@@ -229,14 +229,27 @@ public class CLIController {
         // save file
         // command: save <file_name>
         if (tokens[0].equalsIgnoreCase("Save") && lengthChecker(tokens, 2)) {
-            System.out.println(dg.saveDiagram(tokens[1]));
+            try{
+                System.out.println(dg.saveDiagram(tokens[1]));
+            }
+            catch (Exception e){
+                System.out.println("Save Failed");
+            }
+            
             return;
         }
 
         // load file
         // command: load <file_name>
         if (tokens[0].equalsIgnoreCase("load") && lengthChecker(tokens, 2)) {
-            System.out.println(dg.loadDiagram(tokens[1]));
+            try{
+                System.out.println(dg.loadDiagram(tokens[1]));
+            }
+            catch(Exception e){
+                System.out.println("Loading Failed");
+                e.printStackTrace();
+            }
+            
             return;
         }
 
@@ -245,7 +258,34 @@ public class CLIController {
         if (tokens[0].equalsIgnoreCase("export") && lengthChecker(tokens, 2)) {
             GUI gui = new GUI();
             //Creates a temp file to transfer to GUI 
-            dg.saveDiagram("diagramExporter.json");
+            try{
+                dg.saveDiagram("diagramExporter.json");
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+            gui.printCLI(tokens[1]);
+            //Delete the temp file
+            try {
+                Files.delete(Paths.get("diagramExporter.json"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Image Successfully Exported");
+            return;
+        }
+
+        // export image
+        // command: export <file_name>
+        if (tokens[0].equalsIgnoreCase("export") && lengthChecker(tokens, 2)) {
+            GUI gui = new GUI();
+            //Creates a temp file to transfer to GUI 
+            try{
+                dg.saveDiagram("diagramExporter.json");
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
             gui.printCLI(tokens[1]);
             //Delete the temp file
             try {

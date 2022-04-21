@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
+import java.io.IOException;
 
 public class Diagram {
 
@@ -351,18 +352,6 @@ public class Diagram {
             return "ERROR: Relationship from " + src + " to " + dest + " of type " + type + " already exists";
         }
 
-        // check for correct relationship type
-        if (!(type.equalsIgnoreCase("aggregation") || type.equalsIgnoreCase("composition") ||
-                type.equalsIgnoreCase("inheritance") || type.equalsIgnoreCase("realization"))) {
-            return "ERROR: Incorrect type: \"" + type
-                    + "\" valid types are Aggregation, Composition, Inheritance and Realization";
-        }
-
-        // check to see if relationship exists already
-        if (getRelationship(src, dest) != null || getRelationship(dest, src) != null) {
-            return "ERROR: Relationship from " + src + " to " + dest + " of type " + type + " already exists";
-        }
-
         // snapshot then add the new relationship to the relationship list
         snapshot();
         relationships.add(new Relationship(type, src, dest));
@@ -405,6 +394,9 @@ public class Diagram {
                     String error = validation_check(new_parameter);
                     if (!error.equals("")) {
                         return error + " in new parameter name";
+                    }
+                    if (getParameter(tempMethod, new_parameter) != null){
+                        return "ERROR: Parameter with name: \"" + new_parameter + "\" already exists";
                     }
                     // Check if new parameter type is valid
                     error = validation_check(new_parameter_type);
@@ -450,7 +442,7 @@ public class Diagram {
                     error = validation_check(param[i + 1]);
 
                     if (!paramNames.add(param[i])) {
-                        return "ERROR: Duplicate parameter name \"" + parameter.get(i) + "\" in parameter list";
+                        return "ERROR: Duplicate parameter name \"" + param[i] + "\" in parameter list";
                     }
 
                     if (!error.equals("")) {
@@ -495,19 +487,21 @@ public class Diagram {
                 // Check if parameter exists
                 Parameter tempParameter = getParameter(tempMethod, parameter);
                 if (tempParameter != null) {
-                    for (Parameter p : tempMethod.parameters) {
-                        if (!p.name.equals(parameter)) {
-                            parameters.add(p.name);
-                            parameters.add(p.type);
-                        }
-                    }
+                    snapshot();
+                    tempMethod.parameters.remove(tempParameter);
+                    // for (Parameter p : tempMethod.parameters) {
+                    //     if (!p.name.equals(parameter)) {
+                    //         parameters.add(p.name);
+                    //         parameters.add(p.type);
+                    //     }
+                    // }
 
                     // snapshot then create new list of parameters
-                    snapshot();
-                    tempMethod.parameters.clear();
-                    for (int i = 0; i < parameters.size() - 1; i += 2) {
-                        tempMethod.parameters.add(new Parameter(parameters.get(i), parameters.get(i + 1)));
-                    }
+                    
+                    // tempMethod.parameters.clear();
+                    // for (int i = 0; i < parameters.size() - 1; i += 2) {
+                    //     tempMethod.parameters.add(new Parameter(parameters.get(i), parameters.get(i + 1)));
+                    // }
 
                     return "Parameter \"" + parameter + "\" removed from method \"" + method_name + "\"";
                 } else {
@@ -548,23 +542,22 @@ public class Diagram {
         locations = locs;
     }
 
-    // saves program to .json file
-    public String saveDiagram(String fileName) {
+    // saves program to .json
+    public String saveDiagram(String fileName) throws IOException {
         Save save = new Save();
 
         // makes sure end of file name has .json
-        if (!(fileName.toLowerCase().contains(".json"))) // || fileName.toLowerCase().contains(".yaml")))
+        if (!(fileName.toLowerCase().contains(".json")))
         {
             return "ERROR: Unsupported file type: please choose .json";
         }
-
         save.saveFile(fileName, classList, relationships, locations);
         return "Successfully saved to " + fileName;
 
     }
 
     // loads diagram from .json or .yaml file
-    public String loadDiagram(String fileName) {
+    public String loadDiagram(String fileName) throws Exception{
         Load load = new Load();
         UndoRedo undoRedo = UndoRedo.getInstance();
 
@@ -577,18 +570,12 @@ public class Diagram {
         undoRedo.reset();
 
         // read files into data structure
-        try {
-            Map<String, Object> map = load.loadFile(fileName);
-            classList = (ArrayList<Class>) map.get("classList");
-            relationships = (ArrayList<Relationship>) map.get("relationships");
-            locations = (HashMap<String, String>) map.get("locations");
-            undoRedo = null;
-            return "Successfully loaded from " + fileName;
-        } catch (Exception e) {
-            e.printStackTrace();
-            undoRedo = null;
-            return "Failed to load";
-        }
+        Map<String, Object> map = load.loadFile(fileName);
+        classList = (ArrayList<Class>) map.get("classList");
+        relationships = (ArrayList<Relationship>) map.get("relationships");
+        locations = (HashMap<String, String>) map.get("locations");
+        undoRedo = null;
+        return "Successfully loaded from " + fileName;
     }
 
     // List class
