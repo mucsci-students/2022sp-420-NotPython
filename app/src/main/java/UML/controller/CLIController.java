@@ -280,7 +280,12 @@ public class CLIController {
         if (tokens[0].equalsIgnoreCase("export") && lengthChecker(tokens, 2)) {
             GUI gui = new GUI();
             //Creates a temp file to transfer to GUI 
-            dg.saveDiagram("diagramExporter.json");
+            try{
+                dg.saveDiagram("diagramExporter.json");
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
             gui.printCLI(tokens[1]);
             //Delete the temp file
             try {
