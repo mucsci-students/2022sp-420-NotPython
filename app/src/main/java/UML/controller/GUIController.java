@@ -17,7 +17,7 @@ public class GUIController {
         return dg.undo();
     }
     
-    //Undo File GUI
+    //Redo File GUI
     public String guiRedoCtr(){
         return dg.redo();
     }

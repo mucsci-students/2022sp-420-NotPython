@@ -1,0 +1,310 @@
+{
+	"classes": [
+	{
+		"name": "CLIController",
+		"fields": [
+			{ "name": "dg", "type": "Diagram" },
+			{ "name": "console", "type": "ConsoleReader" },
+			{ "name": "classNames", "type": "ArraayList<String>" },
+			{ "name": "methodNames", "type": "ArrayList<String>" },
+			{ "name": "fieldNames", "type": "ArrayList<String>" }
+		],
+		"methods": [
+			{
+				"name": "processCommand",
+				"return_type": "void",
+				"params": [
+					{ "name": "tokens", "type": "String[]" }
+				]
+			},
+			{
+				"name": "lengthChecker",
+				"return_type": "boolean",
+				"params": [
+					{ "name": "tokens", "type": "String[]" },
+					{ "name": "size", "type": "int" }
+				]
+			},
+			{
+				"name": "addClass",
+				"return_type": "void",
+				"params": [
+					{ "name": "className", "type": "String" }
+				]
+			},
+			{
+				"name": "addMethod",
+				"return_type": "void",
+				"params": [
+					{ "name": "methodName", "type": "String" }
+				]
+			},
+			{
+				"name": "addField",
+				"return_type": "void",
+				"params": [
+					{ "name": "fieldName", "type": "String" }
+				]
+			},
+			{
+				"name": "deleteClass",
+				"return_type": "void",
+				"params": [
+					{ "name": "className", "type": "String" }
+				]
+			},
+			{
+				"name": "deleteMethod",
+				"return_type": "void",
+				"params": [
+					{ "name": "methodName", "type": "String" }
+				]
+			},
+			{
+				"name": "deleteField",
+				"return_type": "void",
+				"params": [
+					{ "name": "fieldName", "type": "String" }
+				]
+			},
+			{
+				"name": "updateCompleters",
+				"return_type": "void",
+				"params": []
+			},
+			{
+				"name": "getCompleter",
+				"return_type": "Completer",
+				"params": []
+			}
+		],
+		"location":{"x":503,"y":178}
+	},
+	{
+		"name": "GUIController",
+		"fields": [
+			{ "name": "dg", "type": "Diagram" },
+			{ "name": "guiPop", "type": "GUIPopup" }
+		],
+		"methods": [
+			{
+				"name": "guiUndoCtr",
+				"return_type": "String",
+				"params": []
+			},
+			{
+				"name": "guiRedoCtr",
+				"return_type": "String",
+				"params": []
+			},
+			{
+				"name": "guiSaveCtr",
+				"return_type": "String",
+				"params": [
+					{ "name": "locations", "type": "HashMap<String,String>" }
+				]
+			},
+			{
+				"name": "guiSaveImageCtr",
+				"return_type": "String",
+				"params": []
+			},
+			{
+				"name": "guiLoadCtr",
+				"return_type": "String",
+				"params": []
+			},
+			{
+				"name": "cliImageExport",
+				"return_type": "void",
+				"params": []
+			},
+			{
+				"name": "guiCreateClassCtr",
+				"return_type": "String[]",
+				"params": []
+			},
+			{
+				"name": "createMethodCtr",
+				"return_type": "String[]",
+				"params": []
+			},
+			{
+				"name": "createFieldCtr",
+				"return_type": "String[]",
+				"params": []
+			},
+			{
+				"name": "createRelationshipCtr",
+				"return_type": "String[]",
+				"params": []
+			},
+			{
+				"name": "deleteClassCtr",
+				"return_type": "String[]",
+				"params": []
+			},
+			{
+				"name": "deleteMethodCtr",
+				"return_type": "String[]",
+				"params": []
+			},
+			{
+				"name": "deleteFieldCtr",
+				"return_type": "String[]",
+				"params": []
+			},
+			{
+				"name": "deleteRelationshipCtr",
+				"return_type": "String[]",
+				"params": []
+			},
+			{
+				"name": "renameClassCtr",
+				"return_type": "String[]",
+				"params": []
+			},
+			{
+				"name": "renameMethodCtr",
+				"return_type": "String[]",
+				"params": []
+			},
+			{
+				"name": "editMethodSingleParam",
+				"return_type": "String[]",
+				"params": []
+			},
+			{
+				"name": "editMethodParamsCtr",
+				"return_type": "String[]",
+				"params": []
+			},
+			{
+				"name": "renameFieldCtr",
+				"return_type": "String[]",
+				"params": []
+			},
+			{
+				"name": "deleteSingleParamCtr",
+				"return_type": "String[]",
+				"params": []
+			},
+			{
+				"name": "deleteParamsCtr",
+				"return_type": "String[]",
+				"params": []
+			},
+			{
+				"name": "maximumWord",
+				"return_type": "String",
+				"params": [
+					{ "name": "className", "type": "String" }
+				]
+			},
+			{
+				"name": "snapshotDiagram",
+				"return_type": "void",
+				"params": []
+			},
+			{
+				"name": "passRelationships",
+				"return_type": "ArrayList<Relationship>",
+				"params": []
+			},
+			{
+				"name": "updateFieldsCtr",
+				"return_type": "String",
+				"params": [
+					{ "name": "className", "type": "String" }
+				]
+			},
+			{
+				"name": "updateMethodsCtr",
+				"return_type": "String",
+				"params": [
+					{ "name": "className", "type": "String" }
+				]
+			},
+			{
+				"name": "getClassListArray",
+				"return_type": "String[]",
+				"params": []
+			}
+		],
+		"location":{"x":61,"y":283}
+	},
+	{
+		"name": "Listing",
+		"fields": [],
+		"methods": [
+			{
+				"name": "listClass",
+				"return_type": "void",
+				"params": [
+					{ "name": "list", "type": "ArrayList<Class>" },
+					{ "name": "className", "type": "String" }
+				]
+			},
+			{
+				"name": "listClasses",
+				"return_type": "void",
+				"params": [
+					{ "name": "list", "type": "ArrayList<Class>" }
+				]
+			},
+			{
+				"name": "listRelationships",
+				"return_type": "void",
+				"params": [
+					{ "name": "list", "type": "ArrayList<Relationship>" }
+				]
+			},
+			{
+				"name": "printRelationship",
+				"return_type": "void",
+				"params": [
+					{ "name": "type", "type": "String" },
+					{ "name": "class1", "type": "String" },
+					{ "name": "class2", "type": "String" }
+				]
+			},
+			{
+				"name": "printRow",
+				"return_type": "void",
+				"params": [
+					{ "name": "phrase", "type": "String" },
+					{ "name": "length", "type": "int" },
+					{ "name": "isRelationship", "type": "boolean" }
+				]
+			},
+			{
+				"name": "maximumLength",
+				"return_type": "int",
+				"params": [
+					{ "name": "classSample", "type": "Class" }
+				]
+			}
+		],
+		"location":{"x":19,"y":21}
+	},
+	{
+		"name": "Class",
+		"fields": [
+			{ "name": "name", "type": "String" },
+			{ "name": "fields", "type": "ArrayList<Field>" },
+			{ "name": "methods", "type": "ArrayList<Method>" }
+		],
+		"methods": [
+			{
+				"name": "rename",
+				"return_type": "void",
+				"params": [
+					{ "name": "newName", "type": "String" }
+				]
+			}
+		],
+		"location":{"x":601,"y":495}
+	}
+	],
+	"relationships": []
+}

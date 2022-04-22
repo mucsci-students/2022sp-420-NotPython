@@ -275,7 +275,7 @@ public class GUI {
             statusMsg.setText(message);
             if (!message.contains("ERROR")) {
                 snapshot();
-                ClassBox box = new ClassBox(className, rand.nextInt(mainPanel.getWidth()), rand.nextInt(mainPanel.getHeight()), guiCtr, this);
+                ClassBox box = new ClassBox(className, rand.nextInt(mainPanel.getWidth() - 100), rand.nextInt(mainPanel.getHeight() - 100), guiCtr, this);
                 boxes.put(className, box);
                 updater();
                 index++;
@@ -499,7 +499,7 @@ public class GUI {
             // FIX LOCATION LOADING
             String classLoc = locs.get(className);
             if (classLoc.equals("-1 -1")){
-                box = new ClassBox(className, rand.nextInt(mainPanel.getWidth()), rand.nextInt(mainPanel.getHeight()), guiCtr, this);
+                box = new ClassBox(className, rand.nextInt(mainPanel.getWidth() - 100), rand.nextInt(mainPanel.getHeight() - 100), guiCtr, this);
             }
             else{
                 String [] location = classLoc.split(" ");
