@@ -168,5 +168,4 @@ public class ClassBox {
         int textheight = (int)(font.getStringBounds("text", frc).getHeight());
         return textheight + 1;
     }
-
 }

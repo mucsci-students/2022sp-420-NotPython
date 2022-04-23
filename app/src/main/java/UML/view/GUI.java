@@ -493,7 +493,6 @@ public class GUI {
 
         mainPanel.repaint();
         arrowUpdater();
-
     }
 
     public void panelDownSize(){
