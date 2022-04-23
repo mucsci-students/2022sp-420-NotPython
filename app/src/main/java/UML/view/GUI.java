@@ -23,6 +23,7 @@ public class GUI {
 
     HashMap<String, ClassBox> boxes;
     HashMap<String, ArrowDraw> arrows;
+    HashMap<String, int[]> boxLocations;
 
     JFrame mainFrame;
     JPanel mainPanel;
@@ -36,9 +37,13 @@ public class GUI {
     int index = 0;
     Random rand = new Random();
 
+    int PANEL_WIDTH = 800;
+    int PANEL_HEIGHT = 600;
+
     public GUI() {
         boxes = new HashMap<String, ClassBox>();
         arrows = new HashMap<String, ArrowDraw>();
+        boxLocations = new HashMap<String, int[]>();
     }
 
     public GUI(GUI other) {
@@ -53,6 +58,20 @@ public class GUI {
         }
     }
 
+    public void updatePanelSize(int width, int height){
+        if(width > PANEL_WIDTH){
+            PANEL_WIDTH = width;
+            mainPanel.setPreferredSize(new Dimension (PANEL_WIDTH, PANEL_HEIGHT));
+            mainPanel.revalidate();
+        }
+        if(height > PANEL_HEIGHT){
+            PANEL_HEIGHT = height;
+            mainPanel.setPreferredSize(new Dimension (PANEL_WIDTH, PANEL_HEIGHT));
+            mainPanel.revalidate();
+        }
+    
+    }
+
     public void GUI_view() {
         mainFrame = new JFrame("UML Editor");
         mainFrame.getContentPane().setLayout(new BorderLayout());
@@ -65,7 +84,7 @@ public class GUI {
         innerPanel = new JPanel();
         JScrollPane jsp = new JScrollPane(mainPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         //mainPanel.add(jsp);
-        mainPanel.setPreferredSize(new Dimension (2000, 1500));
+        mainPanel.setPreferredSize(new Dimension (PANEL_WIDTH, PANEL_HEIGHT));
         mainPanel.setBackground(Color.gray);
         mainPanel.setLayout(null);
 
@@ -476,10 +495,30 @@ public class GUI {
             mainPanel.add(box.panel);
         }
 
+        panelDownSize();
+
         mainPanel.repaint();
         arrowUpdater();
-        // mainPanel.validate();
+    }
 
+    public void panelDownSize(){
+        //calculate panel width
+        for (HashMap.Entry<String, ClassBox> entry : boxes.entrySet()) {
+            String key = entry.getKey();
+            ClassBox box = entry.getValue();
+            if(PANEL_WIDTH > box.bottom_left_pos + 10){
+                PANEL_WIDTH = box.bottom_left_pos + 10;
+            }
+        }
+
+        //calculate panel height
+        for (HashMap.Entry<String, ClassBox> entry : boxes.entrySet()) {
+            String key = entry.getKey();
+            ClassBox box = entry.getValue();
+            if(PANEL_HEIGHT > box.top_right_pos + 15){
+                PANEL_HEIGHT = box.top_right_pos + 15;
+            }
+        }
     }
 
     public void arrowUpdater() {
