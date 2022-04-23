@@ -665,7 +665,7 @@ public class Diagram {
      */
     public static String validation_check(String input) {
         for (int i = 0; i < input.length(); i++) {
-            if (" `\\|:'\"<.>/?!".indexOf(input.charAt(i)) > -1) {
+            if (" `\\|:'\"./?!".indexOf(input.charAt(i)) > -1) {
                 return "ERROR: " + input.charAt(i) + " is an invalid character";
             }
         }

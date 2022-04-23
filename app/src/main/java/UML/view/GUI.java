@@ -247,8 +247,14 @@ public class GUI {
         //Save Image button listener
         saveDiagramImage.addActionListener(e -> {
             String fileName = guiCtr.guiSaveImageCtr();
-            saveImage(fileName);
-            statusMsg.setText("Image Successfully Saved As: " + fileName);
+
+            if (!fileName.contains("Cancelled")){
+                saveImage(fileName);
+                statusMsg.setText("Image Successfully Saved As: " + fileName);
+            }
+            else{
+                statusMsg.setText(fileName);
+            }
         });
         //Load button listener
         loadMenuItem.addActionListener(e -> {
@@ -275,7 +281,7 @@ public class GUI {
             statusMsg.setText(message);
             if (!message.contains("ERROR")) {
                 snapshot();
-                ClassBox box = new ClassBox(className, rand.nextInt(mainPanel.getWidth()), rand.nextInt(mainPanel.getHeight()), guiCtr, this);
+                ClassBox box = new ClassBox(className, rand.nextInt(mainPanel.getWidth() - 100), rand.nextInt(mainPanel.getHeight() - 100), guiCtr, this);
                 boxes.put(className, box);
                 updater();
                 index++;
@@ -499,7 +505,7 @@ public class GUI {
             // FIX LOCATION LOADING
             String classLoc = locs.get(className);
             if (classLoc.equals("-1 -1")){
-                box = new ClassBox(className, rand.nextInt(mainPanel.getWidth()), rand.nextInt(mainPanel.getHeight()), guiCtr, this);
+                box = new ClassBox(className, rand.nextInt(mainPanel.getWidth() - 100), rand.nextInt(mainPanel.getHeight() - 100), guiCtr, this);
             }
             else{
                 String [] location = classLoc.split(" ");
