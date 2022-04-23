@@ -266,8 +266,14 @@ public class GUI {
         //Save Image button listener
         saveDiagramImage.addActionListener(e -> {
             String fileName = guiCtr.guiSaveImageCtr();
-            saveImage(fileName);
-            statusMsg.setText("Image Successfully Saved As: " + fileName);
+
+            if (!fileName.contains("Cancelled")){
+                saveImage(fileName);
+                statusMsg.setText("Image Successfully Saved As: " + fileName);
+            }
+            else{
+                statusMsg.setText(fileName);
+            }
         });
         //Load button listener
         loadMenuItem.addActionListener(e -> {

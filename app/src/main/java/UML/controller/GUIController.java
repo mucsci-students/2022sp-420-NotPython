@@ -1,11 +1,13 @@
 package UML.controller;
 
 import javax.swing.*;
+import javax.swing.filechooser.*;
 import java.util.*;
 
 import UML.model.*;
 import UML.model.Class;
 import UML.view.GUIPopup;
+
 
 public class GUIController {
 
@@ -25,11 +27,23 @@ public class GUIController {
     //Save File GUI
     public String guiSaveCtr(HashMap <String, String> locations){
         String message;
-        String fileName = guiPop.guiSavePop();
+        JFileChooser j = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        j.setAcceptAllFileFilterUsed(false);
+        FileFilter filter = new FileNameExtensionFilter("json File","json");
+        j.setFileFilter(filter);
+        int r = j.showSaveDialog(null);
+        String fileName = "";
+        if (r == JFileChooser.APPROVE_OPTION){
+            fileName = j.getSelectedFile().getAbsolutePath();
+        }
 
         if (fileName.equals(""))
         {
             return "ERROR: file name not entered";
+        }
+
+        if (!fileName.contains(".")){
+            fileName += ".json";
         }
 
         dg.copyGUILocations(locations);
@@ -46,11 +60,19 @@ public class GUIController {
     //Save Diagram as Image GUI
     public String guiSaveImageCtr(){
         String message;
-        String fileName = guiPop.guiSavePop();
+        JFileChooser j = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        j.setAcceptAllFileFilterUsed(false);
+        FileFilter filter = new FileNameExtensionFilter("png File","png");
+        j.setFileFilter(filter);
+        int r = j.showSaveDialog(null);
+        String fileName = "";
+        if (r == JFileChooser.APPROVE_OPTION){
+            fileName = j.getSelectedFile().getAbsolutePath();
+        }
 
         if (fileName.equals(""))
         {
-            return "image";
+            return "Save Image Cancelled";
         }
         else if(fileName.contains(".")){
             fileName = fileName.substring(0, fileName.indexOf("."));
@@ -62,8 +84,16 @@ public class GUIController {
     //Load File GUI
     public String guiLoadCtr(){
         String message;
-        String fileName = guiPop.guiLoadPop();
-
+        String fileName = "";
+        JFileChooser j = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        j.setAcceptAllFileFilterUsed(false);
+        FileFilter filter = new FileNameExtensionFilter("json File","json");
+        j.setFileFilter(filter);
+        int r = j.showOpenDialog(null);
+        if (r == JFileChooser.APPROVE_OPTION){
+            fileName = j.getSelectedFile().getAbsolutePath();
+        }
+        
         if (fileName.equals(""))
         {
             return "ERROR: file name not entered";
@@ -74,7 +104,6 @@ public class GUIController {
         catch(Exception e){
             message = "Load Failed";
         }
-        
         return message;
     }
 
