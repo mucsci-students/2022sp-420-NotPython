@@ -4,43 +4,68 @@ import UML.view.*;
 import java.util.Stack;
 
 public class GUIUndoRedo {
-    private Stack <GUI> undo;
+    // singleton instance of GUI undo redo object
+    private static GUIUndoRedo GUIUndoRedoSingleton = null;
 
-    private Stack <GUI> redo;
+    // stack of GUI objects for undoing
+    private Stack<GUI> undo;
 
-    public GUIUndoRedo()
-    {
+    // stack of GUI objects for redoing
+    private Stack<GUI> redo;
+
+    // private constructor for singleton design pattern
+    private GUIUndoRedo() {
         undo = new Stack<GUI>();
         redo = new Stack<GUI>();
     }
 
-    public void snapshotGUI(GUI state)
-    {
+    // get static instance of singleton
+    // if it exists already then return it
+    // if not then create the instance
+    public static GUIUndoRedo getInstance() {
+        if (GUIUndoRedoSingleton == null) {
+            GUIUndoRedoSingleton = new GUIUndoRedo();
+        }
+        return GUIUndoRedoSingleton;
+    }
+
+    // since we can't new anymore we now have to clear the
+    // stacks when loading
+    public void reset() {
+        undo.clear();
+        redo.clear();
+    }
+
+    // take snapshot of the GUI object and store the
+    // current state in the undo stack
+    public void snapshotGUI(GUI state) {
         undo.push(state);
         redo.clear();
     }
 
-    public GUI undo(GUI state)
-    {
+    // get the current GUI state and push it into the redo stack
+    // get the previous GUI state and return it
+    public GUI undo(GUI state) {
         GUI dg = undo.pop();
         redo.push(state);
         return dg;
     }
 
-    public GUI redo(GUI state)
-    {
+    // get the current GUI state and push it into the undo stack
+    // get the redone state and return it
+    public GUI redo(GUI state) {
         GUI dg = redo.pop();
         undo.push(state);
         return dg;
     }
 
-    public boolean canUndo()
-    {
+    // check if the stack has anything and we can undo
+    public boolean canUndo() {
         return !undo.isEmpty();
     }
 
-    public boolean canRedo()
-    {
+    // check if the stack has anything and we can redo
+    public boolean canRedo() {
         return !redo.isEmpty();
     }
 }

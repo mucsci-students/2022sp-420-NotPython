@@ -8,3 +8,7 @@
       Places used: UndoRedo, GUIUndoRedo
 4) Observer: Used for updating the view for the GUI
       Places used: GUI
+5) Singleton: Used for undo redo in CLI and GUI interfaces
+      Places used: guiController, cliController, undoRedo
+6) Iterator: Used for iterating through classboxes
+      Places Used: GUI

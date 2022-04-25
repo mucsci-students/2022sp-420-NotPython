@@ -36,4 +36,4 @@ Type "gradle test"
 design_patterns.md
 
 ## * Model Test Coverage
-81%
+100%

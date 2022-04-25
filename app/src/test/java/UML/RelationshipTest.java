@@ -11,8 +11,6 @@ import static org.junit.Assert.*;
 import UML.model.Relationship;
 import UML.model.Diagram;
 
-
-
 public class RelationshipTest {
     
     @Test
@@ -36,9 +34,18 @@ public class RelationshipTest {
         assertTrue("The type is incorrect or was not assigned", d.getRelationship("x","y").type.equalsIgnoreCase("Inheritance"));
 
         d.createRelationship("Aggregation", "y", "x");
+        
+        String retStr = d.createRelationship("Aggregation", "y", "y");
+        assertTrue("Created a relationship between class and itself", retStr.equals("ERROR: relationship cannot exist between a class and itself"));
 
-        d.deleteClass("x");
-        d.deleteClass("y");
+        retStr = d.createRelationship("Aggregation", "z", "2");
+        assertTrue("Created relationship for src class that does not exist", retStr.equals("ERROR: Class with name \"z\" does not exist"));
+
+        retStr = d.createRelationship("Aggregation", "x", "2");
+        assertTrue("Created relationship for dest class that does not exist", retStr.equals("ERROR: Class with name \"2\" does not exist"));
+
+        retStr = d.createRelationship("Aggregation", "y", "x");
+        assertTrue("Created relationship that already exists", retStr.equals("ERROR: Relationship from y to x of type Aggregation already exists"));
     }
 
     @Test
@@ -49,10 +56,10 @@ public class RelationshipTest {
         d.createRelationship("Composition", "x", "y");
 
         d.deleteRelationship("x", "y");
-        assertTrue("Relationship deleted succesfully", d.getRelationship("x","y") == null);
+        assertTrue("Relationship deleted successfully", d.getRelationship("x","y") == null);
         
-        d.deleteClass("x");
-        d.deleteClass("y");
+        String retStr = d.deleteRelationship("x", "y");
+        assertTrue("Relationship should not exist", retStr.equals("ERROR: Relationship from x to y does not exist"));
     }
 
     @Test

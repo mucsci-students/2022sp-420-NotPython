@@ -1,11 +1,13 @@
 package UML.controller;
 
 import javax.swing.*;
+import javax.swing.filechooser.*;
 import java.util.*;
 
 import UML.model.*;
 import UML.model.Class;
 import UML.view.GUIPopup;
+
 
 public class GUIController {
 
@@ -17,7 +19,7 @@ public class GUIController {
         return dg.undo();
     }
     
-    //Undo File GUI
+    //Redo File GUI
     public String guiRedoCtr(){
         return dg.redo();
     }
@@ -25,30 +27,94 @@ public class GUIController {
     //Save File GUI
     public String guiSaveCtr(HashMap <String, String> locations){
         String message;
-        String fileName = guiPop.guiSavePop();
+        JFileChooser j = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        j.setAcceptAllFileFilterUsed(false);
+        FileFilter filter = new FileNameExtensionFilter("json File","json");
+        j.setFileFilter(filter);
+        int r = j.showSaveDialog(null);
+        String fileName = "";
+        if (r == JFileChooser.APPROVE_OPTION){
+            fileName = j.getSelectedFile().getAbsolutePath();
+        }
 
         if (fileName.equals(""))
         {
             return "ERROR: file name not entered";
         }
 
+        if (!fileName.contains(".")){
+            fileName += ".json";
+        }
+
         dg.copyGUILocations(locations);
-        message = dg.saveDiagram(fileName);
+        try{
+            message = dg.saveDiagram(fileName);
+        }
+        catch(Exception e){
+            message = "Save Failed";
+        }
+        
         return message;
+    }
+
+    //Save Diagram as Image GUI
+    public String guiSaveImageCtr(){
+        String message;
+        JFileChooser j = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        j.setAcceptAllFileFilterUsed(false);
+        FileFilter filter = new FileNameExtensionFilter("png File","png");
+        j.setFileFilter(filter);
+        int r = j.showSaveDialog(null);
+        String fileName = "";
+        if (r == JFileChooser.APPROVE_OPTION){
+            fileName = j.getSelectedFile().getAbsolutePath();
+        }
+
+        if (fileName.equals(""))
+        {
+            return "Save Image Cancelled";
+        }
+        else if(fileName.contains(".")){
+            fileName = fileName.substring(0, fileName.indexOf("."));
+        }
+
+        return fileName;
     }
     
     //Load File GUI
     public String guiLoadCtr(){
         String message;
-        String fileName = guiPop.guiLoadPop();
-
+        String fileName = "";
+        JFileChooser j = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        j.setAcceptAllFileFilterUsed(false);
+        FileFilter filter = new FileNameExtensionFilter("json File","json");
+        j.setFileFilter(filter);
+        int r = j.showOpenDialog(null);
+        if (r == JFileChooser.APPROVE_OPTION){
+            fileName = j.getSelectedFile().getAbsolutePath();
+        }
+        
         if (fileName.equals(""))
         {
             return "ERROR: file name not entered";
         }
-
-        message = dg.loadDiagram(fileName);
+        try{
+            message = dg.loadDiagram(fileName);
+        }
+        catch(Exception e){
+            message = "Load Failed";
+        }
         return message;
+    }
+
+    //Load the CLI Diagram into the GUI Diagram
+    public void cliImageExport(){
+        try{
+            dg.loadDiagram("diagramExporter.json");
+        }
+        catch(Exception e){
+            String ex = "";
+        }
     }
 
     public HashMap <String, String> getLocationsCtr()
