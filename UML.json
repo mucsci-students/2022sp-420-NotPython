@@ -11,6 +11,13 @@
 		],
 		"methods": [
 			{
+				"name": "CLIController",
+				"return_type": " ",
+				"params": [
+					{ "name": "console", "type": "ConsoleReader" }
+				]
+			},
+			{
 				"name": "processCommand",
 				"return_type": "void",
 				"params": [
@@ -78,7 +85,7 @@
 				"params": []
 			}
 		],
-		"location":{"x":503,"y":178}
+		"location":{"x":817,"y":830}
 	},
 	{
 		"name": "GUIController",
@@ -231,7 +238,7 @@
 				"params": []
 			}
 		],
-		"location":{"x":61,"y":283}
+		"location":{"x":812,"y":294}
 	},
 	{
 		"name": "Listing",
@@ -285,7 +292,7 @@
 				]
 			}
 		],
-		"location":{"x":19,"y":21}
+		"location":{"x":765,"y":102}
 	},
 	{
 		"name": "Class",
@@ -296,6 +303,13 @@
 		],
 		"methods": [
 			{
+				"name": "Class",
+				"return_type": " ",
+				"params": [
+					{ "name": "initName", "type": "String" }
+				]
+			},
+			{
 				"name": "rename",
 				"return_type": "void",
 				"params": [
@@ -303,8 +317,1036 @@
 				]
 			}
 		],
-		"location":{"x":601,"y":495}
+		"location":{"x":2666,"y":693}
+	},
+	{
+		"name": "Diagram",
+		"fields": [
+			{ "name": "classList", "type": "ArrayList<Class>" },
+			{ "name": "relationships", "type": "ArrayList<Relationship>" },
+			{ "name": "locations", "type": "HashMap<String,String>" },
+			{ "name": "undoRedo", "type": "UndoRedo" }
+		],
+		"methods": [
+			{
+				"name": "Diagram",
+				"return_type": " ",
+				"params": [
+					{ "name": "classes", "type": "ArrayList<Class>" },
+					{ "name": "relList", "type": "ArrayList<Relationship>" },
+					{ "name": "locs", "type": "HashMap<String,String>" }
+				]
+			},
+			{
+				"name": "createClass",
+				"return_type": "String",
+				"params": [
+					{ "name": "name", "type": "String" }
+				]
+			},
+			{
+				"name": "renameClass",
+				"return_type": "String",
+				"params": [
+					{ "name": "oldName", "type": "String" },
+					{ "name": "newName", "type": "String" }
+				]
+			},
+			{
+				"name": "deleteClass",
+				"return_type": "String",
+				"params": [
+					{ "name": "className", "type": "String" }
+				]
+			},
+			{
+				"name": "createField",
+				"return_type": "String",
+				"params": [
+					{ "name": "className", "type": "String" },
+					{ "name": "fldName", "type": "String" },
+					{ "name": "fldType", "type": "String" }
+				]
+			},
+			{
+				"name": "deleteField",
+				"return_type": "String",
+				"params": [
+					{ "name": "clasName", "type": "String" },
+					{ "name": "fldName", "type": "String" }
+				]
+			},
+			{
+				"name": "renameField",
+				"return_type": "String",
+				"params": [
+					{ "name": "clas", "type": "String" },
+					{ "name": "oldName", "type": "String" },
+					{ "name": "newName", "type": "String" }
+				]
+			},
+			{
+				"name": "createMethod",
+				"return_type": "String",
+				"params": [
+					{ "name": "className", "type": "String" },
+					{ "name": "type", "type": "String" },
+					{ "name": "methodName", "type": "String" },
+					{ "name": "parameter", "type": "ArrayList<String>" }
+				]
+			},
+			{
+				"name": "deleteMethod",
+				"return_type": "String",
+				"params": [
+					{ "name": "className", "type": "String" },
+					{ "name": "methodName", "type": "String" }
+				]
+			},
+			{
+				"name": "renameMethod",
+				"return_type": "String",
+				"params": [
+					{ "name": "clas", "type": "String" },
+					{ "name": "oldName", "type": "String" },
+					{ "name": "newName", "type": "String" }
+				]
+			},
+			{
+				"name": "createRelationship",
+				"return_type": "String",
+				"params": [
+					{ "name": "type", "type": "String" },
+					{ "name": "src", "type": "String" },
+					{ "name": "dest", "type": "String" }
+				]
+			},
+			{
+				"name": "deleteRelationship",
+				"return_type": "String",
+				"params": [
+					{ "name": "src", "type": "String" },
+					{ "name": "dest", "type": "String" }
+				]
+			},
+			{
+				"name": "changeParameter",
+				"return_type": "String",
+				"params": [
+					{ "name": "className", "type": "String" },
+					{ "name": "method_name", "type": "String" },
+					{ "name": "old_parameter", "type": "String" },
+					{ "name": "new_parameter", "type": "String" },
+					{ "name": "new_parameter_type", "type": "String" }
+				]
+			},
+			{
+				"name": "changeParameters",
+				"return_type": "String",
+				"params": [
+					{ "name": "className", "type": "String" },
+					{ "name": "method_name", "type": "String" },
+					{ "name": "param", "type": "String[]" }
+				]
+			},
+			{
+				"name": "deleteParameter",
+				"return_type": "String",
+				"params": [
+					{ "name": "className", "type": "String" },
+					{ "name": "method_name", "type": "String" },
+					{ "name": "parameter", "type": "String" }
+				]
+			},
+			{
+				"name": "deleteParameters",
+				"return_type": "String",
+				"params": [
+					{ "name": "className", "type": "String" },
+					{ "name": "method_name", "type": "String" }
+				]
+			},
+			{
+				"name": "copyGUILocations",
+				"return_type": "void",
+				"params": [
+					{ "name": "locs", "type": "HashMap<String,String>" }
+				]
+			},
+			{
+				"name": "saveDiagram",
+				"return_type": "String",
+				"params": [
+					{ "name": "fileName", "type": "String" }
+				]
+			},
+			{
+				"name": "loadDiagram",
+				"return_type": "String",
+				"params": [
+					{ "name": "fileName", "type": "String" }
+				]
+			},
+			{
+				"name": "listClass",
+				"return_type": "void",
+				"params": [
+					{ "name": "className", "type": "String" }
+				]
+			},
+			{
+				"name": "listClasses",
+				"return_type": "void",
+				"params": []
+			},
+			{
+				"name": "listRelationships",
+				"return_type": "void",
+				"params": []
+			},
+			{
+				"name": "getClass",
+				"return_type": "Class",
+				"params": [
+					{ "name": "name", "type": "String" }
+				]
+			},
+			{
+				"name": "getField",
+				"return_type": "Field",
+				"params": [
+					{ "name": "curClass", "type": "Class" },
+					{ "name": "fldName", "type": "String" }
+				]
+			},
+			{
+				"name": "getLocations",
+				"return_type": "HashMap<String,String>",
+				"params": []
+			},
+			{
+				"name": "getRelationship",
+				"return_type": "Relationship",
+				"params": [
+					{ "name": "src", "type": "String" },
+					{ "name": "dest", "type": "String" }
+				]
+			},
+			{
+				"name": "getMethod",
+				"return_type": "Method",
+				"params": [
+					{ "name": "className", "type": "String" },
+					{ "name": "methodName", "type": "String" }
+				]
+			},
+			{
+				"name": "getParameter",
+				"return_type": "Parameter",
+				"params": [
+					{ "name": "method", "type": "Method" },
+					{ "name": "parameterName", "type": "String" }
+				]
+			},
+			{
+				"name": "validation_check",
+				"return_type": "String",
+				"params": [
+					{ "name": "input", "type": "String" }
+				]
+			},
+			{
+				"name": "covertClassListArray",
+				"return_type": "String[]",
+				"params": []
+			},
+			{
+				"name": "convertFieldListArray",
+				"return_type": "String[]",
+				"params": [
+					{ "name": "className", "type": "String" }
+				]
+			},
+			{
+				"name": "convertMethodListArray",
+				"return_type": "String[]",
+				"params": [
+					{ "name": "className", "type": "String" }
+				]
+			},
+			{
+				"name": "convertMethodParamsListArray",
+				"return_type": "String[]",
+				"params": [
+					{ "name": "className", "type": "String" },
+					{ "name": "methodName", "type": "String" }
+				]
+			},
+			{
+				"name": "getMethodSize",
+				"return_type": "int",
+				"params": [
+					{ "name": "className", "type": "String" }
+				]
+			},
+			{
+				"name": "getFieldSize",
+				"return_type": "int",
+				"params": [
+					{ "name": "className", "type": "String" }
+				]
+			},
+			{
+				"name": "clone",
+				"return_type": "Diagram",
+				"params": []
+			},
+			{
+				"name": "snapshot",
+				"return_type": "void",
+				"params": []
+			},
+			{
+				"name": "undo",
+				"return_type": "String",
+				"params": []
+			},
+			{
+				"name": "redo",
+				"return_type": "String",
+				"params": []
+			},
+			{
+				"name": "fieldsToString",
+				"return_type": "String",
+				"params": [
+					{ "name": "className", "type": "String" }
+				]
+			},
+			{
+				"name": "getRelationships",
+				"return_type": "ArrayList<Relationship>",
+				"params": []
+			},
+			{
+				"name": "methodsToString",
+				"return_type": "String",
+				"params": [
+					{ "name": "className", "type": "String" }
+				]
+			}
+		],
+		"location":{"x":1475,"y":417}
+	},
+	{
+		"name": "Field",
+		"fields": [
+			{ "name": "name", "type": "String" },
+			{ "name": "type", "type": "String" }
+		],
+		"methods": [
+			{
+				"name": "Field",
+				"return_type": " ",
+				"params": [
+					{ "name": "fld", "type": "String" },
+					{ "name": "tp", "type": "String" }
+				]
+			},
+			{
+				"name": "rename_field",
+				"return_type": "void",
+				"params": [
+					{ "name": "newName", "type": "String" }
+				]
+			}
+		],
+		"location":{"x":2638,"y":472}
+	},
+	{
+		"name": "Load",
+		"fields": [],
+		"methods": [
+			{
+				"name": "loadFile",
+				"return_type": "Map<String,Object>",
+				"params": [
+					{ "name": "name", "type": "String" }
+				]
+			},
+			{
+				"name": "loadJson",
+				"return_type": "Map<String,Object>",
+				"params": [
+					{ "name": "file", "type": "String" }
+				]
+			}
+		],
+		"location":{"x":1474,"y":269}
+	},
+	{
+		"name": "Method",
+		"fields": [
+			{ "name": "type", "type": "String" },
+			{ "name": "name", "type": "String" },
+			{ "name": "parameters", "type": "ArrayList<Parameter>" }
+		],
+		"methods": [
+			{
+				"name": "Method",
+				"return_type": " ",
+				"params": [
+					{ "name": "type", "type": "String" },
+					{ "name": "name", "type": "String" },
+					{ "name": "param", "type": "ArrayList<String>" }
+				]
+			},
+			{
+				"name": "rename_method",
+				"return_type": "void",
+				"params": [
+					{ "name": "newName", "type": "String" }
+				]
+			}
+		],
+		"location":{"x":2531,"y":895}
+	},
+	{
+		"name": "Parameter",
+		"fields": [
+			{ "name": "name", "type": "String" },
+			{ "name": "type", "type": "String" }
+		],
+		"methods": [
+			{
+				"name": "Parameter",
+				"return_type": " ",
+				"params": [
+					{ "name": "name", "type": "String" },
+					{ "name": "type", "type": "String" }
+				]
+			}
+		],
+		"location":{"x":2592,"y":1142}
+	},
+	{
+		"name": "Relationship",
+		"fields": [
+			{ "name": "type", "type": "String" },
+			{ "name": "src", "type": "String" },
+			{ "name": "dest", "type": "String" }
+		],
+		"methods": [
+			{
+				"name": "Relationship",
+				"return_type": " ",
+				"params": [
+					{ "name": "type", "type": "String" },
+					{ "name": "src", "type": "String" },
+					{ "name": "dest", "type": "String" }
+				]
+			}
+		],
+		"location":{"x":1675,"y":103}
+	},
+	{
+		"name": "Save",
+		"fields": [],
+		"methods": [
+			{
+				"name": "saveFile",
+				"return_type": "void",
+				"params": [
+					{ "name": "fileName", "type": "String" },
+					{ "name": "classes", "type": "ArrayList<Class>" },
+					{ "name": "relations", "type": "ArrayList<Relationship>" },
+					{ "name": "locs", "type": "HashMap<String,String>" }
+				]
+			},
+			{
+				"name": "diagramJSON",
+				"return_type": "String",
+				"params": [
+					{ "name": "classes", "type": "ArrayList<Class>" },
+					{ "name": "relations", "type": "ArrayList<Relationship>" },
+					{ "name": "locs", "type": "HashMap<String,String>" }
+				]
+			},
+			{
+				"name": "classJSON",
+				"return_type": "String",
+				"params": [
+					{ "name": "c", "type": "Class" },
+					{ "name": "x", "type": "String" },
+					{ "name": "y", "type": "String" }
+				]
+			},
+			{
+				"name": "locationJSON",
+				"return_type": "String",
+				"params": [
+					{ "name": "x", "type": "String" },
+					{ "name": "y", "type": "String" }
+				]
+			},
+			{
+				"name": "fieldJSON",
+				"return_type": "String",
+				"params": [
+					{ "name": "f", "type": "Field" }
+				]
+			},
+			{
+				"name": "methodJSON",
+				"return_type": "String",
+				"params": [
+					{ "name": "m", "type": "Method" }
+				]
+			},
+			{
+				"name": "paramJson",
+				"return_type": "String",
+				"params": [
+					{ "name": "p", "type": "Parameter" }
+				]
+			},
+			{
+				"name": "relationshipJSON",
+				"return_type": "String",
+				"params": [
+					{ "name": "r", "type": "Relationship" }
+				]
+			}
+		],
+		"location":{"x":2122,"y":32}
+	},
+	{
+		"name": "UndoRedo",
+		"fields": [
+			{ "name": "UndoRedoSingleton", "type": "UndoRedo" },
+			{ "name": "undo", "type": "Stack<Diagram>" },
+			{ "name": "redo", "type": "Stack<Diagram>" }
+		],
+		"methods": [
+			{
+				"name": "UndoRedo",
+				"return_type": " ",
+				"params": []
+			},
+			{
+				"name": "getInstance",
+				"return_type": "UndoRedo",
+				"params": []
+			},
+			{
+				"name": "reset",
+				"return_type": "void",
+				"params": []
+			},
+			{
+				"name": "snapshotDiagram",
+				"return_type": "void",
+				"params": [
+					{ "name": "state", "type": "Diagram" }
+				]
+			},
+			{
+				"name": "undo",
+				"return_type": "Diagram",
+				"params": [
+					{ "name": "state", "type": "Diagram" }
+				]
+			},
+			{
+				"name": "canUndo",
+				"return_type": "boolean",
+				"params": []
+			},
+			{
+				"name": "canRedo",
+				"return_type": "boolean",
+				"params": []
+			}
+		],
+		"location":{"x":1357,"y":23}
+	},
+	{
+		"name": "ArrowDraw",
+		"fields": [
+			{ "name": "thickness", "type": "int" },
+			{ "name": "solidLine", "type": "BasicStroke" },
+			{ "name": "dashedLine", "type": "BasicStroke" },
+			{ "name": "srcPan", "type": "JPanel" },
+			{ "name": "destPan", "type": "JPanel" },
+			{ "name": "type", "type": "String" },
+			{ "name": "side", "type": "String" },
+			{ "name": "srcLoc", "type": "Point" },
+			{ "name": "destLoc", "type": "Point" },
+			{ "name": "pointDist", "type": "int" }
+		],
+		"methods": [
+			{
+				"name": "ArrowDraw",
+				"return_type": " ",
+				"params": [
+					{ "name": "srcInput", "type": "JPanel" },
+					{ "name": "destInput", "type": "JPanel" },
+					{ "name": "typeInput", "type": "String" },
+					{ "name": "g", "type": "Graphics" }
+				]
+			},
+			{
+				"name": "arrowRedraw",
+				"return_type": "void",
+				"params": [
+					{ "name": "g", "type": "Graphics" }
+				]
+			},
+			{
+				"name": "setLineType",
+				"return_type": "void",
+				"params": [
+					{ "name": "g2", "type": "Graphics2D" }
+				]
+			},
+			{
+				"name": "drawType",
+				"return_type": "void",
+				"params": [
+					{ "name": "g2", "type": "Graphics2D" }
+				]
+			},
+			{
+				"name": "checkSides",
+				"return_type": "void",
+				"params": [
+					{ "name": "g", "type": "Graphics" }
+				]
+			},
+			{
+				"name": "checkOneSide",
+				"return_type": "int",
+				"params": [
+					{ "name": "src", "type": "Point" },
+					{ "name": "dest", "type": "Point" }
+				]
+			},
+			{
+				"name": "paintComponent",
+				"return_type": "void",
+				"params": [
+					{ "name": "g", "type": "Graphics" }
+				]
+			}
+		],
+		"location":{"x":14,"y":976}
+	},
+	{
+		"name": "ClassBox",
+		"fields": [
+			{ "name": "guiCtr", "type": "GUIController" },
+			{ "name": "gui", "type": "GUI" },
+			{ "name": "name", "type": "String" },
+			{ "name": "panel", "type": "JPanel" },
+			{ "name": "nameLbl", "type": "JLabel" },
+			{ "name": "fieldArea", "type": "JTextArea" },
+			{ "name": "methodArea", "type": "JTextArea" },
+			{ "name": "x_pos", "type": "int" },
+			{ "name": "y_pos", "type": "int" },
+			{ "name": "top_right_pos", "type": "int" },
+			{ "name": "bottom_left_pos", "type": "int" },
+			{ "name": "panLength", "type": "int" },
+			{ "name": "panHeight", "type": "int" },
+			{ "name": "methodHeight", "type": "int" },
+			{ "name": "fieldHeight", "type": "int" },
+			{ "name": "font", "type": "Font" }
+		],
+		"methods": [
+			{
+				"name": "ClassBox",
+				"return_type": " ",
+				"params": [
+					{ "name": "other", "type": "ClassBox" }
+				]
+			},
+			{
+				"name": "init",
+				"return_type": "JPanel",
+				"params": [
+					{ "name": "className", "type": "String" }
+				]
+			},
+			{
+				"name": "frameResize",
+				"return_type": "void",
+				"params": []
+			},
+			{
+				"name": "rename",
+				"return_type": "void",
+				"params": [
+					{ "name": "newName", "type": "String" }
+				]
+			},
+			{
+				"name": "updateFields",
+				"return_type": "void",
+				"params": []
+			},
+			{
+				"name": "updateMethods",
+				"return_type": "void",
+				"params": []
+			},
+			{
+				"name": "clone",
+				"return_type": "ClassBox",
+				"params": []
+			},
+			{
+				"name": "getDisplayNameLength",
+				"return_type": "int",
+				"params": []
+			},
+			{
+				"name": "getDisplayLength",
+				"return_type": "void",
+				"params": []
+			},
+			{
+				"name": "getDisplayHeight",
+				"return_type": "int",
+				"params": []
+			}
+		],
+		"location":{"x":427,"y":44}
+	},
+	{
+		"name": "CLI",
+		"fields": [],
+		"methods": [
+			{
+				"name": "runCLITabCompletion",
+				"return_type": "void",
+				"params": []
+			}
+		],
+		"location":{"x":104,"y":134}
+	},
+	{
+		"name": "GUI",
+		"fields": [
+			{ "name": "guiCtr", "type": "GUIController" },
+			{ "name": "lister", "type": "Lister" },
+			{ "name": "boxes", "type": "HashMap<String,Classbox>" },
+			{ "name": "arrows", "type": "HashMap<String,ArrowDraw>" },
+			{ "name": "mainFrame", "type": "JFrame" },
+			{ "name": "mainPanel", "type": "JPanel" },
+			{ "name": "innerPanel", "type": "JPanel" },
+			{ "name": "statusBarPanel", "type": "JPanel" },
+			{ "name": "statusMsg", "type": "JLabel" },
+			{ "name": "mainBar", "type": "JMenuBar" },
+			{ "name": "rand", "type": "Random" },
+			{ "name": "PANEL_WIDTH", "type": "int" },
+			{ "name": "PANEL_HEIGHT", "type": "int" }
+		],
+		"methods": [
+			{
+				"name": "GUI",
+				"return_type": " ",
+				"params": []
+			},
+			{
+				"name": "updatePanelSize",
+				"return_type": "void",
+				"params": [
+					{ "name": "width", "type": "int" },
+					{ "name": "height", "type": "int" }
+				]
+			},
+			{
+				"name": "GUI_view",
+				"return_type": "void",
+				"params": []
+			},
+			{
+				"name": "updater",
+				"return_type": "void",
+				"params": []
+			},
+			{
+				"name": "panelUpSize",
+				"return_type": "void",
+				"params": []
+			},
+			{
+				"name": "panelDownSize",
+				"return_type": "void",
+				"params": []
+			},
+			{
+				"name": "arrowUpdater",
+				"return_type": "void",
+				"params": []
+			},
+			{
+				"name": "loadIntoGUI",
+				"return_type": "void",
+				"params": []
+			},
+			{
+				"name": "clone",
+				"return_type": "GUI",
+				"params": []
+			},
+			{
+				"name": "snapshot",
+				"return_type": "void",
+				"params": []
+			},
+			{
+				"name": "saveImage",
+				"return_type": "void",
+				"params": [
+					{ "name": "fileName", "type": "String" }
+				]
+			},
+			{
+				"name": "printCLI",
+				"return_type": "void",
+				"params": [
+					{ "name": "imageFileName", "type": "String" }
+				]
+			}
+		],
+		"location":{"x":29,"y":222}
+	},
+	{
+		"name": "GUIPopup",
+		"fields": [],
+		"methods": [
+			{
+				"name": "guiSavePop",
+				"return_type": "String",
+				"params": []
+			},
+			{
+				"name": "guiLoadPop",
+				"return_type": "String",
+				"params": []
+			},
+			{
+				"name": "createMethodPop",
+				"return_type": "String[]",
+				"params": [
+					{ "name": "input", "type": "String[]" }
+				]
+			},
+			{
+				"name": "getClassPop",
+				"return_type": "String",
+				"params": [
+					{ "name": "classes", "type": "String[]" }
+				]
+			},
+			{
+				"name": "getMethodPop",
+				"return_type": "String",
+				"params": [
+					{ "name": "Method", "type": "String[]" }
+				]
+			},
+			{
+				"name": "getParams",
+				"return_type": "ArrayList<String>",
+				"params": []
+			},
+			{
+				"name": "createFieldPop",
+				"return_type": "String[]",
+				"params": [
+					{ "name": "classes", "type": "String[]" },
+					{ "name": "input", "type": "String[]" }
+				]
+			},
+			{
+				"name": "createRelationshipPop",
+				"return_type": "String[]",
+				"params": [
+					{ "name": "types", "type": "String[]" },
+					{ "name": "classes", "type": "String[]" },
+					{ "name": "input", "type": "String[]" }
+				]
+			},
+			{
+				"name": "deleteClassPop",
+				"return_type": "String",
+				"params": [
+					{ "name": "classes", "type": "String[]" }
+				]
+			},
+			{
+				"name": "deleteMethodPop",
+				"return_type": "String",
+				"params": [
+					{ "name": "methods", "type": "String[]" }
+				]
+			},
+			{
+				"name": "deleteFieldPop",
+				"return_type": "String",
+				"params": [
+					{ "name": "fields", "type": "String[]" }
+				]
+			},
+			{
+				"name": "deleteRelationshipPop",
+				"return_type": "String[]",
+				"params": [
+					{ "name": "classes", "type": "String[]" },
+					{ "name": "input", "type": "String[]" }
+				]
+			},
+			{
+				"name": "renameClassPop",
+				"return_type": "String[]",
+				"params": [
+					{ "name": "classes", "type": "String[]" },
+					{ "name": "input", "type": "String[]" }
+				]
+			},
+			{
+				"name": "renameMethodPop",
+				"return_type": "String[]",
+				"params": [
+					{ "name": "method", "type": "String[]" },
+					{ "name": "input", "type": "String[]" }
+				]
+			},
+			{
+				"name": "editMethodSingleParamPop",
+				"return_type": "String[]",
+				"params": [
+					{ "name": "params", "type": "String[]" },
+					{ "name": "input", "type": "String[]" }
+				]
+			},
+			{
+				"name": "renameFieldPop",
+				"return_type": "String[]",
+				"params": [
+					{ "name": "fields", "type": "String[]" },
+					{ "name": "input", "type": "String[]" }
+				]
+			},
+			{
+				"name": "deleteSingleParamPop",
+				"return_type": "String",
+				"params": [
+					{ "name": "params", "type": "String[]" },
+					{ "name": "input", "type": "String[]" }
+				]
+			},
+			{
+				"name": "guiCreateClassPop",
+				"return_type": "String",
+				"params": []
+			}
+		],
+		"location":{"x":23,"y":639}
+	},
+	{
+		"name": "GUIUndoRedo",
+		"fields": [
+			{ "name": "GUIUndoRedoSingleton", "type": "GUIUndoRedo" },
+			{ "name": "undo", "type": "Stack<GUI>" },
+			{ "name": "redo", "type": "Stack<GUI>" }
+		],
+		"methods": [
+			{
+				"name": "GUIUndoRedo",
+				"return_type": " ",
+				"params": []
+			},
+			{
+				"name": "getInstance",
+				"return_type": "GUIUndoRedo",
+				"params": []
+			},
+			{
+				"name": "snapshotGUI",
+				"return_type": "void",
+				"params": [
+					{ "name": "state", "type": "GUI" }
+				]
+			},
+			{
+				"name": "undo",
+				"return_type": "GUI",
+				"params": [
+					{ "name": "state", "type": "GUI" }
+				]
+			},
+			{
+				"name": "redo",
+				"return_type": "GUI",
+				"params": [
+					{ "name": "state", "type": "GUI" }
+				]
+			},
+			{
+				"name": "canUndo",
+				"return_type": "boolean",
+				"params": []
+			},
+			{
+				"name": "canRedo",
+				"return_type": "boolean",
+				"params": []
+			}
+		],
+		"location":{"x":2552,"y":224}
+	},
+	{
+		"name": "App",
+		"fields": [],
+		"methods": [
+			{
+				"name": "main",
+				"return_type": "void",
+				"params": [
+					{ "name": "args", "type": "String[]" }
+				]
+			}
+		],
+		"location":{"x":101,"y":32}
 	}
 	],
-	"relationships": []
+	"relationships": [
+		{
+			"source": "Field",
+			"destination": "Class",
+			"type": "Composition"
+		},
+		{
+			"source": "Method",
+			"destination": "Class",
+			"type": "Composition"
+		},
+		{
+			"source": "Parameter",
+			"destination": "Method",
+			"type": "Composition"
+		},
+		{
+			"source": "Class",
+			"destination": "Diagram",
+			"type": "Composition"
+		},
+		{
+			"source": "Relationship",
+			"destination": "Diagram",
+			"type": "Composition"
+		}
+	]
 }

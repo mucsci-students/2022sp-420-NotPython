@@ -418,13 +418,13 @@ public class GUIPopup {
         return String.valueOf(paramBox.getSelectedItem());
     }
 
-    public void listClassesPop(){
-        //For future use
-    }
+    // public void listClassesPop(){
+    //     //For future use
+    // }
 
-    public void listRelationshipsPop(){
-        //For future use
-    }
+    // public void listRelationshipsPop(){
+    //     //For future use
+    // }
     
     //GUI Create Class Popup
     public String guiCreateClassPop(){
