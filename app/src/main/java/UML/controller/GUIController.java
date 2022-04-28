@@ -813,7 +813,7 @@ public class GUIController {
 		for(Field fld: classSample.fields) {
 			if((fld.name.length() + fld.type.length() + 1)>maxLength) {
 				maxLength = fld.name.length() + fld.type.length() + 2;
-                maxWord = fld.name + fld.type + "---";
+                maxWord = fld.name + fld.type + "----";
 			}
 		}
 
@@ -821,7 +821,10 @@ public class GUIController {
         String maxMethodWord = "";
 		for(Method m: classSample.methods) {
 			methodlength = m.name.length() + m.type.length() + 3;
-            maxMethodWord = m.name + m.type + "---";
+            maxMethodWord = m.name + m.type + "----";
+            // if(m.parameters == null){
+            //     methodLength
+            // }
 			for(Parameter p: m.parameters)
 			{
 				methodlength += p.name.length() + p.type.length() + 5;
