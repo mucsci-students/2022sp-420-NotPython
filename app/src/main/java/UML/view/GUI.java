@@ -361,6 +361,15 @@ public class GUI {
             if (!message.contains("ERROR")) {
                 snapshot();
                 boxes.remove(className);
+                ArrayList <String> keys = new ArrayList<String>();
+                for (Map.Entry<String, ArrowDraw> set: arrows.entrySet()) {
+                    if(set.getKey().contains(className)){
+                        keys.add(set.getKey());
+                    }
+               }
+               for (String key: keys){
+                   arrows.remove(key);
+               }
                 updater();
             }
         });
