@@ -230,6 +230,9 @@ public class Diagram {
         if (!error.equals("")) {
             return error + " in method type";
         }
+        if(type.equals("constructor") || type.equals("construct")){
+            type = " ";
+        }
         // checks if method name is valid
         error = validation_check(methodName);
         if (!error.equals("")) {

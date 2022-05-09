@@ -122,6 +122,10 @@ public class ParamMethodTest {
         retStr = dg.createMethod("dummy", "method:int", "name", parms);
         assertTrue("Error was not thrown for bad method type", retStr.equals("ERROR: : is an invalid character in method type"));
 
+        retStr = dg.createMethod("dummy", "construct", "dummy", parms);
+        assertTrue("constructor class created", retStr.equals("Method with name \"dummy\" added to class \"dummy\""));
+
+
         dg.createMethod("dummy", "int", "mname", parms);
         retStr = dg.createMethod("dummy", "int", "mname", parms);
         assertTrue(retStr, retStr.equals("ERROR: method already exists"));

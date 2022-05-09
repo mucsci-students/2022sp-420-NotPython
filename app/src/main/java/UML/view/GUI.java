@@ -23,7 +23,7 @@ public class GUI {
 
     HashMap<String, ClassBox> boxes;
     HashMap<String, ArrowDraw> arrows;
-    HashMap<String, int[]> boxLocations;
+    //HashMap<String, int[]> boxLocations;
 
     JFrame mainFrame;
     JPanel mainPanel;
@@ -32,9 +32,9 @@ public class GUI {
     JLabel statusMsg;
     JMenuBar mainBar;
 
-    int listOption = 2;
-    String listClassName;
-    int index = 0;
+    //int listOption = 2;
+    //String listClassName;
+    //int index = 0;
     Random rand = new Random();
 
     int PANEL_WIDTH = 800;
@@ -43,7 +43,7 @@ public class GUI {
     public GUI() {
         boxes = new HashMap<String, ClassBox>();
         arrows = new HashMap<String, ArrowDraw>();
-        boxLocations = new HashMap<String, int[]>();
+        //boxLocations = new HashMap<String, int[]>();
     }
 
     public GUI(GUI other) {
@@ -303,7 +303,7 @@ public class GUI {
                 ClassBox box = new ClassBox(className, rand.nextInt(mainPanel.getWidth() - 100), rand.nextInt(mainPanel.getHeight() - 100), guiCtr, this);
                 boxes.put(className, box);
                 updater();
-                index++;
+                //index++;
             }
         });
         // Create Method Button
@@ -361,6 +361,15 @@ public class GUI {
             if (!message.contains("ERROR")) {
                 snapshot();
                 boxes.remove(className);
+                ArrayList <String> keys = new ArrayList<String>();
+                for (Map.Entry<String, ArrowDraw> set: arrows.entrySet()) {
+                    if(set.getKey().contains(className)){
+                        keys.add(set.getKey());
+                    }
+               }
+               for (String key: keys){
+                   arrows.remove(key);
+               }
                 updater();
             }
         });
@@ -495,30 +504,53 @@ public class GUI {
             mainPanel.add(box.panel);
         }
 
+        panelUpSize();
         panelDownSize();
 
         mainPanel.repaint();
         arrowUpdater();
     }
 
-    public void panelDownSize(){
-        //calculate panel width
+    public void panelUpSize(){
+        
         for (HashMap.Entry<String, ClassBox> entry : boxes.entrySet()) {
             String key = entry.getKey();
             ClassBox box = entry.getValue();
-            if(PANEL_WIDTH > box.bottom_left_pos + 10){
-                PANEL_WIDTH = box.bottom_left_pos + 10;
+            box.frameResize();
+            //calculate panel width
+            if(PANEL_WIDTH < box.top_right_pos + 10){
+                PANEL_WIDTH = box.top_right_pos + 10;
+            }
+            //calculate panel height
+            if(PANEL_HEIGHT < box.bottom_left_pos + 15){
+                PANEL_HEIGHT = box.bottom_left_pos + 15;
             }
         }
+        updatePanelSize(PANEL_WIDTH, PANEL_HEIGHT);
+    }
 
-        //calculate panel height
+    public void panelDownSize(){
+        int curMaxWidth = 400;
+        int curMaxHeight = 500;
         for (HashMap.Entry<String, ClassBox> entry : boxes.entrySet()) {
             String key = entry.getKey();
             ClassBox box = entry.getValue();
-            if(PANEL_HEIGHT > box.top_right_pos + 15){
-                PANEL_HEIGHT = box.top_right_pos + 15;
+
+            //calculate panel width
+            int curWidth = box.top_right_pos + 10;
+            if(curWidth > curMaxWidth){
+                curMaxWidth = curWidth;
+            }
+           
+            //calculate panel height 
+            int curHeight = box.bottom_left_pos + 15;
+            if(curHeight > curMaxHeight){
+                curMaxHeight = curHeight;
             }
         }
+        PANEL_WIDTH = curMaxWidth;
+        PANEL_HEIGHT = curMaxHeight;
+        updatePanelSize(PANEL_WIDTH, PANEL_HEIGHT);
     }
 
     public void arrowUpdater() {
@@ -580,7 +612,7 @@ public class GUI {
 
     public void saveImage(String fileName){
         BufferedImage img = new BufferedImage(mainPanel.getWidth(), mainPanel.getHeight(), BufferedImage.TYPE_INT_RGB);
-        mainPanel.print(img.getGraphics()); // or: panel.printAll(...);
+        mainPanel.printAll(img.getGraphics()); // or: panel.printAll(...);
         try {
             ImageIO.write(img, "png", new File(fileName + ".png"));
         }
@@ -596,7 +628,35 @@ public class GUI {
         guiCtr.cliImageExport();
         loadIntoGUI();
         mainPanel.revalidate();
+        try {
+            System.out.println("Working...");
+            // delay 5 seconds
+            Thread.sleep(5000);
+
+        } catch (InterruptedException e) {
+            System.err.format("IOException: %s%n", e);
+        }
         saveImage(imageFileName);
         mainFrame.dispose();
     }
+
+    // //Check for overlapping classBox
+    // public void overlapClass(String className){
+    //     ClassBox currClass = boxes.get(className);
+    //     int curr_top_left_x_pos = currClass.x_pos;
+    //     int curr_top_right_x_pos = currClass.top_right_pos;
+    //     int curr_bottom_left_y_pos = currClass.bottom_left_pos;              
+    //     int curr_bottom_right_x_pos = top_right_x_pos + currClass.panHeight;
+    //     for (HashMap.Entry<String, ClassBox> entry : boxes.entrySet()) {
+    //         String key = entry.getKey();
+    //         ClassBox box = entry.getValue();
+    //         if(box.name != className){
+    //             int top_left_x_pos = box.x_pos;
+    //             int top_right_x_pos = box.top_right_pos;
+    //             int bottom_left_y_pos = box.bottom_left_pos;              
+    //             int bottom_right_x_pos = top_right_x_pos + box.panHeight;
+
+    //         }
+    //     }
+    // }
 }

@@ -23,7 +23,10 @@ public class ClassBox {
     int top_right_pos;
     int bottom_left_pos;
 
+    //int[] corners;
+
     int panLength;
+    int panHeight;
     int methodHeight;
     int fieldHeight;
 
@@ -38,10 +41,9 @@ public class ClassBox {
 
         x_pos = x; 
         y_pos = y;
-        top_right_pos = x_pos + panLength;
-        bottom_left_pos = y_pos + 100;
 
         init(className);
+        frameResize();
     }
   
     public ClassBox(ClassBox other)
@@ -60,6 +62,7 @@ public class ClassBox {
         name = className;
         nameLbl = new JLabel(className);
         nameLbl.setAlignmentX(Component.CENTER_ALIGNMENT);
+        nameLbl.setPreferredSize(new Dimension(getDisplayNameLength(), 30));
     
         Dimension minSize = new Dimension(10, 20);
         Dimension prefSize = new Dimension(20, 20);
@@ -71,6 +74,8 @@ public class ClassBox {
         fieldArea.add(new Box.Filler(minSize, prefSize, maxSize));
         methodArea.add(new Box.Filler(minSize, prefSize, maxSize));
 
+
+        
         panel.add(nameLbl);
         panel.add(fieldArea);
         panel.add(methodArea);
@@ -99,12 +104,8 @@ public class ClassBox {
                     y_pos = 5;
                 }	
 
-                if(top_right_pos + 15 > gui.PANEL_WIDTH){
-                    gui.updatePanelSize(top_right_pos + 15, gui.PANEL_HEIGHT);
-                }	
-                if(bottom_left_pos + 10 > gui.PANEL_HEIGHT){
-                    gui.updatePanelSize(gui.PANEL_WIDTH, bottom_left_pos + 10);
-                }
+                frameResize();
+
                 panel.setLocation(x_pos, y_pos);
                 panel.repaint();
                 gui.panelDownSize();
@@ -113,12 +114,7 @@ public class ClassBox {
 			}
 
             public void mouseReleased(MouseEvent e) {
-                if(top_right_pos + 15 > gui.PANEL_WIDTH){
-                    gui.updatePanelSize(top_right_pos + 15, gui.PANEL_HEIGHT);
-                }	
-                if(bottom_left_pos + 10 > gui.PANEL_HEIGHT){
-                    gui.updatePanelSize(gui.PANEL_WIDTH, bottom_left_pos + 10);
-                }
+                frameResize();
                 
             }
 		};
@@ -127,6 +123,18 @@ public class ClassBox {
 		panel.addMouseMotionListener(l);
 
         return panel;
+    }
+
+    public void frameResize(){
+        top_right_pos = x_pos + panLength;
+        bottom_left_pos = y_pos + 20 + fieldHeight + methodHeight;
+
+        if(top_right_pos + 15 > gui.PANEL_WIDTH){
+            gui.updatePanelSize(top_right_pos + 15, gui.PANEL_HEIGHT);
+        }	
+        if(bottom_left_pos + 15 > gui.PANEL_HEIGHT){
+            gui.updatePanelSize(gui.PANEL_WIDTH, bottom_left_pos + 15);
+        }
     }
 
     public void rename(String newName){
@@ -155,11 +163,18 @@ public class ClassBox {
         return new ClassBox(this);
     }
 
+    private int getDisplayNameLength(){
+        AffineTransform affinetransform = new AffineTransform();     
+        FontRenderContext frc = new FontRenderContext(affinetransform,true,true);     
+        int textwidth = (int)(font.getStringBounds(name, frc).getWidth());
+        return textwidth;
+    }
+
     private void getDisplayLength(){
         AffineTransform affinetransform = new AffineTransform();     
         FontRenderContext frc = new FontRenderContext(affinetransform,true,true);     
         int textwidth = (int)(font.getStringBounds(guiCtr.maximumWord(name), frc).getWidth());
-        panLength = textwidth + 17;
+        panLength = textwidth /*+ 17*/;
     }
 
     private int getDisplayHeight(){
